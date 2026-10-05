@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>CareerPilot AI - JD解析</title>
 
     <style>
@@ -16,11 +15,8 @@
             background: #f5f7fb;
             color: #1f2937;
             font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                "Microsoft YaHei",
                 Arial,
+                "Microsoft YaHei",
                 sans-serif;
         }
 
@@ -30,54 +26,46 @@
             padding: 40px 20px 60px;
         }
 
-        .header {
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
             margin-bottom: 28px;
         }
 
-        .header h1 {
-            margin: 0 0 8px;
-            font-size: 32px;
-        }
-
-        .header p {
-            margin: 0;
-            color: #6b7280;
-            font-size: 15px;
-        }
-
         .card {
-            background: white;
-            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
             padding: 24px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
-            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
 
         .card h2 {
-            margin: 0 0 18px;
-            font-size: 20px;
+            margin-top: 0;
         }
 
         textarea {
             width: 100%;
-            min-height: 300px;
-            resize: vertical;
+            min-height: 320px;
             padding: 16px;
             border: 1px solid #d1d5db;
             border-radius: 12px;
-            outline: none;
+            resize: vertical;
             font-size: 14px;
             line-height: 1.7;
             font-family: inherit;
+            outline: none;
         }
 
         textarea:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            border-color: #4f46e5;
         }
 
-        .toolbar {
+        .buttons {
             display: flex;
             gap: 12px;
             margin-top: 16px;
@@ -88,26 +76,26 @@
             border: none;
             border-radius: 10px;
             padding: 11px 18px;
-            font-size: 14px;
             cursor: pointer;
+            font-size: 14px;
             font-family: inherit;
         }
 
-        .primary-btn {
+        .primary {
             background: #4f46e5;
             color: white;
         }
 
-        .primary-btn:hover {
+        .primary:hover {
             background: #4338ca;
         }
 
-        .secondary-btn {
+        .secondary {
             background: #eef2ff;
             color: #4338ca;
         }
 
-        .secondary-btn:hover {
+        .secondary:hover {
             background: #e0e7ff;
         }
 
@@ -116,107 +104,97 @@
             cursor: not-allowed;
         }
 
-        .status {
-            margin-top: 14px;
-            min-height: 24px;
+        #status {
+            margin-top: 15px;
+            min-height: 22px;
             color: #6b7280;
             font-size: 14px;
         }
 
         .success {
-            color: #15803d;
+            color: #15803d !important;
         }
 
         .error {
-            color: #dc2626;
+            color: #dc2626 !important;
+        }
+
+        .hidden {
+            display: none !important;
         }
 
         .result-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
             border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            gap: 20px;
         }
 
         .position {
-            margin: 0 0 10px;
             font-size: 28px;
-            color: #111827;
+            margin: 0 0 8px;
         }
 
         .company {
             color: #6b7280;
-            font-size: 15px;
         }
 
-        .ai-badge {
-            white-space: nowrap;
+        .badge {
             background: #ecfdf5;
             color: #047857;
-            border-radius: 999px;
             padding: 7px 12px;
+            border-radius: 999px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: bold;
         }
 
         .meta-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
-            margin-bottom: 24px;
         }
 
         .meta-item {
             background: #f8fafc;
+            padding: 15px;
             border-radius: 12px;
-            padding: 14px;
         }
 
         .meta-label {
             font-size: 12px;
             color: #6b7280;
-            margin-bottom: 6px;
+            margin-bottom: 7px;
         }
 
         .meta-value {
-            font-size: 14px;
             font-weight: 600;
-            color: #111827;
-            word-break: break-word;
         }
 
         .section {
-            margin-top: 24px;
+            margin-top: 26px;
         }
 
         .section-title {
             font-size: 16px;
-            font-weight: 700;
+            font-weight: bold;
             margin-bottom: 12px;
-            color: #111827;
         }
 
-        .tag-list {
+        .tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
         }
 
         .tag {
-            display: inline-block;
             background: #eef2ff;
             color: #4338ca;
-            padding: 7px 11px;
             border-radius: 999px;
+            padding: 7px 12px;
             font-size: 13px;
-        }
-
-        .tag.green {
-            background: #ecfdf5;
-            color: #047857;
         }
 
         .tag.orange {
@@ -224,60 +202,47 @@
             color: #c2410c;
         }
 
-        .list {
+        ol,
+        ul {
             margin: 0;
-            padding-left: 22px;
+            padding-left: 24px;
         }
 
-        .list li {
-            margin: 8px 0;
+        li {
+            margin-bottom: 9px;
             line-height: 1.7;
             font-size: 14px;
         }
 
-        .empty {
-            color: #9ca3af;
-            font-size: 14px;
-        }
-
-        .raw-json {
+        pre {
             background: #111827;
             color: #e5e7eb;
             padding: 16px;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow-x: auto;
             white-space: pre-wrap;
             word-break: break-word;
             font-size: 12px;
             line-height: 1.6;
-            margin-top: 12px;
-        }
-
-        .hidden {
-            display: none;
         }
 
         @media (max-width: 800px) {
             .meta-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-
-            .result-header {
-                flex-direction: column;
-            }
         }
 
         @media (max-width: 500px) {
             .container {
-                padding: 24px 14px 40px;
+                padding: 24px 14px;
             }
 
             .meta-grid {
                 grid-template-columns: 1fr;
             }
 
-            .position {
-                font-size: 23px;
+            .result-header {
+                flex-direction: column;
             }
         }
     </style>
@@ -287,53 +252,56 @@
 
 <div class="container">
 
-    <!-- 页面标题 -->
-    <div class="header">
-        <h1>CareerPilot AI</h1>
-        <p>US03：岗位 JD 输入与结构化解析</p>
+    <h1>CareerPilot AI</h1>
+    <div class="subtitle">
+        US03：岗位 JD 输入与结构化解析
     </div>
 
-
-    <!-- JD 输入 -->
+    <!-- JD输入 -->
     <div class="card">
+
         <h2>输入岗位 JD</h2>
 
         <textarea
             id="jdInput"
-            placeholder="请粘贴完整岗位 JD，例如：岗位名称、薪资、地点、岗位职责、任职要求等..."
+            placeholder="请把招聘网站上的完整岗位 JD 粘贴到这里……"
         ></textarea>
 
-        <div class="toolbar">
+        <div class="buttons">
+
             <button
+                type="button"
+                class="primary"
                 id="parseButton"
-                class="primary-btn"
+                onclick="parseJD()"
             >
                 AI 解析 JD
             </button>
 
             <button
-                id="sampleButton"
-                class="secondary-btn"
+                type="button"
+                class="secondary"
+                onclick="fillSampleJD()"
             >
                 填入示例 JD
             </button>
 
             <button
-                id="clearButton"
-                class="secondary-btn"
+                type="button"
+                class="secondary"
+                onclick="clearJD()"
             >
                 清空
             </button>
+
         </div>
 
-        <div
-            id="status"
-            class="status"
-        ></div>
+        <div id="status"></div>
+
     </div>
 
 
-    <!-- JD 结果 -->
+    <!-- 结果卡片 -->
     <div
         id="resultCard"
         class="card hidden"
@@ -346,7 +314,7 @@
                     id="position"
                     class="position"
                 >
-                    -
+                    未识别岗位
                 </h2>
 
                 <div
@@ -357,7 +325,7 @@
                 </div>
             </div>
 
-            <div class="ai-badge">
+            <div class="badge">
                 AI 结构化解析
             </div>
 
@@ -376,10 +344,9 @@
                     id="location"
                     class="meta-value"
                 >
-                    -
+                    未提供
                 </div>
             </div>
-
 
             <div class="meta-item">
                 <div class="meta-label">
@@ -390,10 +357,9 @@
                     id="education"
                     class="meta-value"
                 >
-                    -
+                    未提供
                 </div>
             </div>
-
 
             <div class="meta-item">
                 <div class="meta-label">
@@ -404,72 +370,77 @@
                     id="internshipDays"
                     class="meta-value"
                 >
-                    -
+                    未提供
                 </div>
             </div>
 
-
             <div class="meta-item">
                 <div class="meta-label">
-                    文本长度
+                    JD 文本长度
                 </div>
 
                 <div
                     id="textLength"
                     class="meta-value"
                 >
-                    -
+                    0 字
                 </div>
             </div>
 
         </div>
 
 
-        <!-- 专业要求 -->
+        <!-- 专业 -->
         <div
             id="majorSection"
             class="section hidden"
         >
+
             <div class="section-title">
                 专业要求
             </div>
 
             <div
                 id="majorList"
-                class="tag-list"
+                class="tags"
             ></div>
+
         </div>
 
 
-        <!-- 技能要求 -->
+        <!-- 技能 -->
         <div
             id="skillsSection"
             class="section hidden"
         >
+
             <div class="section-title">
                 技能要求
             </div>
 
             <div
                 id="skillsList"
-                class="tag-list"
+                class="tags"
             ></div>
+
         </div>
 
 
-        <!-- 经验要求 -->
+        <!-- 经验 -->
         <div
             id="experienceSection"
             class="section hidden"
         >
+
             <div class="section-title">
                 经验要求
             </div>
 
             <div
                 id="experienceList"
-                class="tag-list"
+                class="tags"
             ></div>
+
         </div>
 
 
@@ -478,14 +449,13 @@
             id="responsibilitiesSection"
             class="section hidden"
         >
+
             <div class="section-title">
                 岗位职责
             </div>
 
-            <ol
-                id="responsibilitiesList"
-                class="list"
-            ></ol>
+            <ol id="responsibilitiesList"></ol>
+
         </div>
 
 
@@ -494,34 +464,36 @@
             id="otherSection"
             class="section hidden"
         >
+
             <div class="section-title">
                 其他要求
             </div>
 
-            <ul
-                id="otherList"
-                class="list"
-            ></ul>
+            <ul id="otherList"></ul>
+
         </div>
 
 
-        <!-- 原始 JSON -->
+        <!-- JSON -->
         <div class="section">
+
             <div class="section-title">
                 结构化数据
             </div>
 
             <button
-                id="toggleJsonButton"
-                class="secondary-btn"
+                type="button"
+                class="secondary"
+                onclick="toggleJSON()"
             >
                 查看原始 JSON
             </button>
 
             <pre
-                id="rawJson"
-                class="raw-json hidden"
+                id="rawJSON"
+                class="hidden"
             ></pre>
+
         </div>
 
     </div>
@@ -531,64 +503,11 @@
 
 <script>
 
-    const jdInput = document.getElementById("jdInput");
-    const parseButton = document.getElementById("parseButton");
-    const sampleButton = document.getElementById("sampleButton");
-    const clearButton = document.getElementById("clearButton");
-    const status = document.getElementById("status");
-
-    const resultCard = document.getElementById("resultCard");
-
-    const position = document.getElementById("position");
-    const company = document.getElementById("company");
-
-    const location = document.getElementById("location");
-    const education = document.getElementById("education");
-    const internshipDays = document.getElementById("internshipDays");
-    const textLength = document.getElementById("textLength");
-
-    const majorSection = document.getElementById("majorSection");
-    const majorList = document.getElementById("majorList");
-
-    const skillsSection = document.getElementById("skillsSection");
-    const skillsList = document.getElementById("skillsList");
-
-    const experienceSection = document.getElementById("experienceSection");
-    const experienceList = document.getElementById("experienceList");
-
-    const responsibilitiesSection =
-        document.getElementById(
-            "responsibilitiesSection"
-        );
-
-    const responsibilitiesList =
-        document.getElementById(
-            "responsibilitiesList"
-        );
-
-    const otherSection =
-        document.getElementById(
-            "otherSection"
-        );
-
-    const otherList =
-        document.getElementById(
-            "otherList"
-        );
-
-    const toggleJsonButton =
-        document.getElementById(
-            "toggleJsonButton"
-        );
-
-    const rawJson =
-        document.getElementById(
-            "rawJson"
-        );
-
-
+    // =========================
     // 示例 JD
-    const sampleJD =
+    // =========================
+
+    const SAMPLE_JD =
 `C++开发实习生
 100-200元/天
 广州
@@ -610,359 +529,409 @@ C++ QT
 3.具备良好的分析和解决问题的能力，能够高效处理开发过程中的技术难题。`;
 
 
-    // 创建标签
-    function renderTags(
-        container,
-        items,
-        className = ""
-    ) {
+    // =========================
+    // 填入示例
+    // =========================
 
-        container.innerHTML = "";
+    function fillSampleJD() {
 
-        if (!Array.isArray(items) || items.length === 0) {
-            return false;
-        }
+        const input =
+            document.getElementById("jdInput");
 
-        items.forEach(item => {
+        const status =
+            document.getElementById("status");
 
-            const span =
-                document.createElement("span");
+        input.value = SAMPLE_JD;
 
-            span.className =
-                `tag ${className}`;
+        status.textContent =
+            "示例 JD 已填入，可以点击“AI 解析 JD”。";
 
-            span.textContent = item;
+        status.className = "success";
 
-            container.appendChild(span);
-        });
-
-        return true;
+        input.focus();
     }
 
 
-    // 创建列表
+    // =========================
+    // 清空
+    // =========================
+
+    function clearJD() {
+
+        document.getElementById(
+            "jdInput"
+        ).value = "";
+
+        document.getElementById(
+            "resultCard"
+        ).classList.add("hidden");
+
+        const status =
+            document.getElementById("status");
+
+        status.textContent = "";
+
+        status.className = "";
+
+        document.getElementById(
+            "jdInput"
+        ).focus();
+    }
+
+
+    // =========================
+    // 标签渲染
+    // =========================
+
+    function renderTags(
+        elementId,
+        sectionId,
+        items,
+        extraClass = ""
+    ) {
+
+        const element =
+            document.getElementById(elementId);
+
+        const section =
+            document.getElementById(sectionId);
+
+        element.innerHTML = "";
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+
+            section.classList.add("hidden");
+
+            return;
+        }
+
+        items.forEach(
+            item => {
+
+                const tag =
+                    document.createElement("span");
+
+                tag.className =
+                    "tag " + extraClass;
+
+                tag.textContent =
+                    item;
+
+                element.appendChild(tag);
+            }
+        );
+
+        section.classList.remove("hidden");
+    }
+
+
+    // =========================
+    // 列表渲染
+    // =========================
+
     function renderList(
-        container,
+        elementId,
+        sectionId,
         items
     ) {
 
-        container.innerHTML = "";
+        const element =
+            document.getElementById(elementId);
 
-        if (!Array.isArray(items) || items.length === 0) {
-            return false;
+        const section =
+            document.getElementById(sectionId);
+
+        element.innerHTML = "";
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+
+            section.classList.add("hidden");
+
+            return;
         }
 
-        items.forEach(item => {
+        items.forEach(
+            item => {
 
-            const li =
-                document.createElement("li");
+                const li =
+                    document.createElement("li");
 
-            li.textContent = item;
+                li.textContent =
+                    item;
 
-            container.appendChild(li);
-        });
+                element.appendChild(li);
+            }
+        );
 
-        return true;
+        section.classList.remove("hidden");
     }
 
 
-    // 显示结果
-    function renderJobResult(
-        data
-    ) {
+    // =========================
+    // 显示解析结果
+    // =========================
 
-        const job = data.job || {};
+    function showResult(data) {
 
-        // 基本信息
-        position.textContent =
+        const job =
+            data.job || {};
+
+
+        document.getElementById(
+            "position"
+        ).textContent =
             job.position || "未识别岗位";
 
-        company.textContent =
-            `公司：${job.company || "未提供"}`;
 
-        location.textContent =
+        document.getElementById(
+            "company"
+        ).textContent =
+            "公司：" +
+            (job.company || "未提供");
+
+
+        document.getElementById(
+            "location"
+        ).textContent =
             job.location || "未提供";
 
-        education.textContent =
+
+        document.getElementById(
+            "education"
+        ).textContent =
             job.required_education || "未提供";
 
-        internshipDays.textContent =
+
+        document.getElementById(
+            "internshipDays"
+        ).textContent =
             job.internship_days || "未提供";
 
-        textLength.textContent =
-            `${data.text_length || 0} 字`;
+
+        document.getElementById(
+            "textLength"
+        ).textContent =
+            (data.text_length || 0) + " 字";
 
 
-        // 专业
-        const hasMajor =
-            renderTags(
-                majorList,
-                job.required_major,
-                ""
-            );
-
-        majorSection.classList.toggle(
-            "hidden",
-            !hasMajor
+        renderTags(
+            "majorList",
+            "majorSection",
+            job.required_major
         );
 
 
-        // 技能
-        const hasSkills =
-            renderTags(
-                skillsList,
-                job.required_skills,
-                ""
-            );
-
-        skillsSection.classList.toggle(
-            "hidden",
-            !hasSkills
+        renderTags(
+            "skillsList",
+            "skillsSection",
+            job.required_skills
         );
 
 
-        // 经验
-        const hasExperience =
-            renderTags(
-                experienceList,
-                job.experience,
-                "orange"
-            );
-
-        experienceSection.classList.toggle(
-            "hidden",
-            !hasExperience
+        renderTags(
+            "experienceList",
+            "experienceSection",
+            job.experience,
+            "orange"
         );
 
 
-        // 岗位职责
-        const hasResponsibilities =
-            renderList(
-                responsibilitiesList,
-                job.responsibilities
-            );
-
-        responsibilitiesSection.classList.toggle(
-            "hidden",
-            !hasResponsibilities
+        renderList(
+            "responsibilitiesList",
+            "responsibilitiesSection",
+            job.responsibilities
         );
 
 
-        // 其他要求
-        const hasOther =
-            renderList(
-                otherList,
-                job.other_requirements
-            );
-
-        otherSection.classList.toggle(
-            "hidden",
-            !hasOther
+        renderList(
+            "otherList",
+            "otherSection",
+            job.other_requirements
         );
 
 
-        // 原始 JSON
-        rawJson.textContent =
+        document.getElementById(
+            "rawJSON"
+        ).textContent =
             JSON.stringify(
                 job,
                 null,
                 2
             );
 
-        rawJson.classList.add(
-            "hidden"
-        );
 
-        toggleJsonButton.textContent =
-            "查看原始 JSON";
+        document.getElementById(
+            "rawJSON"
+        ).classList.add("hidden");
 
 
-        // 显示结果卡片
-        resultCard.classList.remove(
-            "hidden"
-        );
+        document.getElementById(
+            "resultCard"
+        ).classList.remove("hidden");
 
 
-        // 自动滚动到结果
-        resultCard.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
+        document.getElementById(
+            "resultCard"
+        ).scrollIntoView({
+            behavior: "smooth"
         });
     }
 
 
-    // 解析 JD
-    parseButton.addEventListener(
-        "click",
-        async () => {
+    // =========================
+    // 调用后端解析 JD
+    // =========================
 
-            const jdText =
-                jdInput.value.trim();
+    async function parseJD() {
 
-            if (!jdText) {
+        const input =
+            document.getElementById("jdInput");
 
-                status.textContent =
-                    "请先粘贴岗位 JD。";
+        const button =
+            document.getElementById("parseButton");
 
-                status.className =
-                    "status error";
+        const status =
+            document.getElementById("status");
 
-                return;
-            }
-
-            if (jdText.length < 30) {
-
-                status.textContent =
-                    "JD 内容过短，请输入完整岗位描述。";
-
-                status.className =
-                    "status error";
-
-                return;
-            }
+        const jdText =
+            input.value.trim();
 
 
-            parseButton.disabled = true;
-
-            sampleButton.disabled = true;
+        if (!jdText) {
 
             status.textContent =
-                "正在调用 AI 解析 JD，请稍候……";
+                "请先输入岗位 JD。";
 
             status.className =
-                "status";
+                "error";
+
+            return;
+        }
 
 
-            try {
+        if (jdText.length < 30) {
 
-                const response =
-                    await fetch(
-                        "/api/jd/parse",
-                        {
-                            method: "POST",
+            status.textContent =
+                "JD 内容过短，请输入完整岗位描述。";
 
-                            headers: {
-                                "Content-Type":
-                                    "application/json",
-                                "Accept":
-                                    "application/json"
-                            },
+            status.className =
+                "error";
 
-                            body: JSON.stringify({
-                                jd_text: jdText
-                            })
-                        }
-                    );
+            return;
+        }
 
 
-                const data =
-                    await response.json();
+        button.disabled = true;
+
+        status.textContent =
+            "正在调用 AI 解析 JD，请稍候……";
+
+        status.className = "";
 
 
-                if (!response.ok) {
+        try {
 
-                    throw new Error(
-                        data.detail ||
-                        "JD 解析失败。"
-                    );
-                }
+            const response =
+                await fetch(
+                    "/api/jd/parse",
+                    {
+                        method: "POST",
 
+                        headers: {
+                            "Content-Type":
+                                "application/json",
 
-                renderJobResult(
-                    data
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            jd_text: jdText
+                        })
+                    }
                 );
 
 
-                status.textContent =
-                    `解析完成，共处理 ${data.text_length} 个字符。`;
-
-                status.className =
-                    "status success";
+            const data =
+                await response.json();
 
 
-            } catch (error) {
+            if (!response.ok) {
 
-                console.error(
-                    error
+                throw new Error(
+                    data.detail ||
+                    "JD 解析失败"
                 );
-
-                status.textContent =
-                    `解析失败：${error.message}`;
-
-                status.className =
-                    "status error";
-
-            } finally {
-
-                parseButton.disabled = false;
-
-                sampleButton.disabled = false;
             }
-        }
-    );
 
 
-    // 示例 JD
-    sampleButton.addEventListener(
-        "click",
-        () => {
+            showResult(data);
 
-            jdInput.value =
-                sampleJD;
 
             status.textContent =
-                "已填入示例 JD，可以直接点击 AI 解析。";
+                "JD 解析成功。";
 
             status.className =
-                "status";
-
-            jdInput.focus();
-        }
-    );
+                "success";
 
 
-    // 清空
-    clearButton.addEventListener(
-        "click",
-        () => {
+        } catch (error) {
 
-            jdInput.value = "";
-
-            resultCard.classList.add(
-                "hidden"
+            console.error(
+                "JD解析错误：",
+                error
             );
 
             status.textContent =
-                "";
+                "解析失败：" +
+                error.message;
 
-            rawJson.textContent =
-                "";
+            status.className =
+                "error";
 
-            jdInput.focus();
+        } finally {
+
+            button.disabled = false;
         }
-    );
+
+    }
 
 
-    // 查看 / 隐藏 JSON
-    toggleJsonButton.addEventListener(
-        "click",
-        () => {
+    // =========================
+    // 显示 / 隐藏 JSON
+    // =========================
 
-            const hidden =
-                rawJson.classList.contains(
-                    "hidden"
-                );
+    function toggleJSON() {
 
-            rawJson.classList.toggle(
+        const json =
+            document.getElementById(
+                "rawJSON"
+            );
+
+        const hidden =
+            json.classList.contains(
                 "hidden"
             );
 
-            toggleJsonButton.textContent =
-                hidden
-                    ? "隐藏原始 JSON"
-                    : "查看原始 JSON";
+        if (hidden) {
+
+            json.classList.remove(
+                "hidden"
+            );
+
+        } else {
+
+            json.classList.add(
+                "hidden"
+            );
         }
-    );
+    }
 
 </script>
 
