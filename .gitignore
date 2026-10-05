@@ -15,3 +15,6 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local user profile data
+backend/data/profile.json
