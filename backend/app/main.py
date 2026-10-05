@@ -10,6 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.parsers import extract_text
 from app.profile_service import build_profile
+from app.jd_service import build_job
 
 
 load_dotenv()
@@ -173,3 +174,38 @@ async def parse_resume(
         temp_path.unlink(
             missing_ok=True
         )
+        @app.post("/api/jd/parse")
+async def parse_jd(data: dict):
+    jd_text = data.get("jd_text", "").strip()
+
+    if not jd_text:
+        raise HTTPException(
+            status_code=400,
+            detail="JD 内容不能为空。"
+        )
+
+    if len(jd_text) < 30:
+        raise HTTPException(
+            status_code=400,
+            detail="JD 内容过短，请输入完整岗位描述。"
+        )
+
+    if len(jd_text) > 20000:
+        raise HTTPException(
+            status_code=413,
+            detail="JD 内容过长，暂时限制为 20000 个字符。"
+        )
+
+    try:
+        job = await build_job(jd_text)
+
+        return {
+            "text_length": len(jd_text),
+            "job": job
+        }
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=str(exc)
+        ) from exc
