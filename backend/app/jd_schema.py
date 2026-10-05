@@ -8,5 +8,5 @@ JOB_SCHEMA = {
     "experience": [],
     "location": "",
     "internship_days": "",
-    "other_requirements": []
+    "other_requirements": [],
 }
