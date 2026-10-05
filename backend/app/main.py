@@ -95,6 +95,11 @@ def index():
         STATIC_DIR / "index.html"
     )
 
+@app.get("/jd")
+def jd_page():
+    return FileResponse(
+        STATIC_DIR / "jd.html"
+    )
 
 # =========================
 # 健康检查
