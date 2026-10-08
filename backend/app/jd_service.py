@@ -1,141 +1,604 @@
 import json
 import os
+import re
 
 import httpx
+from dotenv import load_dotenv
 
 from app.jd_schema import JOB_SCHEMA
 
 
-def build_jd_prompt(jd_text: str) -> str:
-    schema = json.dumps(
+# ============================================================
+# 环境变量
+# ============================================================
+
+load_dotenv()
+
+LLM_BASE_URL = os.getenv(
+    "LLM_BASE_URL",
+    "https://api.deepseek.com",
+)
+
+LLM_API_KEY = os.getenv(
+    "LLM_API_KEY",
+    "",
+)
+
+LLM_MODEL = os.getenv(
+    "LLM_MODEL",
+    "deepseek-chat",
+)
+
+
+# ============================================================
+# Prompt
+# ============================================================
+
+def build_jd_prompt(
+    jd_text: str,
+) -> str:
+
+    schema_text = json.dumps(
         JOB_SCHEMA,
         ensure_ascii=False,
         indent=2,
     )
 
     return f"""
-你是大学生求职岗位信息结构化助手。
+你是一个专业的大学生求职岗位分析助手。
 
-任务：
-从下面的岗位 JD 原文中提取结构化岗位信息。
+你的任务是：
+将用户提供的原始岗位 JD 解析成严格的结构化 JSON。
 
-严格要求：
+必须严格按照下面的 JSON 结构输出：
 
-1. 只能提取 JD 中明确出现的信息。
-2. 不得虚构公司、岗位、技能、学历、专业、经验、地点、薪资或其他要求。
-3. 无法判断的信息使用空字符串或空数组。
-4. 不要根据常识自行补充岗位要求。
-5. 岗位职责必须尽量保留原始语义。
-6. required_skills 只放岗位明确要求或明确提及的技能。
-7. salary 专门用于存放薪资、薪酬、日薪、月薪、时薪、实习补贴等信息。
-8. 薪资信息绝对不能放入 other_requirements。
-9. salary 不属于岗位硬性条件，不参与后续硬性条件匹配。
-10. other_requirements 只放无法归入学历、专业、技能、经验、地点、实习周期等字段的明确要求。
-11. 输出必须是合法 JSON。
-12. 不要输出 Markdown。
-13. 输出结构必须与 Schema 完全一致。
+{schema_text}
 
-Schema：
-{schema}
+字段含义如下：
 
-JD 原文：
----BEGIN JOB DESCRIPTION---
+1. company
+公司名称。
+如果 JD 中没有明确出现公司名称，填写空字符串。
+
+2. position
+岗位名称。
+这是非常重要的字段。
+必须从 JD 标题、岗位名称、职位名称等位置提取。
+例如：
+"C++开发实习生"
+"Java后端开发实习生"
+"大数据开发工程师"
+不能因为 JD 中信息较多而留空。
+
+3. salary
+薪资信息。
+例如：
+"100-200元/天"
+"8-12K/月"
+薪资只用于展示，不属于硬性匹配条件。
+
+4. responsibilities
+岗位职责 / 工作内容。
+必须重点识别：
+"岗位职责"
+"工作职责"
+"职位描述"
+"工作内容"
+"你将负责"
+"主要工作"
+等部分。
+
+每一条职责单独作为数组中的一个字符串。
+
+5. required_education
+学历要求。
+例如：
+"本科"
+"硕士"
+"学历不限"
+
+6. required_major
+专业要求。
+必须是数组。
+例如：
+["计算机科学与技术", "软件工程"]
+
+如果没有明确专业要求，返回 []。
+
+7. required_skills
+岗位要求的技能。
+必须从任职要求、技能要求、技术栈等内容中提取。
+
+例如：
+["C/C++", "Qt", "Python", "Git"]
+
+8. experience
+经验要求。
+例如：
+["桌面开发经验"]
+["后端开发经验"]
+["有实习经验优先"]
+
+9. location
+工作地点。
+例如：
+"广州"
+"深圳"
+"上海"
+
+10. internship_days
+实习时间要求。
+例如：
+"5天/周3个月"
+"每周至少4天"
+
+11. other_requirements
+其他要求。
+例如：
+["良好的沟通能力", "责任心强"]
+
+重要规则：
+
+第一，必须尽可能提取 JD 原文中的信息，不要自行编造。
+
+第二，岗位职责和任职要求必须区分：
+"岗位职责"属于 responsibilities。
+"任职要求"中的技术能力属于 required_skills。
+"任职要求"中的工作经验属于 experience。
+
+第三：
+薪资必须放到 salary。
+不能放到 other_requirements。
+
+第四：
+如果岗位名称出现在 JD 第一行，例如：
+
+C++开发实习生
+100-200元/天
+广州
+
+那么 position 必须是：
+"C++开发实习生"
+
+第五：
+如果存在：
+
+岗位职责:
+1. 使用C/C++语言进行软件开发。
+2. 与团队合作进行软件测试。
+3. 参与软件整体架构设计。
+
+必须解析成：
+
+"responsibilities": [
+    "使用C/C++语言进行软件开发。",
+    "与团队合作进行软件测试。",
+    "参与软件整体架构设计。"
+]
+
+第六：
+只输出 JSON。
+禁止输出解释文字。
+禁止输出 Markdown。
+禁止输出 ```json。
+
+原始 JD：
+
+--------------------
 {jd_text}
----END JOB DESCRIPTION---
-""".strip()
+--------------------
+"""
 
 
-async def build_job(jd_text: str) -> dict:
-    base_url = os.getenv(
-        "LLM_BASE_URL",
+# ============================================================
+# 提取 JSON
+# ============================================================
+
+def extract_json(
+    content: str,
+) -> dict:
+
+    if not content:
+        raise ValueError(
+            "LLM 返回内容为空。"
+        )
+
+    content = content.strip()
+
+    # --------------------------------------------------------
+    # 1. 直接解析
+    # --------------------------------------------------------
+
+    try:
+        result = json.loads(
+            content
+        )
+
+        if isinstance(
+            result,
+            dict,
+        ):
+            return result
+
+    except json.JSONDecodeError:
+        pass
+
+    # --------------------------------------------------------
+    # 2. 去除 Markdown JSON 代码块
+    # --------------------------------------------------------
+
+    cleaned = re.sub(
+        r"^```(?:json)?\s*",
         "",
-    ).rstrip("/")
-
-    api_key = os.getenv(
-        "LLM_API_KEY",
-        "",
+        content,
+        flags=re.IGNORECASE,
     )
 
-    model = os.getenv(
-        "LLM_MODEL",
+    cleaned = re.sub(
+        r"\s*```$",
         "",
+        cleaned,
+    ).strip()
+
+    try:
+        result = json.loads(
+            cleaned
+        )
+
+        if isinstance(
+            result,
+            dict,
+        ):
+            return result
+
+    except json.JSONDecodeError:
+        pass
+
+    # --------------------------------------------------------
+    # 3. 从文本中寻找第一个 JSON 对象
+    # --------------------------------------------------------
+
+    start = cleaned.find("{")
+    end = cleaned.rfind("}")
+
+    if (
+        start != -1
+        and end != -1
+        and end > start
+    ):
+
+        json_text = cleaned[
+            start:end + 1
+        ]
+
+        try:
+            result = json.loads(
+                json_text
+            )
+
+            if isinstance(
+                result,
+                dict,
+            ):
+                return result
+
+        except json.JSONDecodeError:
+            pass
+
+    raise ValueError(
+        "LLM 返回内容无法解析为 JSON。"
     )
 
-    if not base_url or not api_key or not model:
-        return {
-            **JOB_SCHEMA,
-            "_mode": "parser_only",
-            "_message": "未配置 LLM API。",
-        }
+
+# ============================================================
+# 标准化岗位结构
+# ============================================================
+
+def normalize_job(
+    job: dict,
+) -> dict:
+
+    result = {
+        "company": "",
+        "position": "",
+        "salary": "",
+        "responsibilities": [],
+        "required_education": "",
+        "required_major": [],
+        "required_skills": [],
+        "experience": [],
+        "location": "",
+        "internship_days": "",
+        "other_requirements": [],
+    }
+
+    # --------------------------------------------------------
+    # 复制已有字段
+    # --------------------------------------------------------
+
+    for key in result.keys():
+
+        if key in job:
+            result[key] = job[key]
+
+    # --------------------------------------------------------
+    # 标准化字符串字段
+    # --------------------------------------------------------
+
+    string_fields = [
+        "company",
+        "position",
+        "salary",
+        "required_education",
+        "location",
+        "internship_days",
+    ]
+
+    for key in string_fields:
+
+        value = result[key]
+
+        if value is None:
+            result[key] = ""
+
+        elif not isinstance(
+            value,
+            str,
+        ):
+            result[key] = str(
+                value
+            )
+
+
+    # --------------------------------------------------------
+    # 标准化数组字段
+    # --------------------------------------------------------
+
+    list_fields = [
+        "responsibilities",
+        "required_major",
+        "required_skills",
+        "experience",
+        "other_requirements",
+    ]
+
+    for key in list_fields:
+
+        value = result[key]
+
+        if value is None:
+            result[key] = []
+
+        elif isinstance(
+            value,
+            str,
+        ):
+
+            if value.strip():
+                result[key] = [
+                    value.strip()
+                ]
+            else:
+                result[key] = []
+
+        elif not isinstance(
+            value,
+            list,
+        ):
+
+            result[key] = [
+                str(value)
+            ]
+
+
+    # --------------------------------------------------------
+    # 清理数组中的空字符串
+    # --------------------------------------------------------
+
+    for key in list_fields:
+
+        cleaned = []
+
+        for item in result[key]:
+
+            if isinstance(
+                item,
+                str,
+            ):
+
+                item = item.strip()
+
+                if item:
+                    cleaned.append(
+                        item
+                    )
+
+            else:
+
+                cleaned.append(
+                    item
+                )
+
+        result[key] = cleaned
+
+
+    return result
+
+
+# ============================================================
+# 调用 LLM
+# ============================================================
+
+async def build_job(
+    jd_text: str,
+) -> dict:
+
+    if not LLM_API_KEY:
+        raise RuntimeError(
+            "未配置 LLM_API_KEY，请检查 backend/.env"
+        )
+
+    if not jd_text.strip():
+        raise ValueError(
+            "JD 内容不能为空。"
+        )
+
+    prompt = build_jd_prompt(
+        jd_text
+    )
+
+    headers = {
+        "Authorization":
+            f"Bearer {LLM_API_KEY}",
+
+        "Content-Type":
+            "application/json",
+    }
 
     payload = {
-        "model": model,
-        "temperature": 0,
+        "model": LLM_MODEL,
+
         "messages": [
             {
                 "role": "system",
-                "content": (
-                    "严格按照指定 JSON Schema 输出结构化岗位信息。"
-                ),
+                "content":
+                    "你是一个严谨的岗位 JD 结构化解析助手。",
             },
+
             {
                 "role": "user",
-                "content": build_jd_prompt(jd_text),
+                "content": prompt,
             },
         ],
+
+        "temperature": 0,
+
+        "response_format": {
+            "type": "json_object"
+        },
     }
 
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-    }
+    # --------------------------------------------------------
+    # API 地址
+    # --------------------------------------------------------
+
+    base_url = LLM_BASE_URL.rstrip("/")
+
+    if not base_url.endswith(
+        "/chat/completions"
+    ):
+        url = (
+            base_url
+            + "/chat/completions"
+        )
+    else:
+        url = base_url
+
+    # --------------------------------------------------------
+    # 调用 DeepSeek
+    # --------------------------------------------------------
 
     async with httpx.AsyncClient(
-        timeout=60
+        timeout=60.0
     ) as client:
 
         response = await client.post(
-            f"{base_url}/chat/completions",
+            url,
             headers=headers,
             json=payload,
         )
 
-    if response.status_code >= 400:
+    # --------------------------------------------------------
+    # HTTP 错误
+    # --------------------------------------------------------
+
+    if response.status_code != 200:
+
         raise RuntimeError(
-            f"LLM API 调用失败：HTTP "
-            f"{response.status_code} "
-            f"{response.text[:500]}"
+            "LLM API 调用失败："
+            f"HTTP {response.status_code}\n"
+            f"{response.text}"
         )
 
-    content = (
-        response.json()["choices"][0]["message"]["content"]
-        .strip()
-    )
-
-    if content.startswith("```"):
-        content = content.replace(
-            "```json",
-            "",
-        )
-
-        content = content.replace(
-            "```",
-            "",
-        )
-
-        content = content.strip()
+    # --------------------------------------------------------
+    # 解析 API JSON
+    # --------------------------------------------------------
 
     try:
-        result = json.loads(content)
 
-    except json.JSONDecodeError as exc:
+        response_data =
+            response.json()
+
+    except Exception as e:
+
         raise RuntimeError(
-            "模型返回内容不是合法 JSON。"
-        ) from exc
+            "LLM API 返回内容不是有效 JSON："
+            f"{e}\n"
+            f"{response.text}"
+        )
 
-    # 防止模型遗漏新增字段
-    for key, default_value in JOB_SCHEMA.items():
-        if key not in result:
-            result[key] = default_value
+    # --------------------------------------------------------
+    # 获取模型文本
+    # --------------------------------------------------------
 
-    return result
+    try:
+
+        content = (
+            response_data
+            ["choices"]
+            [0]
+            ["message"]
+            ["content"]
+        )
+
+    except (
+        KeyError,
+        IndexError,
+        TypeError,
+    ) as e:
+
+        raise RuntimeError(
+            "LLM 返回结构异常："
+            f"{e}\n"
+            f"{json.dumps(response_data, ensure_ascii=False, indent=2)}"
+        )
+
+    # --------------------------------------------------------
+    # JSON 解析
+    # --------------------------------------------------------
+
+    job = extract_json(
+        content
+    )
+
+    # --------------------------------------------------------
+    # 标准化
+    # --------------------------------------------------------
+
+    job = normalize_job(
+        job
+    )
+
+    # --------------------------------------------------------
+    # 关键字段校验
+    #
+    # 不再允许“解析成功但 position 为空”
+    # --------------------------------------------------------
+
+    if not job["position"]:
+
+        raise RuntimeError(
+            "JD 解析结果缺少岗位名称 position。"
+            "\n模型原始返回：\n"
+            + content
+        )
+
+    if not job["responsibilities"]:
+
+        raise RuntimeError(
+            "JD 解析结果缺少岗位职责 responsibilities。"
+            "\n模型原始返回：\n"
+            + content
+        )
+
+    return job
