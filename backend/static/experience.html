@@ -1,1 +1,1407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
 
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CareerPilot AI - 项目经历匹配</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f7fb;
+            color: #1f2937;
+            font-family:
+                Arial,
+                "Microsoft YaHei",
+                sans-serif;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow:
+                0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .position {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .company {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .badge {
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 8px 13px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .summary {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .summary-title {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .good {
+            color: #15803d;
+        }
+
+        .warning {
+            color: #b45309;
+        }
+
+        .bad {
+            color: #dc2626;
+        }
+
+        .info {
+            color: #4338ca;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .work-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .work-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .work-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .work-title {
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #111827;
+        }
+
+        .status {
+            flex-shrink: 0;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-match {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-partial {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status-unknown {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .subsection {
+            margin-top: 14px;
+        }
+
+        .label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #6b7280;
+            margin-bottom: 7px;
+        }
+
+        .experience-tag {
+            display: inline-block;
+            margin: 0 8px 8px 0;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 13px;
+        }
+
+        .evidence,
+        .explanation {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        .explanation {
+            margin-top: 7px;
+            color: #6b7280;
+        }
+
+        .gap-list,
+        .summary-list {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        .gap-list li,
+        .summary-list li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 11px 18px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #4338ca;
+        }
+
+        .secondary {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        #message {
+            margin-top: 14px;
+            min-height: 22px;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #15803d;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .loading {
+            color: #4338ca;
+        }
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .empty {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .container {
+                padding: 24px 14px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .work-top {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>
+            CareerPilot AI
+        </h1>
+
+        <div class="subtitle">
+            US06：项目 / 实习经历与岗位工作内容匹配
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         岗位
+    ====================================================== -->
+
+    <div class="card">
+
+        <div class="job-header">
+
+            <div>
+
+                <h2
+                    id="position"
+                    class="position"
+                >
+                    正在读取岗位……
+                </h2>
+
+                <div
+                    id="company"
+                    class="company"
+                >
+                    公司：-
+                </div>
+
+            </div>
+
+
+            <div class="badge">
+                AI 经历匹配
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         综合结果
+    ====================================================== -->
+
+    <div class="card">
+
+        <div class="summary">
+
+            <div class="summary-title">
+                综合经历匹配结论
+            </div>
+
+            <div
+                id="overallStatus"
+                class="summary-value info"
+            >
+                分析中……
+            </div>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    工作内容
+                </div>
+
+                <div
+                    id="workItemCount"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    匹配
+                </div>
+
+                <div
+                    id="matchedCount"
+                    class="stat-value good"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    部分匹配
+                </div>
+
+                <div
+                    id="partialCount"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    信息不足 / 缺口
+                </div>
+
+                <div
+                    id="gapCount"
+                    class="stat-value warning"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         工作内容匹配
+    ====================================================== -->
+
+    <div class="card">
+
+        <h2>
+            岗位工作内容与我的经历
+        </h2>
+
+
+        <div
+            id="workList"
+            class="work-list"
+        >
+
+            <div class="empty">
+                正在分析……
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         经历 Gap
+    ====================================================== -->
+
+    <div
+        id="gapSection"
+        class="card"
+        style="display: none;"
+    >
+
+        <h2>
+            经历缺口
+        </h2>
+
+
+        <ul
+            id="gapList"
+            class="gap-list"
+        >
+        </ul>
+
+    </div>
+
+
+    <!-- =====================================================
+         总结
+    ====================================================== -->
+
+    <div
+        id="summarySection"
+        class="card"
+        style="display: none;"
+    >
+
+        <h2>
+            匹配总结
+        </h2>
+
+
+        <div
+            id="summaryText"
+            class="evidence"
+        >
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         操作
+    ====================================================== -->
+
+    <div class="card">
+
+        <div class="buttons">
+
+            <button
+                class="primary"
+                type="button"
+                onclick="matchExperiences()"
+            >
+                重新分析经历
+            </button>
+
+
+            <button
+                class="secondary"
+                type="button"
+                onclick="goBack()"
+            >
+                返回岗位匹配
+            </button>
+
+        </div>
+
+
+        <div id="message">
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JSON
+    ====================================================== -->
+
+    <div class="card">
+
+        <h2>
+            匹配结果 JSON
+        </h2>
+
+        <pre id="rawJSON">
+等待分析……
+        </pre>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let currentJob = null;
+
+
+    const positionElement =
+        document.getElementById(
+            "position"
+        );
+
+    const companyElement =
+        document.getElementById(
+            "company"
+        );
+
+    const overallStatusElement =
+        document.getElementById(
+            "overallStatus"
+        );
+
+    const workItemCountElement =
+        document.getElementById(
+            "workItemCount"
+        );
+
+    const matchedCountElement =
+        document.getElementById(
+            "matchedCount"
+        );
+
+    const partialCountElement =
+        document.getElementById(
+            "partialCount"
+        );
+
+    const gapCountElement =
+        document.getElementById(
+            "gapCount"
+        );
+
+    const workListElement =
+        document.getElementById(
+            "workList"
+        );
+
+    const gapSection =
+        document.getElementById(
+            "gapSection"
+        );
+
+    const gapListElement =
+        document.getElementById(
+            "gapList"
+        );
+
+    const summarySection =
+        document.getElementById(
+            "summarySection"
+        );
+
+    const summaryTextElement =
+        document.getElementById(
+            "summaryText"
+        );
+
+    const messageElement =
+        document.getElementById(
+            "message"
+        );
+
+    const rawJSONElement =
+        document.getElementById(
+            "rawJSON"
+        );
+
+
+    // =========================================================
+    // 页面加载
+    // =========================================================
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        async () => {
+
+            await loadJob();
+
+        }
+    );
+
+
+    // =========================================================
+    // 加载岗位
+    // =========================================================
+
+    async function loadJob() {
+
+        const savedJob =
+            sessionStorage.getItem(
+                "careerpilot_job"
+            );
+
+
+        if (!savedJob) {
+
+            positionElement.textContent =
+                "没有找到岗位信息";
+
+            messageElement.textContent =
+                "请先完成 JD 解析。";
+
+            messageElement.className =
+                "error";
+
+            return;
+        }
+
+
+        try {
+
+            currentJob =
+                JSON.parse(
+                    savedJob
+                );
+
+        } catch (error) {
+
+            positionElement.textContent =
+                "岗位信息读取失败";
+
+            messageElement.textContent =
+                "岗位数据格式错误。";
+
+            messageElement.className =
+                "error";
+
+            return;
+
+        }
+
+
+        positionElement.textContent =
+            currentJob.position ||
+            "未识别岗位";
+
+
+        companyElement.textContent =
+            "公司：" +
+            (
+                currentJob.company ||
+                "未提供"
+            );
+
+
+        await matchExperiences();
+
+    }
+
+
+    // =========================================================
+    // 执行匹配
+    // =========================================================
+
+    async function matchExperiences() {
+
+        if (!currentJob) {
+
+            messageElement.textContent =
+                "没有可分析的岗位。";
+
+            messageElement.className =
+                "error";
+
+            return;
+
+        }
+
+
+        messageElement.textContent =
+            "正在分析岗位工作内容与项目、实习经历，请稍候……";
+
+        messageElement.className =
+            "loading";
+
+
+        overallStatusElement.textContent =
+            "分析中……";
+
+        overallStatusElement.className =
+            "summary-value info";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/jd/experience-match",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            job:
+                                currentJob
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "经历匹配失败。"
+                );
+
+            }
+
+
+            renderResult(
+                data
+            );
+
+
+            rawJSONElement.textContent =
+                JSON.stringify(
+                    data,
+                    null,
+                    2
+                );
+
+
+            messageElement.textContent =
+                "项目 / 经历匹配分析完成。";
+
+            messageElement.className =
+                "success";
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            messageElement.textContent =
+                "分析失败：" +
+                error.message;
+
+            messageElement.className =
+                "error";
+
+
+            overallStatusElement.textContent =
+                "分析失败";
+
+            overallStatusElement.className =
+                "summary-value bad";
+
+        }
+
+    }
+
+
+    // =========================================================
+    // 展示结果
+    // =========================================================
+
+    function renderResult(
+        data
+    ) {
+
+        const result =
+            data.experience_match ||
+            {};
+
+
+        const overallStatus =
+            result.overall_status ||
+            "信息不足";
+
+
+        overallStatusElement.textContent =
+            overallStatus;
+
+
+        if (
+            overallStatus ===
+            "经历匹配度高"
+        ) {
+
+            overallStatusElement.className =
+                "summary-value good";
+
+        } else if (
+            overallStatus ===
+            "存在明显经历缺口"
+        ) {
+
+            overallStatusElement.className =
+                "summary-value bad";
+
+        } else if (
+            overallStatus ===
+            "经历匹配度一般"
+        ) {
+
+            overallStatusElement.className =
+                "summary-value warning";
+
+        } else {
+
+            overallStatusElement.className =
+                "summary-value info";
+
+        }
+
+
+        workItemCountElement.textContent =
+            result.work_item_count ||
+            0;
+
+
+        matchedCountElement.textContent =
+            result.matched_count ||
+            0;
+
+
+        partialCountElement.textContent =
+            result.partial_count ||
+            0;
+
+
+        gapCountElement.textContent =
+            (
+                (result.unknown_count || 0) +
+                (result.unmatched_count || 0)
+            );
+
+
+        renderWorkItems(
+            result.work_items
+        );
+
+
+        renderGaps(
+            result.gaps
+        );
+
+
+        renderSummary(
+            result.summary
+        );
+
+    }
+
+
+    // =========================================================
+    // 工作内容
+    // =========================================================
+
+    function renderWorkItems(
+        workItems
+    ) {
+
+        workListElement.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(workItems) ||
+            workItems.length === 0
+        ) {
+
+            workListElement.innerHTML =
+                `
+                <div class="empty">
+                    当前岗位没有明确的工作内容，
+                    或暂时无法提取工作内容。
+                </div>
+                `;
+
+            return;
+
+        }
+
+
+        workItems.forEach(
+            item => {
+
+                const wrapper =
+                    document.createElement(
+                        "div"
+                    );
+
+                wrapper.className =
+                    "work-item";
+
+
+                const top =
+                    document.createElement(
+                        "div"
+                    );
+
+                top.className =
+                    "work-top";
+
+
+                const title =
+                    document.createElement(
+                        "div"
+                    );
+
+                title.className =
+                    "work-title";
+
+                title.textContent =
+                    item.work_item ||
+                    "未明确工作内容";
+
+
+                const badge =
+                    document.createElement(
+                        "span"
+                    );
+
+                badge.className =
+                    "status";
+
+
+                const status =
+                    item.status ||
+                    "信息不足";
+
+
+                badge.textContent =
+                    status;
+
+
+                if (
+                    status === "匹配"
+                ) {
+
+                    badge.classList.add(
+                        "status-match"
+                    );
+
+                } else if (
+                    status === "部分匹配"
+                ) {
+
+                    badge.classList.add(
+                        "status-partial"
+                    );
+
+                } else if (
+                    status === "不匹配"
+                ) {
+
+                    badge.classList.add(
+                        "status-fail"
+                    );
+
+                } else {
+
+                    badge.classList.add(
+                        "status-unknown"
+                    );
+
+                }
+
+
+                top.appendChild(
+                    title
+                );
+
+                top.appendChild(
+                    badge
+                );
+
+
+                wrapper.appendChild(
+                    top
+                );
+
+
+                // -------------------------------------------------
+                // 对应经历
+                // -------------------------------------------------
+
+                const experiences =
+                    Array.isArray(
+                        item.matched_experiences
+                    )
+                        ? item.matched_experiences
+                        : [];
+
+
+                const experienceSection =
+                    document.createElement(
+                        "div"
+                    );
+
+                experienceSection.className =
+                    "subsection";
+
+
+                const experienceLabel =
+                    document.createElement(
+                        "div"
+                    );
+
+                experienceLabel.className =
+                    "label";
+
+                experienceLabel.textContent =
+                    "对应经历";
+
+
+                experienceSection.appendChild(
+                    experienceLabel
+                );
+
+
+                if (
+                    experiences.length > 0
+                ) {
+
+                    experiences.forEach(
+                        experience => {
+
+                            const tag =
+                                document.createElement(
+                                    "span"
+                                );
+
+                            tag.className =
+                                "experience-tag";
+
+                            tag.textContent =
+                                experience;
+
+                            experienceSection.appendChild(
+                                tag
+                            );
+
+                        }
+                    );
+
+                } else {
+
+                    const empty =
+                        document.createElement(
+                            "div"
+                        );
+
+                    empty.className =
+                        "empty";
+
+                    empty.textContent =
+                        "未发现相关经历";
+
+                    experienceSection.appendChild(
+                        empty
+                    );
+
+                }
+
+
+                wrapper.appendChild(
+                    experienceSection
+                );
+
+
+                // -------------------------------------------------
+                // 证据
+                // -------------------------------------------------
+
+                const evidenceSection =
+                    document.createElement(
+                        "div"
+                    );
+
+                evidenceSection.className =
+                    "subsection";
+
+
+                const evidenceLabel =
+                    document.createElement(
+                        "div"
+                    );
+
+                evidenceLabel.className =
+                    "label";
+
+                evidenceLabel.textContent =
+                    "匹配依据";
+
+
+                evidenceSection.appendChild(
+                    evidenceLabel
+                );
+
+
+                const evidenceData =
+                    Array.isArray(
+                        item.evidence
+                    )
+                        ? item.evidence
+                        : [];
+
+
+                const evidence =
+                    document.createElement(
+                        "div"
+                    );
+
+                evidence.className =
+                    "evidence";
+
+
+                if (
+                    evidenceData.length > 0
+                ) {
+
+                    evidence.textContent =
+                        evidenceData.join(
+                            "；"
+                        );
+
+                } else {
+
+                    evidence.textContent =
+                        "暂无明确证据";
+
+                }
+
+
+                evidenceSection.appendChild(
+                    evidence
+                );
+
+                wrapper.appendChild(
+                    evidenceSection
+                );
+
+
+                // -------------------------------------------------
+                // 分析说明
+                // -------------------------------------------------
+
+                const explanation =
+                    document.createElement(
+                        "div"
+                    );
+
+                explanation.className =
+                    "explanation";
+
+                explanation.textContent =
+                    "分析：" +
+                    (
+                        item.explanation ||
+                        "暂无说明"
+                    );
+
+
+                wrapper.appendChild(
+                    explanation
+                );
+
+
+                workListElement.appendChild(
+                    wrapper
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // Gap
+    // =========================================================
+
+    function renderGaps(
+        gaps
+    ) {
+
+        gapListElement.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(gaps) ||
+            gaps.length === 0
+        ) {
+
+            gapSection.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        gaps.forEach(
+            gap => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+                li.textContent =
+                    gap;
+
+                gapListElement.appendChild(
+                    li
+                );
+
+            }
+        );
+
+
+        gapSection.style.display =
+            "block";
+
+    }
+
+
+    // =========================================================
+    // 总结
+    // =========================================================
+
+    function renderSummary(
+        summary
+    ) {
+
+        if (
+            !summary
+        ) {
+
+            summarySection.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        summaryTextElement.textContent =
+            summary;
+
+
+        summarySection.style.display =
+            "block";
+
+    }
+
+
+    // =========================================================
+    // 返回 US04
+    // =========================================================
+
+    function goBack() {
+
+        window.location.href =
+            "/match";
+
+    }
+
+</script>
+
+</body>
+
+</html>
