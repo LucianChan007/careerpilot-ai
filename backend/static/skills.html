@@ -1,1 +1,1196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
 
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CareerPilot AI - 技能匹配</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f7fb;
+            color: #1f2937;
+            font-family:
+                Arial,
+                "Microsoft YaHei",
+                sans-serif;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .position {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .company {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .badge {
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 7px 12px;
+            border-radius: 999px;
+            height: fit-content;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .summary {
+            padding: 22px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            margin-bottom: 22px;
+        }
+
+        .summary-title {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .good {
+            color: #15803d;
+        }
+
+        .warning {
+            color: #b45309;
+        }
+
+        .bad {
+            color: #dc2626;
+        }
+
+        .info {
+            color: #4338ca;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .section {
+            margin-top: 24px;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .skill-item {
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+
+        .skill-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .skill-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .status {
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-match {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-partial {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status-unknown {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .evidence {
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        .explanation {
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #6b7280;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 11px 18px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #4338ca;
+        }
+
+        .secondary {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        #message {
+            margin-top: 14px;
+            min-height: 22px;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #15803d;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .loading {
+            color: #4338ca;
+        }
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 800px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 24px 14px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>
+            CareerPilot AI
+        </h1>
+
+        <div class="subtitle">
+            US05：岗位技能匹配
+        </div>
+
+    </div>
+
+
+    <!-- 岗位 -->
+    <div class="card">
+
+        <div class="job-header">
+
+            <div>
+
+                <h2
+                    id="position"
+                    class="position"
+                >
+                    正在读取岗位……
+                </h2>
+
+                <div
+                    id="company"
+                    class="company"
+                >
+                    公司：-
+                </div>
+
+            </div>
+
+            <div class="badge">
+                AI 技能分析
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 总体结果 -->
+    <div class="card">
+
+        <div class="summary">
+
+            <div class="summary-title">
+                综合技能匹配结论
+            </div>
+
+            <div
+                id="overallStatus"
+                class="summary-value info"
+            >
+                分析中……
+            </div>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    岗位技能
+                </div>
+
+                <div
+                    id="requiredCount"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    满足
+                </div>
+
+                <div
+                    id="matchedCount"
+                    class="stat-value good"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    部分匹配
+                </div>
+
+                <div
+                    id="partialCount"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    信息不足 / 缺口
+                </div>
+
+                <div
+                    id="gapCount"
+                    class="stat-value warning"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 技能明细 -->
+        <div class="section">
+
+            <div class="section-title">
+                技能匹配明细
+            </div>
+
+            <div
+                id="skillList"
+                class="skill-list"
+            >
+            </div>
+
+        </div>
+
+
+        <!-- 技能缺口 -->
+        <div
+            id="gapSection"
+            class="section hidden"
+        >
+
+            <div class="section-title">
+                技能缺口
+            </div>
+
+            <ul id="gapList"></ul>
+
+        </div>
+
+
+        <!-- 建议 -->
+        <div
+            id="recommendationSection"
+            class="section hidden"
+        >
+
+            <div class="section-title">
+                技能补强建议
+            </div>
+
+            <ul id="recommendationList"></ul>
+
+        </div>
+
+    </div>
+
+
+    <!-- 操作 -->
+    <div class="card">
+
+        <div class="buttons">
+
+            <button
+                class="primary"
+                type="button"
+                onclick="matchSkills()"
+            >
+                重新分析技能
+            </button>
+
+            <button
+                class="secondary"
+                type="button"
+                onclick="goBack()"
+            >
+                返回岗位匹配
+            </button>
+
+        </div>
+
+
+        <div id="message"></div>
+
+    </div>
+
+
+    <!-- JSON -->
+    <div class="card">
+
+        <h2>
+            技能匹配 JSON
+        </h2>
+
+        <pre id="rawJSON">等待分析……</pre>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let currentJob = null;
+
+
+    const positionElement =
+        document.getElementById(
+            "position"
+        );
+
+    const companyElement =
+        document.getElementById(
+            "company"
+        );
+
+    const overallStatusElement =
+        document.getElementById(
+            "overallStatus"
+        );
+
+    const requiredCountElement =
+        document.getElementById(
+            "requiredCount"
+        );
+
+    const matchedCountElement =
+        document.getElementById(
+            "matchedCount"
+        );
+
+    const partialCountElement =
+        document.getElementById(
+            "partialCount"
+        );
+
+    const gapCountElement =
+        document.getElementById(
+            "gapCount"
+        );
+
+    const skillListElement =
+        document.getElementById(
+            "skillList"
+        );
+
+    const gapSection =
+        document.getElementById(
+            "gapSection"
+        );
+
+    const gapListElement =
+        document.getElementById(
+            "gapList"
+        );
+
+    const recommendationSection =
+        document.getElementById(
+            "recommendationSection"
+        );
+
+    const recommendationListElement =
+        document.getElementById(
+            "recommendationList"
+        );
+
+    const messageElement =
+        document.getElementById(
+            "message"
+        );
+
+    const rawJSONElement =
+        document.getElementById(
+            "rawJSON"
+        );
+
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        async () => {
+
+            await loadJob();
+
+        }
+    );
+
+
+    async function loadJob() {
+
+        const savedJob =
+            sessionStorage.getItem(
+                "careerpilot_job"
+            );
+
+
+        if (!savedJob) {
+
+            positionElement.textContent =
+                "没有找到岗位信息";
+
+            messageElement.textContent =
+                "请先完成 JD 解析，再进入岗位匹配。";
+
+            messageElement.className =
+                "error";
+
+            return;
+        }
+
+
+        try {
+
+            currentJob =
+                JSON.parse(
+                    savedJob
+                );
+
+        } catch (error) {
+
+            positionElement.textContent =
+                "岗位信息读取失败";
+
+            messageElement.textContent =
+                "保存的岗位数据格式错误。";
+
+            messageElement.className =
+                "error";
+
+            return;
+        }
+
+
+        positionElement.textContent =
+            currentJob.position ||
+            "未识别岗位";
+
+
+        companyElement.textContent =
+            "公司：" +
+            (
+                currentJob.company ||
+                "未提供"
+            );
+
+
+        await matchSkills();
+
+    }
+
+
+    async function matchSkills() {
+
+        if (!currentJob) {
+
+            messageElement.textContent =
+                "没有可分析的岗位。";
+
+            messageElement.className =
+                "error";
+
+            return;
+        }
+
+
+        messageElement.textContent =
+            "正在分析岗位技能与个人经历，请稍候……";
+
+        messageElement.className =
+            "loading";
+
+
+        overallStatusElement.textContent =
+            "分析中……";
+
+        overallStatusElement.className =
+            "summary-value info";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/jd/skills-match",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            job:
+                                currentJob
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "技能匹配失败。"
+                );
+
+            }
+
+
+            renderResult(
+                data
+            );
+
+
+            rawJSONElement.textContent =
+                JSON.stringify(
+                    data,
+                    null,
+                    2
+                );
+
+
+            messageElement.textContent =
+                "技能匹配分析完成。";
+
+            messageElement.className =
+                "success";
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            messageElement.textContent =
+                "分析失败：" +
+                error.message;
+
+            messageElement.className =
+                "error";
+
+
+            overallStatusElement.textContent =
+                "分析失败";
+
+            overallStatusElement.className =
+                "summary-value bad";
+
+        }
+
+    }
+
+
+    function renderResult(
+        data
+    ) {
+
+        const result =
+            data.skills_match ||
+            {};
+
+
+        const status =
+            result.overall_status ||
+            "信息不足";
+
+
+        overallStatusElement.textContent =
+            status;
+
+
+        if (
+            status === "技能匹配度高"
+        ) {
+
+            overallStatusElement.className =
+                "summary-value good";
+
+        } else if (
+            status === "存在明显技能缺口"
+        ) {
+
+            overallStatusElement.className =
+                "summary-value bad";
+
+        } else if (
+            status === "技能匹配度一般"
+        ) {
+
+            overallStatusElement.className =
+                "summary-value warning";
+
+        } else {
+
+            overallStatusElement.className =
+                "summary-value info";
+
+        }
+
+
+        requiredCountElement.textContent =
+            result.required_count || 0;
+
+
+        matchedCountElement.textContent =
+            result.matched_count || 0;
+
+
+        partialCountElement.textContent =
+            result.partial_count || 0;
+
+
+        gapCountElement.textContent =
+            (
+                (result.unknown_count || 0) +
+                (result.unmatched_count || 0)
+            );
+
+
+        renderSkills(
+            result.skills
+        );
+
+
+        renderGaps(
+            result.gaps
+        );
+
+
+        renderRecommendations(
+            result.recommendations
+        );
+
+    }
+
+
+    function renderSkills(
+        skills
+    ) {
+
+        skillListElement.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(skills) ||
+            skills.length === 0
+        ) {
+
+            skillListElement.innerHTML =
+                `
+                <div>
+                    当前 JD 没有明确技能要求。
+                </div>
+                `;
+
+            return;
+
+        }
+
+
+        skills.forEach(
+            skill => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "skill-item";
+
+
+                const top =
+                    document.createElement(
+                        "div"
+                    );
+
+                top.className =
+                    "skill-top";
+
+
+                const name =
+                    document.createElement(
+                        "div"
+                    );
+
+                name.className =
+                    "skill-name";
+
+                name.textContent =
+                    skill.skill ||
+                    "未命名技能";
+
+
+                const status =
+                    document.createElement(
+                        "span"
+                    );
+
+                status.className =
+                    "status";
+
+
+                const value =
+                    skill.status ||
+                    "信息不足";
+
+
+                status.textContent =
+                    value;
+
+
+                if (
+                    value === "满足"
+                ) {
+
+                    status.classList.add(
+                        "status-match"
+                    );
+
+                } else if (
+                    value === "部分匹配"
+                ) {
+
+                    status.classList.add(
+                        "status-partial"
+                    );
+
+                } else if (
+                    value === "不匹配"
+                ) {
+
+                    status.classList.add(
+                        "status-fail"
+                    );
+
+                } else {
+
+                    status.classList.add(
+                        "status-unknown"
+                    );
+
+                }
+
+
+                top.appendChild(
+                    name
+                );
+
+                top.appendChild(
+                    status
+                );
+
+
+                const evidence =
+                    document.createElement(
+                        "div"
+                    );
+
+                evidence.className =
+                    "evidence";
+
+
+                const evidenceData =
+                    Array.isArray(
+                        skill.evidence
+                    )
+                        ? skill.evidence
+                        : [];
+
+
+                if (
+                    evidenceData.length > 0
+                ) {
+
+                    evidence.textContent =
+                        "证据：" +
+                        evidenceData.join(
+                            "；"
+                        );
+
+                } else {
+
+                    evidence.textContent =
+                        "证据：暂无明确证据";
+
+                }
+
+
+                const explanation =
+                    document.createElement(
+                        "div"
+                    );
+
+                explanation.className =
+                    "explanation";
+
+                explanation.textContent =
+                    "分析：" +
+                    (
+                        skill.explanation ||
+                        "暂无说明"
+                    );
+
+
+                item.appendChild(
+                    top
+                );
+
+                item.appendChild(
+                    evidence
+                );
+
+                item.appendChild(
+                    explanation
+                );
+
+
+                skillListElement.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+
+    function renderGaps(
+        gaps
+    ) {
+
+        gapListElement.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(gaps) ||
+            gaps.length === 0
+        ) {
+
+            gapSection.classList.add(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        gaps.forEach(
+            gap => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+                li.textContent =
+                    gap;
+
+                gapListElement.appendChild(
+                    li
+                );
+
+            }
+        );
+
+
+        gapSection.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    function renderRecommendations(
+        recommendations
+    ) {
+
+        recommendationListElement.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(
+                recommendations
+            ) ||
+            recommendations.length === 0
+        ) {
+
+            recommendationSection.classList.add(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        recommendations.forEach(
+            recommendation => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+                li.textContent =
+                    recommendation;
+
+                recommendationListElement.appendChild(
+                    li
+                );
+
+            }
+        );
+
+
+        recommendationSection.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    function goBack() {
+
+        window.location.href =
+            "/match";
+
+    }
+
+</script>
+
+</body>
+
+</html>
