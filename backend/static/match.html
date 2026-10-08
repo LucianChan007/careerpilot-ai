@@ -1,1 +1,1342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerPilot AI - 岗位匹配</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f7fb;
+            color: #1f2937;
+            font-family:
+                Arial,
+                "Microsoft YaHei",
+                sans-serif;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            margin: 0 0 18px;
+            font-size: 20px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .position {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .company {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .ai-badge {
+            white-space: nowrap;
+            background: #eef2ff;
+            color: #4338ca;
+            border-radius: 999px;
+            padding: 8px 13px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .meta-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 7px;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            word-break: break-word;
+        }
+
+        .salary-box {
+            margin-top: 16px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 15px 16px;
+        }
+
+        .salary-title {
+            font-size: 12px;
+            color: #15803d;
+            margin-bottom: 6px;
+        }
+
+        .salary-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #166534;
+        }
+
+        .salary-note {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        .summary {
+            padding: 22px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 22px;
+        }
+
+        .summary-title {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .summary-good {
+            color: #15803d;
+        }
+
+        .summary-warning {
+            color: #b45309;
+        }
+
+        .summary-bad {
+            color: #dc2626;
+        }
+
+        .summary-info {
+            color: #4338ca;
+        }
+
+        .section {
+            margin-top: 24px;
+        }
+
+        .section-title {
+            margin-bottom: 12px;
+            font-size: 17px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .condition-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .condition-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            background: #ffffff;
+        }
+
+        .condition-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .condition-name {
+            font-size: 15px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .condition-requirement {
+            margin-top: 7px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .condition-evidence {
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #6b7280;
+        }
+
+        .status-badge {
+            flex-shrink: 0;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-pass {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-unknown {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .gap-list,
+        .reason-list {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        .gap-list li,
+        .reason-list li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .empty {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            min-height: 24px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .success {
+            color: #15803d;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .loading {
+            color: #4338ca;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 11px 18px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .primary {
+            background: #4f46e5;
+            color: #ffffff;
+        }
+
+        .primary:hover {
+            background: #4338ca;
+        }
+
+        .secondary {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        .secondary:hover {
+            background: #e0e7ff;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        pre {
+            margin: 0;
+            background: #111827;
+            color: #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 800px) {
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 24px 14px 40px;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .position {
+                font-size: 23px;
+            }
+
+            .condition-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- 页面标题 -->
+    <div class="header">
+        <h1>CareerPilot AI</h1>
+
+        <div class="subtitle">
+            US04：岗位硬性条件匹配
+        </div>
+    </div>
+
+
+    <!-- 岗位信息 -->
+    <div class="card">
+
+        <div class="job-header">
+
+            <div>
+                <h2
+                    id="position"
+                    class="position"
+                >
+                    正在读取岗位……
+                </h2>
+
+                <div
+                    id="company"
+                    class="company"
+                >
+                    公司：-
+                </div>
+            </div>
+
+            <div class="ai-badge">
+                AI 岗位匹配
+            </div>
+
+        </div>
+
+
+        <div class="meta-grid">
+
+            <div class="meta-item">
+                <div class="meta-label">
+                    工作地点
+                </div>
+
+                <div
+                    id="location"
+                    class="meta-value"
+                >
+                    -
+                </div>
+            </div>
+
+
+            <div class="meta-item">
+                <div class="meta-label">
+                    学历要求
+                </div>
+
+                <div
+                    id="education"
+                    class="meta-value"
+                >
+                    -
+                </div>
+            </div>
+
+
+            <div class="meta-item">
+                <div class="meta-label">
+                    实习周期
+                </div>
+
+                <div
+                    id="internshipDays"
+                    class="meta-value"
+                >
+                    -
+                </div>
+            </div>
+
+
+            <div class="meta-item">
+                <div class="meta-label">
+                    专业要求
+                </div>
+
+                <div
+                    id="major"
+                    class="meta-value"
+                >
+                    -
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- 薪资 -->
+        <div class="salary-box">
+
+            <div class="salary-title">
+                岗位薪资
+            </div>
+
+            <div
+                id="salary"
+                class="salary-value"
+            >
+                未提供
+            </div>
+
+            <div class="salary-note">
+                薪资属于岗位信息展示字段，不参与硬性条件匹配。
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 匹配结果 -->
+    <div class="card">
+
+        <h2 class="card-title">
+            硬性条件匹配
+        </h2>
+
+
+        <div class="summary">
+
+            <div class="summary-title">
+                综合匹配结论
+            </div>
+
+            <div
+                id="overallStatus"
+                class="summary-value summary-info"
+            >
+                等待匹配
+            </div>
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="section-title">
+                条件明细
+            </div>
+
+            <div
+                id="conditionList"
+                class="condition-list"
+            >
+
+                <div class="empty">
+                    尚未进行岗位匹配。
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 能力 Gap -->
+        <div
+            id="gapSection"
+            class="section hidden"
+        >
+
+            <div class="section-title">
+                可能存在的能力 Gap
+            </div>
+
+            <ul
+                id="gapList"
+                class="gap-list"
+            ></ul>
+
+        </div>
+
+
+        <!-- 匹配原因 -->
+        <div
+            id="reasonSection"
+            class="section hidden"
+        >
+
+            <div class="section-title">
+                匹配依据
+            </div>
+
+            <ul
+                id="reasonList"
+                class="reason-list"
+            ></ul>
+
+        </div>
+
+    </div>
+
+
+    <!-- 操作 -->
+    <div class="card">
+
+        <div class="buttons">
+
+            <button
+                id="matchButton"
+                class="primary"
+                type="button"
+                onclick="matchJob()"
+            >
+                重新匹配
+            </button>
+
+            <button
+                class="secondary"
+                type="button"
+                onclick="goBackToJD()"
+            >
+                返回 JD 解析
+            </button>
+
+        </div>
+
+        <div
+            id="status"
+            class="status-message"
+        ></div>
+
+    </div>
+
+
+    <!-- 原始 JSON -->
+    <div class="card">
+
+        <h2 class="card-title">
+            匹配结果 JSON
+        </h2>
+
+        <pre id="rawJSON">等待匹配……</pre>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // =========================================================
+    // 全局变量
+    // =========================================================
+
+    let currentJob = null;
+
+
+    // =========================================================
+    // 获取元素
+    // =========================================================
+
+    const positionElement =
+        document.getElementById("position");
+
+    const companyElement =
+        document.getElementById("company");
+
+    const locationElement =
+        document.getElementById("location");
+
+    const educationElement =
+        document.getElementById("education");
+
+    const internshipDaysElement =
+        document.getElementById("internshipDays");
+
+    const majorElement =
+        document.getElementById("major");
+
+    const salaryElement =
+        document.getElementById("salary");
+
+    const overallStatusElement =
+        document.getElementById("overallStatus");
+
+    const conditionListElement =
+        document.getElementById("conditionList");
+
+    const gapSection =
+        document.getElementById("gapSection");
+
+    const gapListElement =
+        document.getElementById("gapList");
+
+    const reasonSection =
+        document.getElementById("reasonSection");
+
+    const reasonListElement =
+        document.getElementById("reasonList");
+
+    const rawJSONElement =
+        document.getElementById("rawJSON");
+
+    const statusElement =
+        document.getElementById("status");
+
+    const matchButton =
+        document.getElementById("matchButton");
+
+
+    // =========================================================
+    // 页面加载
+    // =========================================================
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        async () => {
+
+            await loadJob();
+
+        }
+    );
+
+
+    // =========================================================
+    // 从浏览器读取 JD
+    // =========================================================
+
+    async function loadJob() {
+
+        let job = null;
+
+
+        // 优先从 sessionStorage 读取
+        const sessionJob =
+            sessionStorage.getItem(
+                "careerpilot_job"
+            );
+
+        if (sessionJob) {
+
+            try {
+
+                job = JSON.parse(
+                    sessionJob
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "sessionStorage JD JSON 读取失败",
+                    error
+                );
+            }
+        }
+
+
+        // 如果 sessionStorage 没有，
+        // 再尝试 localStorage
+        if (!job) {
+
+            const localJob =
+                localStorage.getItem(
+                    "careerpilot_job"
+                );
+
+            if (localJob) {
+
+                try {
+
+                    job = JSON.parse(
+                        localJob
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "localStorage JD JSON 读取失败",
+                        error
+                    );
+                }
+            }
+        }
+
+
+        if (!job) {
+
+            positionElement.textContent =
+                "没有找到岗位信息";
+
+            statusElement.textContent =
+                "请先返回 JD 解析页面完成岗位解析。";
+
+            statusElement.className =
+                "status-message error";
+
+            matchButton.disabled = true;
+
+            return;
+
+        }
+
+
+        currentJob = job;
+
+
+        renderJob(
+            currentJob
+        );
+
+
+        // 自动执行匹配
+        await matchJob();
+
+    }
+
+
+    // =========================================================
+    // 展示岗位信息
+    // =========================================================
+
+    function renderJob(job) {
+
+        positionElement.textContent =
+            job.position ||
+            "未识别岗位";
+
+
+        companyElement.textContent =
+            "公司：" +
+            (
+                job.company ||
+                "未提供"
+            );
+
+
+        locationElement.textContent =
+            job.location ||
+            "未提供";
+
+
+        educationElement.textContent =
+            job.required_education ||
+            "未提供";
+
+
+        internshipDaysElement.textContent =
+            job.internship_days ||
+            "未提供";
+
+
+        if (
+            Array.isArray(
+                job.required_major
+            ) &&
+            job.required_major.length > 0
+        ) {
+
+            majorElement.textContent =
+                job.required_major.join(
+                    "、"
+                );
+
+        } else {
+
+            majorElement.textContent =
+                "未提供";
+        }
+
+
+        salaryElement.textContent =
+            job.salary ||
+            "未提供";
+
+    }
+
+
+    // =========================================================
+    // 执行岗位匹配
+    // =========================================================
+
+    async function matchJob() {
+
+        if (!currentJob) {
+
+            statusElement.textContent =
+                "没有可匹配的岗位信息。";
+
+            statusElement.className =
+                "status-message error";
+
+            return;
+        }
+
+
+        matchButton.disabled = true;
+
+
+        statusElement.textContent =
+            "正在根据你的个人画像进行岗位匹配，请稍候……";
+
+        statusElement.className =
+            "status-message loading";
+
+
+        overallStatusElement.textContent =
+            "分析中……";
+
+        overallStatusElement.className =
+            "summary-value summary-info";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/jd/match",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            job: currentJob
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "岗位匹配失败。"
+                );
+            }
+
+
+            renderMatchResult(
+                data
+            );
+
+
+            rawJSONElement.textContent =
+                JSON.stringify(
+                    data,
+                    null,
+                    2
+                );
+
+
+            statusElement.textContent =
+                "岗位匹配完成。";
+
+            statusElement.className =
+                "status-message success";
+
+
+        } catch (error) {
+
+            console.error(
+                "岗位匹配错误：",
+                error
+            );
+
+
+            statusElement.textContent =
+                "匹配失败：" +
+                error.message;
+
+            statusElement.className =
+                "status-message error";
+
+
+            overallStatusElement.textContent =
+                "匹配失败";
+
+            overallStatusElement.className =
+                "summary-value summary-bad";
+
+
+        } finally {
+
+            matchButton.disabled = false;
+
+        }
+
+    }
+
+
+    // =========================================================
+    // 展示匹配结果
+    // =========================================================
+
+    function renderMatchResult(
+        data
+    ) {
+
+        const match =
+            data.match || {};
+
+
+        // -------------------------
+        // 综合结论
+        // -------------------------
+
+        const overallStatus =
+            match.overall_status ||
+            "信息不足";
+
+
+        overallStatusElement.textContent =
+            overallStatus;
+
+
+        if (
+            overallStatus === "满足硬性条件"
+        ) {
+
+            overallStatusElement.className =
+                "summary-value summary-good";
+
+        } else if (
+            overallStatus === "存在硬性不匹配"
+        ) {
+
+            overallStatusElement.className =
+                "summary-value summary-bad";
+
+        } else {
+
+            overallStatusElement.className =
+                "summary-value summary-warning";
+        }
+
+
+        // -------------------------
+        // 条件列表
+        // -------------------------
+
+        renderConditions(
+            match.conditions
+        );
+
+
+        // -------------------------
+        // Gap
+        // -------------------------
+
+        renderGaps(
+            match.gaps
+        );
+
+
+        // -------------------------
+        // 原因
+        // -------------------------
+
+        renderReasons(
+            match.reasons
+        );
+
+    }
+
+
+    // =========================================================
+    // 条件列表
+    // =========================================================
+
+    function renderConditions(
+        conditions
+    ) {
+
+        conditionListElement.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(
+                conditions
+            ) ||
+            conditions.length === 0
+        ) {
+
+            conditionListElement.innerHTML =
+                `
+                <div class="empty">
+                    当前没有可判断的硬性条件。
+                </div>
+                `;
+
+            return;
+        }
+
+
+        conditions.forEach(
+            condition => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "condition-item";
+
+
+                const top =
+                    document.createElement(
+                        "div"
+                    );
+
+                top.className =
+                    "condition-top";
+
+
+                const name =
+                    document.createElement(
+                        "div"
+                    );
+
+                name.className =
+                    "condition-name";
+
+                name.textContent =
+                    condition.category ||
+                    "未分类条件";
+
+
+                const badge =
+                    document.createElement(
+                        "span"
+                    );
+
+                badge.className =
+                    "status-badge";
+
+
+                const status =
+                    condition.status ||
+                    "信息不足";
+
+
+                if (
+                    status === "满足"
+                ) {
+
+                    badge.classList.add(
+                        "status-pass"
+                    );
+
+                } else if (
+                    status === "不满足"
+                ) {
+
+                    badge.classList.add(
+                        "status-fail"
+                    );
+
+                } else {
+
+                    badge.classList.add(
+                        "status-unknown"
+                    );
+                }
+
+
+                badge.textContent =
+                    status;
+
+
+                top.appendChild(
+                    name
+                );
+
+                top.appendChild(
+                    badge
+                );
+
+
+                const requirement =
+                    document.createElement(
+                        "div"
+                    );
+
+                requirement.className =
+                    "condition-requirement";
+
+                requirement.textContent =
+                    "岗位要求：" +
+                    (
+                        condition.requirement ||
+                        "未明确"
+                    );
+
+
+                const evidence =
+                    document.createElement(
+                        "div"
+                    );
+
+                evidence.className =
+                    "condition-evidence";
+
+                evidence.textContent =
+                    "匹配依据：" +
+                    (
+                        condition.evidence ||
+                        "暂无明确依据"
+                    );
+
+
+                item.appendChild(
+                    top
+                );
+
+                item.appendChild(
+                    requirement
+                );
+
+                item.appendChild(
+                    evidence
+                );
+
+
+                conditionListElement.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // Gap
+    // =========================================================
+
+    function renderGaps(
+        gaps
+    ) {
+
+        gapListElement.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(gaps) ||
+            gaps.length === 0
+        ) {
+
+            gapSection.classList.add(
+                "hidden"
+            );
+
+            return;
+        }
+
+
+        gaps.forEach(
+            gap => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+                li.textContent =
+                    gap;
+
+                gapListElement.appendChild(
+                    li
+                );
+
+            }
+        );
+
+
+        gapSection.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    // =========================================================
+    // 原因
+    // =========================================================
+
+    function renderReasons(
+        reasons
+    ) {
+
+        reasonListElement.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(reasons) ||
+            reasons.length === 0
+        ) {
+
+            reasonSection.classList.add(
+                "hidden"
+            );
+
+            return;
+        }
+
+
+        reasons.forEach(
+            reason => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+                li.textContent =
+                    reason;
+
+                reasonListElement.appendChild(
+                    li
+                );
+
+            }
+        );
+
+
+        reasonSection.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    // =========================================================
+    // 返回 JD 页面
+    // =========================================================
+
+    function goBackToJD() {
+
+        window.location.href =
+            "/jd";
+
+    }
+
+</script>
+
+</body>
+
+</html>
