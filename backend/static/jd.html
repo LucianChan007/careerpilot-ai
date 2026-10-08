@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>CareerPilot AI - JD解析</title>
 
     <style>
@@ -26,13 +28,19 @@
             padding: 40px 20px 60px;
         }
 
-        h1 {
-            margin-bottom: 8px;
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+            color: #111827;
         }
 
         .subtitle {
             color: #6b7280;
-            margin-bottom: 28px;
+            font-size: 15px;
         }
 
         .card {
@@ -63,6 +71,7 @@
 
         textarea:focus {
             border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
         }
 
         .buttons {
@@ -119,9 +128,17 @@
             color: #dc2626 !important;
         }
 
+        .loading {
+            color: #4338ca !important;
+        }
+
         .hidden {
             display: none !important;
         }
+
+        /* =========================
+           结果区域
+        ========================= */
 
         .result-header {
             display: flex;
@@ -136,10 +153,12 @@
         .position {
             font-size: 28px;
             margin: 0 0 8px;
+            color: #111827;
         }
 
         .company {
             color: #6b7280;
+            font-size: 14px;
         }
 
         .badge {
@@ -149,6 +168,7 @@
             border-radius: 999px;
             font-size: 12px;
             font-weight: bold;
+            white-space: nowrap;
         }
 
         .meta-grid {
@@ -171,7 +191,43 @@
 
         .meta-value {
             font-weight: 600;
+            color: #111827;
+            word-break: break-word;
         }
+
+        /* =========================
+           薪资
+        ========================= */
+
+        .salary-box {
+            margin-top: 16px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 15px 16px;
+        }
+
+        .salary-title {
+            font-size: 12px;
+            color: #15803d;
+            margin-bottom: 6px;
+        }
+
+        .salary-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #166534;
+        }
+
+        .salary-note {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        /* =========================
+           Section
+        ========================= */
 
         .section {
             margin-top: 26px;
@@ -181,6 +237,7 @@
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 12px;
+            color: #111827;
         }
 
         .tags {
@@ -190,6 +247,7 @@
         }
 
         .tag {
+            display: inline-block;
             background: #eef2ff;
             color: #4338ca;
             border-radius: 999px;
@@ -202,19 +260,46 @@
             color: #c2410c;
         }
 
-        ol,
-        ul {
+        .list {
             margin: 0;
             padding-left: 24px;
         }
 
-        li {
+        .list li {
             margin-bottom: 9px;
             line-height: 1.7;
             font-size: 14px;
         }
 
+        /* =========================
+           操作区域
+        ========================= */
+
+        .action-box {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .match-button {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            background: #4f46e5;
+            color: white;
+        }
+
+        .match-button:hover {
+            background: #4338ca;
+        }
+
+        /* =========================
+           JSON
+        ========================= */
+
         pre {
+            margin: 0;
             background: #111827;
             color: #e5e7eb;
             padding: 16px;
@@ -226,9 +311,17 @@
             line-height: 1.6;
         }
 
+        /* =========================
+           响应式
+        ========================= */
+
         @media (max-width: 800px) {
             .meta-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .result-header {
+                flex-direction: column;
             }
         }
 
@@ -241,31 +334,50 @@
                 grid-template-columns: 1fr;
             }
 
-            .result-header {
-                flex-direction: column;
+            .position {
+                font-size: 23px;
             }
         }
     </style>
 </head>
 
+
 <body>
 
 <div class="container">
 
-    <h1>CareerPilot AI</h1>
-    <div class="subtitle">
-        US03：岗位 JD 输入与结构化解析
+    <!-- =========================
+         页面标题
+    ========================== -->
+
+    <div class="header">
+
+        <h1>
+            CareerPilot AI
+        </h1>
+
+        <div class="subtitle">
+            US03：岗位 JD 输入与结构化解析
+        </div>
+
     </div>
 
-    <!-- JD输入 -->
+
+    <!-- =========================
+         JD 输入
+    ========================== -->
+
     <div class="card">
 
-        <h2>输入岗位 JD</h2>
+        <h2>
+            输入岗位 JD
+        </h2>
 
         <textarea
             id="jdInput"
             placeholder="请把招聘网站上的完整岗位 JD 粘贴到这里……"
         ></textarea>
+
 
         <div class="buttons">
 
@@ -278,6 +390,7 @@
                 AI 解析 JD
             </button>
 
+
             <button
                 type="button"
                 class="secondary"
@@ -285,6 +398,7 @@
             >
                 填入示例 JD
             </button>
+
 
             <button
                 type="button"
@@ -296,12 +410,16 @@
 
         </div>
 
+
         <div id="status"></div>
 
     </div>
 
 
-    <!-- 结果卡片 -->
+    <!-- =========================
+         解析结果
+    ========================== -->
+
     <div
         id="resultCard"
         class="card hidden"
@@ -310,6 +428,7 @@
         <div class="result-header">
 
             <div>
+
                 <h2
                     id="position"
                     class="position"
@@ -317,13 +436,16 @@
                     未识别岗位
                 </h2>
 
+
                 <div
                     id="company"
                     class="company"
                 >
                     公司：未提供
                 </div>
+
             </div>
+
 
             <div class="badge">
                 AI 结构化解析
@@ -332,10 +454,12 @@
         </div>
 
 
-        <!-- 基本信息 -->
+        <!-- 基础信息 -->
+
         <div class="meta-grid">
 
             <div class="meta-item">
+
                 <div class="meta-label">
                     工作地点
                 </div>
@@ -346,9 +470,12 @@
                 >
                     未提供
                 </div>
+
             </div>
 
+
             <div class="meta-item">
+
                 <div class="meta-label">
                     学历要求
                 </div>
@@ -359,9 +486,12 @@
                 >
                     未提供
                 </div>
+
             </div>
 
+
             <div class="meta-item">
+
                 <div class="meta-label">
                     实习要求
                 </div>
@@ -372,25 +502,56 @@
                 >
                     未提供
                 </div>
+
             </div>
 
+
             <div class="meta-item">
+
                 <div class="meta-label">
-                    JD 文本长度
+                    专业要求
                 </div>
 
                 <div
-                    id="textLength"
+                    id="major"
                     class="meta-value"
                 >
-                    0 字
+                    未提供
                 </div>
+
             </div>
 
         </div>
 
 
-        <!-- 专业 -->
+        <!-- =========================
+             薪资
+        ========================== -->
+
+        <div class="salary-box">
+
+            <div class="salary-title">
+                岗位薪资
+            </div>
+
+            <div
+                id="salary"
+                class="salary-value"
+            >
+                未提供
+            </div>
+
+            <div class="salary-note">
+                薪资属于岗位信息展示字段，不参与硬性条件匹配。
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             专业要求
+        ========================== -->
+
         <div
             id="majorSection"
             class="section hidden"
@@ -408,7 +569,10 @@
         </div>
 
 
-        <!-- 技能 -->
+        <!-- =========================
+             技能要求
+        ========================== -->
+
         <div
             id="skillsSection"
             class="section hidden"
@@ -426,7 +590,10 @@
         </div>
 
 
-        <!-- 经验 -->
+        <!-- =========================
+             经验要求
+        ========================== -->
+
         <div
             id="experienceSection"
             class="section hidden"
@@ -444,7 +611,10 @@
         </div>
 
 
-        <!-- 岗位职责 -->
+        <!-- =========================
+             岗位职责
+        ========================== -->
+
         <div
             id="responsibilitiesSection"
             class="section hidden"
@@ -454,12 +624,18 @@
                 岗位职责
             </div>
 
-            <ol id="responsibilitiesList"></ol>
+            <ol
+                id="responsibilitiesList"
+                class="list"
+            ></ol>
 
         </div>
 
 
-        <!-- 其他要求 -->
+        <!-- =========================
+             其他要求
+        ========================== -->
+
         <div
             id="otherSection"
             class="section hidden"
@@ -469,17 +645,41 @@
                 其他要求
             </div>
 
-            <ul id="otherList"></ul>
+            <ul
+                id="otherList"
+                class="list"
+            ></ul>
 
         </div>
 
 
-        <!-- JSON -->
+        <!-- =========================
+             US04 匹配入口
+        ========================== -->
+
+        <div class="action-box">
+
+            <button
+                type="button"
+                class="match-button"
+                onclick="goToMatch()"
+            >
+                与我的画像匹配
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             原始 JSON
+        ========================== -->
+
         <div class="section">
 
             <div class="section-title">
                 结构化数据
             </div>
+
 
             <button
                 type="button"
@@ -488,6 +688,7 @@
             >
                 查看原始 JSON
             </button>
+
 
             <pre
                 id="rawJSON"
@@ -503,9 +704,9 @@
 
 <script>
 
-    // =========================
+    // =========================================================
     // 示例 JD
-    // =========================
+    // =========================================================
 
     const SAMPLE_JD =
 `C++开发实习生
@@ -529,59 +730,96 @@ C++ QT
 3.具备良好的分析和解决问题的能力，能够高效处理开发过程中的技术难题。`;
 
 
-    // =========================
-    // 填入示例
-    // =========================
+    // =========================================================
+    // DOM 元素
+    // =========================================================
+
+    const jdInput =
+        document.getElementById(
+            "jdInput"
+        );
+
+    const parseButton =
+        document.getElementById(
+            "parseButton"
+        );
+
+    const statusElement =
+        document.getElementById(
+            "status"
+        );
+
+    const resultCard =
+        document.getElementById(
+            "resultCard"
+        );
+
+    const rawJSON =
+        document.getElementById(
+            "rawJSON"
+        );
+
+
+    // =========================================================
+    // 填入示例 JD
+    // =========================================================
 
     function fillSampleJD() {
 
-        const input =
-            document.getElementById("jdInput");
+        jdInput.value =
+            SAMPLE_JD;
 
-        const status =
-            document.getElementById("status");
 
-        input.value = SAMPLE_JD;
-
-        status.textContent =
+        statusElement.textContent =
             "示例 JD 已填入，可以点击“AI 解析 JD”。";
 
-        status.className = "success";
+        statusElement.className =
+            "success";
 
-        input.focus();
+
+        jdInput.focus();
+
     }
 
 
-    // =========================
+    // =========================================================
     // 清空
-    // =========================
+    // =========================================================
 
     function clearJD() {
 
-        document.getElementById(
-            "jdInput"
-        ).value = "";
+        jdInput.value =
+            "";
 
-        document.getElementById(
-            "resultCard"
-        ).classList.add("hidden");
 
-        const status =
-            document.getElementById("status");
+        resultCard.classList.add(
+            "hidden"
+        );
 
-        status.textContent = "";
 
-        status.className = "";
+        statusElement.textContent =
+            "";
 
-        document.getElementById(
-            "jdInput"
-        ).focus();
+        statusElement.className =
+            "";
+
+
+        rawJSON.textContent =
+            "";
+
+        rawJSON.classList.add(
+            "hidden"
+        );
+
+
+        jdInput.focus();
+
     }
 
 
-    // =========================
+    // =========================================================
     // 标签渲染
-    // =========================
+    // =========================================================
 
     function renderTags(
         elementId,
@@ -591,46 +829,70 @@ C++ QT
     ) {
 
         const element =
-            document.getElementById(elementId);
+            document.getElementById(
+                elementId
+            );
 
         const section =
-            document.getElementById(sectionId);
+            document.getElementById(
+                sectionId
+            );
 
-        element.innerHTML = "";
+
+        element.innerHTML =
+            "";
+
 
         if (
             !Array.isArray(items) ||
             items.length === 0
         ) {
 
-            section.classList.add("hidden");
+            section.classList.add(
+                "hidden"
+            );
 
             return;
+
         }
+
 
         items.forEach(
             item => {
 
                 const tag =
-                    document.createElement("span");
+                    document.createElement(
+                        "span"
+                    );
+
 
                 tag.className =
-                    "tag " + extraClass;
+                    "tag " +
+                    extraClass;
+
 
                 tag.textContent =
                     item;
 
-                element.appendChild(tag);
+
+                element.appendChild(
+                    tag
+                );
+
             }
         );
 
-        section.classList.remove("hidden");
+
+        section.classList.remove(
+            "hidden"
+        );
+
     }
 
 
-    // =========================
+    // =========================================================
     // 列表渲染
-    // =========================
+    // =========================================================
 
     function renderList(
         elementId,
@@ -639,86 +901,167 @@ C++ QT
     ) {
 
         const element =
-            document.getElementById(elementId);
+            document.getElementById(
+                elementId
+            );
 
         const section =
-            document.getElementById(sectionId);
+            document.getElementById(
+                sectionId
+            );
 
-        element.innerHTML = "";
+
+        element.innerHTML =
+            "";
+
 
         if (
             !Array.isArray(items) ||
             items.length === 0
         ) {
 
-            section.classList.add("hidden");
+            section.classList.add(
+                "hidden"
+            );
 
             return;
+
         }
+
 
         items.forEach(
             item => {
 
                 const li =
-                    document.createElement("li");
+                    document.createElement(
+                        "li"
+                    );
+
 
                 li.textContent =
                     item;
 
-                element.appendChild(li);
+
+                element.appendChild(
+                    li
+                );
+
             }
         );
 
-        section.classList.remove("hidden");
+
+        section.classList.remove(
+            "hidden"
+        );
+
     }
 
 
-    // =========================
+    // =========================================================
     // 显示解析结果
-    // =========================
+    // =========================================================
 
-    function showResult(data) {
+    function showResult(
+        data
+    ) {
 
         const job =
             data.job || {};
 
 
+        // -----------------------------------------------------
+        // 关键：保存 JD，供 US04 使用
+        // -----------------------------------------------------
+
+        sessionStorage.setItem(
+            "careerpilot_job",
+            JSON.stringify(job)
+        );
+
+
+        // -----------------------------------------------------
+        // 基本信息
+        // -----------------------------------------------------
+
         document.getElementById(
             "position"
         ).textContent =
-            job.position || "未识别岗位";
+            job.position ||
+            "未识别岗位";
 
 
         document.getElementById(
             "company"
         ).textContent =
             "公司：" +
-            (job.company || "未提供");
+            (
+                job.company ||
+                "未提供"
+            );
 
 
         document.getElementById(
             "location"
         ).textContent =
-            job.location || "未提供";
+            job.location ||
+            "未提供";
 
 
         document.getElementById(
             "education"
         ).textContent =
-            job.required_education || "未提供";
+            job.required_education ||
+            "未提供";
 
 
         document.getElementById(
             "internshipDays"
         ).textContent =
-            job.internship_days || "未提供";
+            job.internship_days ||
+            "未提供";
 
+
+        // -----------------------------------------------------
+        // 专业要求摘要
+        // -----------------------------------------------------
+
+        if (
+            Array.isArray(
+                job.required_major
+            ) &&
+            job.required_major.length > 0
+        ) {
+
+            document.getElementById(
+                "major"
+            ).textContent =
+                job.required_major.join(
+                    "、"
+                );
+
+        } else {
+
+            document.getElementById(
+                "major"
+            ).textContent =
+                "未提供";
+        }
+
+
+        // -----------------------------------------------------
+        // 薪资
+        // -----------------------------------------------------
 
         document.getElementById(
-            "textLength"
+            "salary"
         ).textContent =
-            (data.text_length || 0) + " 字";
+            job.salary ||
+            "未提供";
 
+
+        // -----------------------------------------------------
+        // 专业
+        // -----------------------------------------------------
 
         renderTags(
             "majorList",
@@ -727,12 +1070,20 @@ C++ QT
         );
 
 
+        // -----------------------------------------------------
+        // 技能
+        // -----------------------------------------------------
+
         renderTags(
             "skillsList",
             "skillsSection",
             job.required_skills
         );
 
+
+        // -----------------------------------------------------
+        // 经验
+        // -----------------------------------------------------
 
         renderTags(
             "experienceList",
@@ -742,12 +1093,20 @@ C++ QT
         );
 
 
+        // -----------------------------------------------------
+        // 岗位职责
+        // -----------------------------------------------------
+
         renderList(
             "responsibilitiesList",
             "responsibilitiesSection",
             job.responsibilities
         );
 
+
+        // -----------------------------------------------------
+        // 其他要求
+        // -----------------------------------------------------
 
         renderList(
             "otherList",
@@ -756,9 +1115,11 @@ C++ QT
         );
 
 
-        document.getElementById(
-            "rawJSON"
-        ).textContent =
+        // -----------------------------------------------------
+        // 原始 JSON
+        // -----------------------------------------------------
+
+        rawJSON.textContent =
             JSON.stringify(
                 job,
                 null,
@@ -766,76 +1127,90 @@ C++ QT
             );
 
 
-        document.getElementById(
-            "rawJSON"
-        ).classList.add("hidden");
+        rawJSON.classList.add(
+            "hidden"
+        );
 
 
-        document.getElementById(
-            "resultCard"
-        ).classList.remove("hidden");
+        // -----------------------------------------------------
+        // 显示结果
+        // -----------------------------------------------------
+
+        resultCard.classList.remove(
+            "hidden"
+        );
 
 
-        document.getElementById(
-            "resultCard"
-        ).scrollIntoView({
-            behavior: "smooth"
+        resultCard.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
         });
+
     }
 
 
-    // =========================
-    // 调用后端解析 JD
-    // =========================
+    // =========================================================
+    // AI 解析 JD
+    // =========================================================
 
     async function parseJD() {
 
-        const input =
-            document.getElementById("jdInput");
-
-        const button =
-            document.getElementById("parseButton");
-
-        const status =
-            document.getElementById("status");
-
         const jdText =
-            input.value.trim();
+            jdInput.value.trim();
 
+
+        // -----------------------------------------------------
+        // 输入检查
+        // -----------------------------------------------------
 
         if (!jdText) {
 
-            status.textContent =
+            statusElement.textContent =
                 "请先输入岗位 JD。";
 
-            status.className =
+            statusElement.className =
                 "error";
 
             return;
+
         }
 
 
-        if (jdText.length < 30) {
+        if (
+            jdText.length < 30
+        ) {
 
-            status.textContent =
+            statusElement.textContent =
                 "JD 内容过短，请输入完整岗位描述。";
 
-            status.className =
+            statusElement.className =
                 "error";
 
             return;
+
         }
 
 
-        button.disabled = true;
+        // -----------------------------------------------------
+        // 加载状态
+        // -----------------------------------------------------
 
-        status.textContent =
+        parseButton.disabled =
+            true;
+
+
+        statusElement.textContent =
             "正在调用 AI 解析 JD，请稍候……";
 
-        status.className = "";
+        statusElement.className =
+            "loading";
 
 
         try {
+
+            // -------------------------------------------------
+            // 调用后端
+            // -------------------------------------------------
 
             const response =
                 await fetch(
@@ -852,7 +1227,8 @@ C++ QT
                         },
 
                         body: JSON.stringify({
-                            jd_text: jdText
+                            jd_text:
+                                jdText
                         })
                     }
                 );
@@ -862,78 +1238,125 @@ C++ QT
                 await response.json();
 
 
-            if (!response.ok) {
+            // -------------------------------------------------
+            // 错误处理
+            // -------------------------------------------------
+
+            if (
+                !response.ok
+            ) {
 
                 throw new Error(
                     data.detail ||
-                    "JD 解析失败"
+                    "JD 解析失败。"
                 );
+
             }
 
 
-            showResult(data);
+            // -------------------------------------------------
+            // 展示结果
+            // -------------------------------------------------
+
+            showResult(
+                data
+            );
 
 
-            status.textContent =
+            statusElement.textContent =
                 "JD 解析成功。";
 
-            status.className =
+            statusElement.className =
                 "success";
 
 
         } catch (error) {
 
             console.error(
-                "JD解析错误：",
+                "JD 解析错误：",
                 error
             );
 
-            status.textContent =
+
+            statusElement.textContent =
                 "解析失败：" +
                 error.message;
 
-            status.className =
+            statusElement.className =
                 "error";
+
 
         } finally {
 
-            button.disabled = false;
+            parseButton.disabled =
+                false;
+
         }
 
     }
 
 
-    // =========================
-    // 显示 / 隐藏 JSON
-    // =========================
+    // =========================================================
+    // 查看 / 隐藏 JSON
+    // =========================================================
 
     function toggleJSON() {
 
-        const json =
-            document.getElementById(
-                "rawJSON"
-            );
-
-        const hidden =
-            json.classList.contains(
+        const isHidden =
+            rawJSON.classList.contains(
                 "hidden"
             );
 
-        if (hidden) {
 
-            json.classList.remove(
+        if (isHidden) {
+
+            rawJSON.classList.remove(
                 "hidden"
             );
 
         } else {
 
-            json.classList.add(
+            rawJSON.classList.add(
                 "hidden"
             );
+
         }
+
+    }
+
+
+    // =========================================================
+    // 前往 US04
+    // =========================================================
+
+    function goToMatch() {
+
+        const savedJob =
+            sessionStorage.getItem(
+                "careerpilot_job"
+            );
+
+
+        if (!savedJob) {
+
+            statusElement.textContent =
+                "当前没有可匹配的岗位，请先完成 JD 解析。";
+
+            statusElement.className =
+                "error";
+
+            return;
+
+        }
+
+
+        window.location.href =
+            "/match";
+
     }
 
 </script>
 
 </body>
+
 </html>
