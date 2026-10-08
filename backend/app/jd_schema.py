@@ -1,6 +1,7 @@
 JOB_SCHEMA = {
     "company": "",
     "position": "",
+    "salary": "",
     "responsibilities": [],
     "required_education": "",
     "required_major": [],
