@@ -3,7 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>CareerPilot AI - 岗位匹配</title>
 
@@ -55,7 +58,124 @@
         .card-title {
             margin: 0 0 18px;
             font-size: 20px;
+            color: #111827;
         }
+
+        /* =====================================================
+           个人画像
+        ===================================================== */
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .profile-name {
+            margin: 0 0 7px;
+            font-size: 26px;
+            color: #111827;
+        }
+
+        .profile-basic {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .profile-badge {
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .profile-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .profile-section.full {
+            grid-column: 1 / -1;
+        }
+
+        .profile-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .profile-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        .profile-item {
+            margin-bottom: 12px;
+        }
+
+        .profile-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .profile-item-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .profile-item-text {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4338ca;
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 13px;
+        }
+
+        .tag.green {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .tag.orange {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        /* =====================================================
+           岗位信息
+        ===================================================== */
 
         .job-header {
             display: flex;
@@ -80,13 +200,13 @@
         }
 
         .ai-badge {
-            white-space: nowrap;
-            background: #eef2ff;
-            color: #4338ca;
+            background: #ecfdf5;
+            color: #047857;
             border-radius: 999px;
             padding: 8px 13px;
             font-size: 12px;
             font-weight: bold;
+            white-space: nowrap;
         }
 
         .meta-grid {
@@ -97,8 +217,8 @@
 
         .meta-item {
             background: #f8fafc;
-            padding: 15px;
             border-radius: 12px;
+            padding: 15px;
         }
 
         .meta-label {
@@ -140,6 +260,10 @@
             color: #4b5563;
         }
 
+        /* =====================================================
+           综合结果
+        ===================================================== */
+
         .summary {
             padding: 22px;
             border-radius: 14px;
@@ -175,16 +299,9 @@
             color: #4338ca;
         }
 
-        .section {
-            margin-top: 24px;
-        }
-
-        .section-title {
-            margin-bottom: 12px;
-            font-size: 17px;
-            font-weight: bold;
-            color: #111827;
-        }
+        /* =====================================================
+           匹配条件
+        ===================================================== */
 
         .condition-list {
             display: flex;
@@ -193,16 +310,16 @@
         }
 
         .condition-item {
+            background: #ffffff;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
             padding: 16px;
-            background: #ffffff;
         }
 
         .condition-top {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             gap: 15px;
         }
 
@@ -216,19 +333,20 @@
             margin-top: 7px;
             font-size: 14px;
             color: #374151;
+            line-height: 1.6;
         }
 
         .condition-evidence {
             margin-top: 8px;
             font-size: 13px;
-            line-height: 1.6;
             color: #6b7280;
+            line-height: 1.6;
         }
 
         .status-badge {
             flex-shrink: 0;
-            padding: 6px 10px;
             border-radius: 999px;
+            padding: 6px 10px;
             font-size: 12px;
             font-weight: bold;
         }
@@ -248,6 +366,21 @@
             color: #92400e;
         }
 
+        /* =====================================================
+           Gap / 原因
+        ===================================================== */
+
+        .section {
+            margin-top: 26px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #111827;
+        }
+
         .gap-list,
         .reason-list {
             margin: 0;
@@ -257,8 +390,8 @@
         .gap-list li,
         .reason-list li {
             margin-bottom: 8px;
-            line-height: 1.7;
             font-size: 14px;
+            line-height: 1.7;
         }
 
         .empty {
@@ -266,24 +399,9 @@
             font-size: 14px;
         }
 
-        .status-message {
-            margin-top: 15px;
-            min-height: 24px;
-            font-size: 14px;
-            color: #6b7280;
-        }
-
-        .success {
-            color: #15803d;
-        }
-
-        .error {
-            color: #dc2626;
-        }
-
-        .loading {
-            color: #4338ca;
-        }
+        /* =====================================================
+           操作
+        ===================================================== */
 
         .buttons {
             display: flex;
@@ -295,8 +413,8 @@
             border: none;
             border-radius: 10px;
             padding: 11px 18px;
-            font-size: 14px;
             cursor: pointer;
+            font-size: 14px;
             font-family: inherit;
         }
 
@@ -323,6 +441,29 @@
             cursor: not-allowed;
         }
 
+        #status {
+            margin-top: 15px;
+            min-height: 22px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .success {
+            color: #15803d !important;
+        }
+
+        .error {
+            color: #dc2626 !important;
+        }
+
+        .loading {
+            color: #4338ca !important;
+        }
+
+        /* =====================================================
+           JSON
+        ===================================================== */
+
         pre {
             margin: 0;
             background: #111827;
@@ -340,17 +481,32 @@
             display: none !important;
         }
 
+        /* =====================================================
+           响应式
+        ===================================================== */
+
         @media (max-width: 800px) {
+
             .meta-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .job-header {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section.full {
+                grid-column: auto;
+            }
+
+            .job-header,
+            .profile-header {
                 flex-direction: column;
             }
         }
 
         @media (max-width: 500px) {
+
             .container {
                 padding: 24px 14px 40px;
             }
@@ -361,6 +517,10 @@
 
             .position {
                 font-size: 23px;
+            }
+
+            .profile-name {
+                font-size: 22px;
             }
 
             .condition-top {
@@ -376,22 +536,170 @@
 
 <div class="container">
 
-    <!-- 页面标题 -->
+    <!-- =====================================================
+         页面标题
+    ====================================================== -->
+
     <div class="header">
-        <h1>CareerPilot AI</h1>
+
+        <h1>
+            CareerPilot AI
+        </h1>
 
         <div class="subtitle">
             US04：岗位硬性条件匹配
         </div>
+
     </div>
 
 
-    <!-- 岗位信息 -->
+    <!-- =====================================================
+         我的个人画像
+    ====================================================== -->
+
+    <div class="card">
+
+        <div class="profile-header">
+
+            <div>
+
+                <h2
+                    id="profileName"
+                    class="profile-name"
+                >
+                    正在读取个人画像……
+                </h2>
+
+                <div
+                    id="profileBasic"
+                    class="profile-basic"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="profile-badge">
+                当前匹配画像
+            </div>
+
+        </div>
+
+
+        <div class="profile-grid">
+
+            <!-- 基本信息 -->
+
+            <div class="profile-section">
+
+                <div class="profile-label">
+                    求职方向
+                </div>
+
+                <div
+                    id="targetPositions"
+                    class="profile-text"
+                >
+                    未提供
+                </div>
+
+            </div>
+
+
+            <div class="profile-section">
+
+                <div class="profile-label">
+                    目标城市
+                </div>
+
+                <div
+                    id="targetCities"
+                    class="profile-text"
+                >
+                    未提供
+                </div>
+
+            </div>
+
+
+            <div class="profile-section">
+
+                <div class="profile-label">
+                    实习时间
+                </div>
+
+                <div
+                    id="availability"
+                    class="profile-text"
+                >
+                    未提供
+                </div>
+
+            </div>
+
+
+            <div class="profile-section">
+
+                <div class="profile-label">
+                    技能
+                </div>
+
+                <div
+                    id="profileSkills"
+                    class="tags"
+                >
+                </div>
+
+            </div>
+
+
+            <!-- 项目 -->
+
+            <div class="profile-section full">
+
+                <div class="profile-label">
+                    项目经历
+                </div>
+
+                <div
+                    id="profileProjects"
+                >
+                </div>
+
+            </div>
+
+
+            <!-- 实习 -->
+
+            <div class="profile-section full">
+
+                <div class="profile-label">
+                    实习经历
+                </div>
+
+                <div
+                    id="profileInternships"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         岗位信息
+    ====================================================== -->
+
     <div class="card">
 
         <div class="job-header">
 
             <div>
+
                 <h2
                     id="position"
                     class="position"
@@ -399,13 +707,16 @@
                     正在读取岗位……
                 </h2>
 
+
                 <div
                     id="company"
                     class="company"
                 >
                     公司：-
                 </div>
+
             </div>
+
 
             <div class="ai-badge">
                 AI 岗位匹配
@@ -417,6 +728,7 @@
         <div class="meta-grid">
 
             <div class="meta-item">
+
                 <div class="meta-label">
                     工作地点
                 </div>
@@ -427,10 +739,12 @@
                 >
                     -
                 </div>
+
             </div>
 
 
             <div class="meta-item">
+
                 <div class="meta-label">
                     学历要求
                 </div>
@@ -441,10 +755,12 @@
                 >
                     -
                 </div>
+
             </div>
 
 
             <div class="meta-item">
+
                 <div class="meta-label">
                     实习周期
                 </div>
@@ -455,10 +771,12 @@
                 >
                     -
                 </div>
+
             </div>
 
 
             <div class="meta-item">
+
                 <div class="meta-label">
                     专业要求
                 </div>
@@ -469,6 +787,7 @@
                 >
                     -
                 </div>
+
             </div>
 
         </div>
@@ -497,13 +816,18 @@
     </div>
 
 
-    <!-- 匹配结果 -->
+    <!-- =====================================================
+         匹配结果
+    ====================================================== -->
+
     <div class="card">
 
         <h2 class="card-title">
             硬性条件匹配
         </h2>
 
+
+        <!-- 综合结论 -->
 
         <div class="summary">
 
@@ -521,11 +845,14 @@
         </div>
 
 
+        <!-- 条件明细 -->
+
         <div class="section">
 
             <div class="section-title">
                 条件明细
             </div>
+
 
             <div
                 id="conditionList"
@@ -541,7 +868,8 @@
         </div>
 
 
-        <!-- 能力 Gap -->
+        <!-- Gap -->
+
         <div
             id="gapSection"
             class="section hidden"
@@ -551,15 +879,18 @@
                 可能存在的能力 Gap
             </div>
 
+
             <ul
                 id="gapList"
                 class="gap-list"
-            ></ul>
+            >
+            </ul>
 
         </div>
 
 
         <!-- 匹配原因 -->
+
         <div
             id="reasonSection"
             class="section hidden"
@@ -569,17 +900,22 @@
                 匹配依据
             </div>
 
+
             <ul
                 id="reasonList"
                 class="reason-list"
-            ></ul>
+            >
+            </ul>
 
         </div>
 
     </div>
 
 
-    <!-- 操作 -->
+    <!-- =====================================================
+         操作
+    ====================================================== -->
+
     <div class="card">
 
         <div class="buttons">
@@ -593,6 +929,7 @@
                 重新匹配
             </button>
 
+
             <button
                 class="secondary"
                 type="button"
@@ -603,20 +940,23 @@
 
         </div>
 
-        <div
-            id="status"
-            class="status-message"
-        ></div>
+
+        <div id="status">
+        </div>
 
     </div>
 
 
-    <!-- 原始 JSON -->
+    <!-- =====================================================
+         原始 JSON
+    ====================================================== -->
+
     <div class="card">
 
         <h2 class="card-title">
             匹配结果 JSON
         </h2>
+
 
         <pre id="rawJSON">等待匹配……</pre>
 
@@ -635,56 +975,128 @@
 
 
     // =========================================================
-    // 获取元素
+    // DOM
     // =========================================================
 
+    const profileNameElement =
+        document.getElementById(
+            "profileName"
+        );
+
+    const profileBasicElement =
+        document.getElementById(
+            "profileBasic"
+        );
+
+    const targetPositionsElement =
+        document.getElementById(
+            "targetPositions"
+        );
+
+    const targetCitiesElement =
+        document.getElementById(
+            "targetCities"
+        );
+
+    const availabilityElement =
+        document.getElementById(
+            "availability"
+        );
+
+    const profileSkillsElement =
+        document.getElementById(
+            "profileSkills"
+        );
+
+    const profileProjectsElement =
+        document.getElementById(
+            "profileProjects"
+        );
+
+    const profileInternshipsElement =
+        document.getElementById(
+            "profileInternships"
+        );
+
     const positionElement =
-        document.getElementById("position");
+        document.getElementById(
+            "position"
+        );
 
     const companyElement =
-        document.getElementById("company");
+        document.getElementById(
+            "company"
+        );
 
     const locationElement =
-        document.getElementById("location");
+        document.getElementById(
+            "location"
+        );
 
     const educationElement =
-        document.getElementById("education");
+        document.getElementById(
+            "education"
+        );
 
     const internshipDaysElement =
-        document.getElementById("internshipDays");
+        document.getElementById(
+            "internshipDays"
+        );
 
     const majorElement =
-        document.getElementById("major");
+        document.getElementById(
+            "major"
+        );
 
     const salaryElement =
-        document.getElementById("salary");
+        document.getElementById(
+            "salary"
+        );
 
     const overallStatusElement =
-        document.getElementById("overallStatus");
+        document.getElementById(
+            "overallStatus"
+        );
 
     const conditionListElement =
-        document.getElementById("conditionList");
+        document.getElementById(
+            "conditionList"
+        );
 
     const gapSection =
-        document.getElementById("gapSection");
+        document.getElementById(
+            "gapSection"
+        );
 
     const gapListElement =
-        document.getElementById("gapList");
+        document.getElementById(
+            "gapList"
+        );
 
     const reasonSection =
-        document.getElementById("reasonSection");
+        document.getElementById(
+            "reasonSection"
+        );
 
     const reasonListElement =
-        document.getElementById("reasonList");
+        document.getElementById(
+            "reasonList"
+        );
 
     const rawJSONElement =
-        document.getElementById("rawJSON");
+        document.getElementById(
+            "rawJSON"
+        );
 
     const statusElement =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
     const matchButton =
-        document.getElementById("matchButton");
+        document.getElementById(
+            "matchButton"
+        );
 
 
     // =========================================================
@@ -702,7 +1114,7 @@
 
 
     // =========================================================
-    // 从浏览器读取 JD
+    // 读取 JD
     // =========================================================
 
     async function loadJob() {
@@ -710,32 +1122,33 @@
         let job = null;
 
 
-        // 优先从 sessionStorage 读取
         const sessionJob =
             sessionStorage.getItem(
                 "careerpilot_job"
             );
 
+
         if (sessionJob) {
 
             try {
 
-                job = JSON.parse(
-                    sessionJob
-                );
+                job =
+                    JSON.parse(
+                        sessionJob
+                    );
 
             } catch (error) {
 
                 console.error(
-                    "sessionStorage JD JSON 读取失败",
+                    "sessionStorage JD 读取失败：",
                     error
                 );
+
             }
+
         }
 
 
-        // 如果 sessionStorage 没有，
-        // 再尝试 localStorage
         if (!job) {
 
             const localJob =
@@ -743,22 +1156,27 @@
                     "careerpilot_job"
                 );
 
+
             if (localJob) {
 
                 try {
 
-                    job = JSON.parse(
-                        localJob
-                    );
+                    job =
+                        JSON.parse(
+                            localJob
+                        );
 
                 } catch (error) {
 
                     console.error(
-                        "localStorage JD JSON 读取失败",
+                        "localStorage JD 读取失败：",
                         error
                     );
+
                 }
+
             }
+
         }
 
 
@@ -767,20 +1185,25 @@
             positionElement.textContent =
                 "没有找到岗位信息";
 
+
             statusElement.textContent =
                 "请先返回 JD 解析页面完成岗位解析。";
 
             statusElement.className =
-                "status-message error";
+                "error";
 
-            matchButton.disabled = true;
+
+            matchButton.disabled =
+                true;
+
 
             return;
 
         }
 
 
-        currentJob = job;
+        currentJob =
+            job;
 
 
         renderJob(
@@ -788,17 +1211,18 @@
         );
 
 
-        // 自动执行匹配
         await matchJob();
 
     }
 
 
     // =========================================================
-    // 展示岗位信息
+    // 展示岗位
     // =========================================================
 
-    function renderJob(job) {
+    function renderJob(
+        job
+    ) {
 
         positionElement.textContent =
             job.position ||
@@ -844,6 +1268,7 @@
 
             majorElement.textContent =
                 "未提供";
+
         }
 
 
@@ -855,7 +1280,517 @@
 
 
     // =========================================================
-    // 执行岗位匹配
+    // 展示个人画像
+    // =========================================================
+
+    function renderProfile(
+        profile
+    ) {
+
+        if (
+            !profile ||
+            typeof profile !== "object"
+        ) {
+
+            profileNameElement.textContent =
+                "个人画像不存在";
+
+            profileBasicElement.textContent =
+                "未读取到当前用户个人画像。";
+
+            return;
+
+        }
+
+
+        // -----------------------------------------------------
+        // 姓名
+        // -----------------------------------------------------
+
+        profileNameElement.textContent =
+            profile.name ||
+            "未提供姓名";
+
+
+        // -----------------------------------------------------
+        // 教育背景
+        // -----------------------------------------------------
+
+        const education =
+            Array.isArray(
+                profile.education
+            )
+                ? profile.education
+                : [];
+
+
+        if (
+            education.length > 0
+        ) {
+
+            const educationTexts =
+                education.map(
+                    item => {
+
+                        if (
+                            typeof item ===
+                            "string"
+                        ) {
+
+                            return item;
+
+                        }
+
+                        const school =
+                            item.school ||
+                            "";
+
+                        const degree =
+                            item.degree ||
+                            "";
+
+                        const major =
+                            item.major ||
+                            "";
+
+                        const period =
+                            item.period ||
+                            item.time ||
+                            "";
+
+
+                        return [
+                            school,
+                            degree,
+                            major,
+                            period
+                        ]
+                            .filter(Boolean)
+                            .join(
+                                " · "
+                            );
+
+                    }
+                );
+
+
+            profileBasicElement.textContent =
+                educationTexts.join(
+                    "；"
+                );
+
+        } else {
+
+            profileBasicElement.textContent =
+                "暂无教育背景信息";
+
+        }
+
+
+        // -----------------------------------------------------
+        // 求职方向
+        // -----------------------------------------------------
+
+        targetPositionsElement.textContent =
+            formatArrayOrValue(
+                profile.target_positions,
+                "、",
+                "未提供"
+            );
+
+
+        // -----------------------------------------------------
+        // 目标城市
+        // -----------------------------------------------------
+
+        targetCitiesElement.textContent =
+            formatArrayOrValue(
+                profile.target_cities,
+                "、",
+                "未提供"
+            );
+
+
+        // -----------------------------------------------------
+        // 实习时间
+        // -----------------------------------------------------
+
+        availabilityElement.textContent =
+            formatArrayOrValue(
+                profile.availability,
+                "、",
+                "未提供"
+            );
+
+
+        // -----------------------------------------------------
+        // 技能
+        // -----------------------------------------------------
+
+        renderProfileTags(
+            profileSkillsElement,
+            profile.skills
+        );
+
+
+        // -----------------------------------------------------
+        // 项目
+        // -----------------------------------------------------
+
+        renderProfileItems(
+            profileProjectsElement,
+            profile.projects
+        );
+
+
+        // -----------------------------------------------------
+        // 实习经历
+        // -----------------------------------------------------
+
+        renderProfileItems(
+            profileInternshipsElement,
+            profile.internships
+        );
+
+    }
+
+
+    // =========================================================
+    // 格式化数组 / 字符串
+    // =========================================================
+
+    function formatArrayOrValue(
+        value,
+        separator = "、",
+        fallback = "未提供"
+    ) {
+
+        if (
+            Array.isArray(value)
+        ) {
+
+            if (
+                value.length === 0
+            ) {
+
+                return fallback;
+
+            }
+
+
+            return value
+                .map(
+                    item => {
+
+                        if (
+                            typeof item === "string"
+                        ) {
+
+                            return item;
+
+                        }
+
+                        if (
+                            typeof item === "object" &&
+                            item !== null
+                        ) {
+
+                            return Object.values(
+                                item
+                            )
+                                .filter(
+                                    v =>
+                                        v !== null &&
+                                        v !== undefined &&
+                                        String(v).trim() !== ""
+                                )
+                                .join(
+                                    " · "
+                                );
+
+                        }
+
+                        return String(
+                            item
+                        );
+
+                    }
+                )
+                .join(separator);
+
+        }
+
+
+        if (
+            typeof value === "string" &&
+            value.trim()
+        ) {
+
+            return value;
+
+        }
+
+
+        if (
+            value !== null &&
+            value !== undefined
+        ) {
+
+            return String(
+                value
+            );
+
+        }
+
+
+        return fallback;
+
+    }
+
+
+    // =========================================================
+    // 个人画像技能
+    // =========================================================
+
+    function renderProfileTags(
+        element,
+        items
+    ) {
+
+        element.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+            empty.className =
+                "empty";
+
+            empty.textContent =
+                "未提供";
+
+            element.appendChild(
+                empty
+            );
+
+            return;
+
+        }
+
+
+        items.forEach(
+            item => {
+
+                const tag =
+                    document.createElement(
+                        "span"
+                    );
+
+                tag.className =
+                    "tag";
+
+
+                if (
+                    typeof item === "string"
+                ) {
+
+                    tag.textContent =
+                        item;
+
+                } else {
+
+                    tag.textContent =
+                        Object.values(
+                            item
+                        )
+                            .filter(
+                                value =>
+                                    value !== null &&
+                                    value !== undefined &&
+                                    String(value).trim() !== ""
+                            )
+                            .join(
+                                " · "
+                            );
+
+                }
+
+
+                element.appendChild(
+                    tag
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // 个人项目 / 实习经历
+    // =========================================================
+
+    function renderProfileItems(
+        element,
+        items
+    ) {
+
+        element.innerHTML =
+            "";
+
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+            empty.className =
+                "empty";
+
+            empty.textContent =
+                "未提供";
+
+            element.appendChild(
+                empty
+            );
+
+            return;
+
+        }
+
+
+        items.forEach(
+            item => {
+
+                const wrapper =
+                    document.createElement(
+                        "div"
+                    );
+
+                wrapper.className =
+                    "profile-item";
+
+
+                if (
+                    typeof item === "string"
+                ) {
+
+                    const title =
+                        document.createElement(
+                            "div"
+                        );
+
+                    title.className =
+                        "profile-item-title";
+
+                    title.textContent =
+                        item;
+
+
+                    wrapper.appendChild(
+                        title
+                    );
+
+
+                } else {
+
+                    const values =
+                        Object.entries(
+                            item
+                        );
+
+
+                    let firstValueUsed =
+                        false;
+
+
+                    values.forEach(
+                        ([key, value]) => {
+
+                            if (
+                                value === null ||
+                                value === undefined ||
+                                String(value).trim() === ""
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            const text =
+                                String(
+                                    value
+                                );
+
+
+                            const element =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            if (
+                                !firstValueUsed
+                            ) {
+
+                                element.className =
+                                    "profile-item-title";
+
+                                element.textContent =
+                                    text;
+
+                                firstValueUsed =
+                                    true;
+
+                            } else {
+
+                                element.className =
+                                    "profile-item-text";
+
+                                element.textContent =
+                                    key +
+                                    "：" +
+                                    text;
+
+                            }
+
+
+                            wrapper.appendChild(
+                                element
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                element.appendChild(
+                    wrapper
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // 岗位匹配
     // =========================================================
 
     async function matchJob() {
@@ -866,20 +1801,22 @@
                 "没有可匹配的岗位信息。";
 
             statusElement.className =
-                "status-message error";
+                "error";
 
             return;
+
         }
 
 
-        matchButton.disabled = true;
+        matchButton.disabled =
+            true;
 
 
         statusElement.textContent =
             "正在根据你的个人画像进行岗位匹配，请稍候……";
 
         statusElement.className =
-            "status-message loading";
+            "loading";
 
 
         overallStatusElement.textContent =
@@ -906,7 +1843,8 @@
                         },
 
                         body: JSON.stringify({
-                            job: currentJob
+                            job:
+                                currentJob
                         })
                     }
                 );
@@ -916,19 +1854,39 @@
                 await response.json();
 
 
-            if (!response.ok) {
+            if (
+                !response.ok
+            ) {
 
                 throw new Error(
                     data.detail ||
                     "岗位匹配失败。"
                 );
+
             }
 
+
+            // -------------------------------------------------
+            // 展示个人画像
+            // -------------------------------------------------
+
+            renderProfile(
+                data.profile
+            );
+
+
+            // -------------------------------------------------
+            // 展示匹配结果
+            // -------------------------------------------------
 
             renderMatchResult(
                 data
             );
 
+
+            // -------------------------------------------------
+            // JSON
+            // -------------------------------------------------
 
             rawJSONElement.textContent =
                 JSON.stringify(
@@ -942,7 +1900,7 @@
                 "岗位匹配完成。";
 
             statusElement.className =
-                "status-message success";
+                "success";
 
 
         } catch (error) {
@@ -958,7 +1916,7 @@
                 error.message;
 
             statusElement.className =
-                "status-message error";
+                "error";
 
 
             overallStatusElement.textContent =
@@ -967,10 +1925,10 @@
             overallStatusElement.className =
                 "summary-value summary-bad";
 
-
         } finally {
 
-            matchButton.disabled = false;
+            matchButton.disabled =
+                false;
 
         }
 
@@ -989,9 +1947,9 @@
             data.match || {};
 
 
-        // -------------------------
+        // -----------------------------------------------------
         // 综合结论
-        // -------------------------
+        // -----------------------------------------------------
 
         const overallStatus =
             match.overall_status ||
@@ -1003,14 +1961,16 @@
 
 
         if (
-            overallStatus === "满足硬性条件"
+            overallStatus ===
+            "满足硬性条件"
         ) {
 
             overallStatusElement.className =
                 "summary-value summary-good";
 
         } else if (
-            overallStatus === "存在硬性不匹配"
+            overallStatus ===
+            "存在硬性不匹配"
         ) {
 
             overallStatusElement.className =
@@ -1020,30 +1980,31 @@
 
             overallStatusElement.className =
                 "summary-value summary-warning";
+
         }
 
 
-        // -------------------------
-        // 条件列表
-        // -------------------------
+        // -----------------------------------------------------
+        // 条件
+        // -----------------------------------------------------
 
         renderConditions(
             match.conditions
         );
 
 
-        // -------------------------
+        // -----------------------------------------------------
         // Gap
-        // -------------------------
+        // -----------------------------------------------------
 
         renderGaps(
             match.gaps
         );
 
 
-        // -------------------------
+        // -----------------------------------------------------
         // 原因
-        // -------------------------
+        // -----------------------------------------------------
 
         renderReasons(
             match.reasons
@@ -1053,7 +2014,7 @@
 
 
     // =========================================================
-    // 条件列表
+    // 条件明细
     // =========================================================
 
     function renderConditions(
@@ -1079,6 +2040,7 @@
                 `;
 
             return;
+
         }
 
 
@@ -1094,6 +2056,7 @@
                     "condition-item";
 
 
+                // 顶部
                 const top =
                     document.createElement(
                         "div"
@@ -1103,6 +2066,7 @@
                     "condition-top";
 
 
+                // 分类名称
                 const name =
                     document.createElement(
                         "div"
@@ -1116,6 +2080,7 @@
                     "未分类条件";
 
 
+                // 状态
                 const badge =
                     document.createElement(
                         "span"
@@ -1151,6 +2116,7 @@
                     badge.classList.add(
                         "status-unknown"
                     );
+
                 }
 
 
@@ -1167,6 +2133,7 @@
                 );
 
 
+                // 岗位要求
                 const requirement =
                     document.createElement(
                         "div"
@@ -1183,6 +2150,7 @@
                     );
 
 
+                // 匹配依据
                 const evidence =
                     document.createElement(
                         "div"
@@ -1244,6 +2212,7 @@
             );
 
             return;
+
         }
 
 
@@ -1257,6 +2226,7 @@
 
                 li.textContent =
                     gap;
+
 
                 gapListElement.appendChild(
                     li
@@ -1274,7 +2244,7 @@
 
 
     // =========================================================
-    // 原因
+    // 匹配原因
     // =========================================================
 
     function renderReasons(
@@ -1295,6 +2265,7 @@
             );
 
             return;
+
         }
 
 
@@ -1308,6 +2279,7 @@
 
                 li.textContent =
                     reason;
+
 
                 reasonListElement.appendChild(
                     li
@@ -1325,7 +2297,7 @@
 
 
     // =========================================================
-    // 返回 JD 页面
+    // 返回 JD
     // =========================================================
 
     function goBackToJD() {
