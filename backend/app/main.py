@@ -46,7 +46,7 @@ DATA_DIR.mkdir(
 
 app = FastAPI(
     title="CareerPilot AI",
-    version="0.4.0",
+    version="0.4.1",
     description="CareerPilot AI：大学生实习求职研究与投递助理",
 )
 
@@ -102,7 +102,7 @@ def index():
 
 
 # ============================================================
-# US03：JD 解析页面
+# US03：JD 页面
 # ============================================================
 
 @app.get("/jd")
@@ -136,7 +136,7 @@ def health():
 
 
 # ============================================================
-# US02：个人画像读取
+# US02：读取个人画像
 # ============================================================
 
 @app.get("/api/profile")
@@ -149,21 +149,31 @@ def get_profile():
         return {}
 
     try:
+
         with PROFILE_FILE.open(
             "r",
             encoding="utf-8",
         ) as f:
+
             return json.load(f)
 
     except json.JSONDecodeError as exc:
+
         raise HTTPException(
             status_code=500,
             detail="个人画像文件格式损坏。",
         ) from exc
 
+    except OSError as exc:
+
+        raise HTTPException(
+            status_code=500,
+            detail="个人画像读取失败。",
+        ) from exc
+
 
 # ============================================================
-# US02：个人画像保存
+# US02：保存个人画像
 # ============================================================
 
 @app.put("/api/profile")
@@ -178,16 +188,19 @@ async def save_profile(
         profile,
         dict,
     ):
+
         raise HTTPException(
             status_code=400,
             detail="个人画像必须是 JSON 对象。",
         )
 
     try:
+
         with PROFILE_FILE.open(
             "w",
             encoding="utf-8",
         ) as f:
+
             json.dump(
                 profile,
                 f,
@@ -196,6 +209,7 @@ async def save_profile(
             )
 
     except OSError as exc:
+
         raise HTTPException(
             status_code=500,
             detail="个人画像保存失败。",
@@ -219,6 +233,10 @@ async def parse_resume(
     """
     上传 PDF / DOCX 简历，
     提取文本并调用 LLM 生成结构化个人画像。
+
+    解析完成后，会自动把个人画像保存到
+    backend/data/profile.json，
+    供 US02 / US04 后续使用。
     """
 
     # --------------------------------------------------------
@@ -233,6 +251,7 @@ async def parse_resume(
         ".pdf",
         ".docx",
     }:
+
         raise HTTPException(
             status_code=400,
             detail="仅支持 PDF 或 DOCX。",
@@ -246,6 +265,7 @@ async def parse_resume(
     data = await file.read()
 
     if not data:
+
         raise HTTPException(
             status_code=400,
             detail="文件为空。",
@@ -257,6 +277,7 @@ async def parse_resume(
     # --------------------------------------------------------
 
     if len(data) > MAX_FILE_SIZE:
+
         raise HTTPException(
             status_code=413,
             detail=(
@@ -274,8 +295,12 @@ async def parse_resume(
         delete=False,
         suffix=suffix,
     ) as tmp:
+
         tmp.write(data)
-        temp_path = Path(tmp.name)
+
+        temp_path = Path(
+            tmp.name
+        )
 
 
     try:
@@ -288,9 +313,11 @@ async def parse_resume(
             temp_path
         )
 
+
         if len(
             text.strip()
         ) < 30:
+
             raise HTTPException(
                 status_code=422,
                 detail=(
@@ -309,18 +336,57 @@ async def parse_resume(
         )
 
 
+        if not isinstance(
+            profile,
+            dict,
+        ):
+
+            raise HTTPException(
+                status_code=500,
+                detail="AI 返回的个人画像格式错误。",
+            )
+
+
         # ----------------------------------------------------
-        # 7. 返回结果
+        # 7. 自动保存个人画像
+        # ----------------------------------------------------
+
+        try:
+
+            with PROFILE_FILE.open(
+                "w",
+                encoding="utf-8",
+            ) as f:
+
+                json.dump(
+                    profile,
+                    f,
+                    ensure_ascii=False,
+                    indent=2,
+                )
+
+        except OSError as exc:
+
+            raise HTTPException(
+                status_code=500,
+                detail="AI 解析成功，但个人画像保存失败。",
+            ) from exc
+
+
+        # ----------------------------------------------------
+        # 8. 返回结果
         # ----------------------------------------------------
 
         return {
             "filename": file.filename,
             "text_length": len(text),
+            "profile_saved": True,
             "profile": profile,
         }
 
 
     except HTTPException:
+
         raise
 
 
@@ -335,7 +401,7 @@ async def parse_resume(
     finally:
 
         # ----------------------------------------------------
-        # 8. 删除临时文件
+        # 9. 删除临时文件
         # ----------------------------------------------------
 
         temp_path.unlink(
@@ -357,7 +423,7 @@ async def parse_jd(
     """
 
     # --------------------------------------------------------
-    # 1. 获取 JD 文本
+    # 1. 获取 JD
     # --------------------------------------------------------
 
     jd_text = data.jd_text.strip()
@@ -368,6 +434,7 @@ async def parse_jd(
     # --------------------------------------------------------
 
     if not jd_text:
+
         raise HTTPException(
             status_code=400,
             detail="JD 内容不能为空。",
@@ -375,10 +442,11 @@ async def parse_jd(
 
 
     # --------------------------------------------------------
-    # 3. 最小长度检查
+    # 3. 最小长度
     # --------------------------------------------------------
 
     if len(jd_text) < 30:
+
         raise HTTPException(
             status_code=400,
             detail=(
@@ -389,10 +457,11 @@ async def parse_jd(
 
 
     # --------------------------------------------------------
-    # 4. 最大长度检查
+    # 4. 最大长度
     # --------------------------------------------------------
 
     if len(jd_text) > 20000:
+
         raise HTTPException(
             status_code=413,
             detail=(
@@ -405,7 +474,7 @@ async def parse_jd(
     try:
 
         # ----------------------------------------------------
-        # 5. AI 结构化解析
+        # 5. AI 解析
         # ----------------------------------------------------
 
         job = await build_job(
@@ -414,7 +483,7 @@ async def parse_jd(
 
 
         # ----------------------------------------------------
-        # 6. 返回结构化岗位
+        # 6. 返回
         # ----------------------------------------------------
 
         return {
@@ -445,15 +514,17 @@ async def match_jd(
     """
 
     # --------------------------------------------------------
-    # 1. 获取岗位信息
+    # 1. 获取岗位
     # --------------------------------------------------------
 
     job = data.job
+
 
     if not isinstance(
         job,
         dict,
     ):
+
         raise HTTPException(
             status_code=400,
             detail="岗位信息格式错误。",
@@ -461,12 +532,13 @@ async def match_jd(
 
 
     # --------------------------------------------------------
-    # 2. 检查岗位名称
+    # 2. 岗位名称检查
     # --------------------------------------------------------
 
     if not job.get(
         "position"
     ):
+
         raise HTTPException(
             status_code=400,
             detail="岗位信息缺少岗位名称。",
@@ -474,15 +546,16 @@ async def match_jd(
 
 
     # --------------------------------------------------------
-    # 3. 检查个人画像是否存在
+    # 3. 检查个人画像
     # --------------------------------------------------------
 
     if not PROFILE_FILE.exists():
+
         raise HTTPException(
             status_code=400,
             detail=(
                 "尚未建立个人画像，"
-                "请先完成简历解析。"
+                "请先上传并解析简历。"
             ),
         )
 
@@ -518,7 +591,22 @@ async def match_jd(
 
 
     # --------------------------------------------------------
-    # 5. 调用匹配服务
+    # 5. 检查画像是否为空
+    # --------------------------------------------------------
+
+    if not profile:
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "当前个人画像为空，"
+                "请先上传并解析真实简历。"
+            ),
+        )
+
+
+    # --------------------------------------------------------
+    # 6. 执行匹配
     # --------------------------------------------------------
 
     try:
@@ -530,7 +618,7 @@ async def match_jd(
 
 
         # ----------------------------------------------------
-        # 6. 返回匹配结果
+        # 7. 返回结果
         # ----------------------------------------------------
 
         return {
