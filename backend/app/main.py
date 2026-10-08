@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from app.parsers import extract_text
 from app.profile_service import build_profile
 from app.jd_service import build_job
+from app.match_service import match_profile_to_job
 
 
 # =========================
@@ -45,7 +46,7 @@ DATA_DIR.mkdir(
 
 app = FastAPI(
     title="CareerPilot AI",
-    version="0.3.0",
+    version="0.4.0",
     description="CareerPilot AI：大学生实习求职研究与投递助理",
 )
 
@@ -85,6 +86,10 @@ class JDRequest(BaseModel):
     jd_text: str
 
 
+class JDMatchRequest(BaseModel):
+    job: dict
+
+
 # =========================
 # 首页
 # =========================
@@ -95,11 +100,17 @@ def index():
         STATIC_DIR / "index.html"
     )
 
+
+# =========================
+# JD 页面
+# =========================
+
 @app.get("/jd")
 def jd_page():
     return FileResponse(
         STATIC_DIR / "jd.html"
     )
+
 
 # =========================
 # 健康检查
@@ -120,7 +131,7 @@ def health():
 @app.get("/api/profile")
 def get_profile():
     """
-    读取保存的个人画像。
+    读取当前保存的个人画像。
     """
 
     if not PROFILE_FILE.exists():
@@ -145,7 +156,7 @@ async def save_profile(
     profile: dict,
 ):
     """
-    保存个人画像。
+    保存当前用户个人画像。
     """
 
     if not isinstance(
@@ -378,6 +389,103 @@ async def parse_jd(
         return {
             "text_length": len(jd_text),
             "job": job,
+        }
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=str(exc),
+        ) from exc
+
+
+# ============================================================
+# US04：岗位硬性条件匹配
+# ============================================================
+
+@app.post("/api/jd/match")
+async def match_jd(
+    data: JDMatchRequest,
+):
+    """
+    使用当前保存的个人画像，
+    对结构化岗位进行硬性条件匹配。
+    """
+
+    # -------------------------
+    # 1. 获取岗位信息
+    # -------------------------
+
+    job = data.job
+
+    if not isinstance(
+        job,
+        dict,
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="岗位信息格式错误。",
+        )
+
+    # -------------------------
+    # 2. 检查岗位名称
+    # -------------------------
+
+    if not job.get(
+        "position"
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="岗位信息缺少岗位名称。",
+        )
+
+    # -------------------------
+    # 3. 检查个人画像
+    # -------------------------
+
+    if not PROFILE_FILE.exists():
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "尚未建立个人画像，"
+                "请先完成简历解析。"
+            ),
+        )
+
+    # -------------------------
+    # 4. 读取个人画像
+    # -------------------------
+
+    try:
+        with PROFILE_FILE.open(
+            "r",
+            encoding="utf-8",
+        ) as f:
+            profile = json.load(f)
+
+    except json.JSONDecodeError as exc:
+        raise HTTPException(
+            status_code=500,
+            detail="个人画像文件格式损坏。",
+        ) from exc
+
+    # -------------------------
+    # 5. 执行岗位匹配
+    # -------------------------
+
+    try:
+        result = await match_profile_to_job(
+            profile,
+            job,
+        )
+
+        # -------------------------
+        # 6. 返回匹配结果
+        # -------------------------
+
+        return {
+            "profile": profile,
+            "job": job,
+            "match": result,
         }
 
     except Exception as exc:
