@@ -11,7 +11,7 @@ from pydantic import BaseModel
 
 from app.parsers import extract_text
 from app.profile_service import build_profile
-from app.jd_service import parse_jd
+from app.jd_service import build_job
 from app.match_service import match_profile_to_job
 from app.skill_service import match_skills_to_profile
 from app.experience_service import match_experiences_to_job
@@ -33,7 +33,10 @@ STATIC_DIR = BASE_DIR.parent / "static"
 DATA_DIR = BASE_DIR.parent / "data"
 PROFILE_FILE = DATA_DIR / "profile.json"
 
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+DATA_DIR.mkdir(
+    parents=True,
+    exist_ok=True,
+)
 
 app.mount(
     "/static",
@@ -322,7 +325,7 @@ async def parse_job(
         )
 
     try:
-        job = await parse_jd(text)
+        job = await build_job(text)
 
         return {
             "text_length": len(text),
@@ -350,7 +353,10 @@ async def match_job(
 
     job = data.job
 
-    if not isinstance(job, dict):
+    if not isinstance(
+        job,
+        dict,
+    ):
         raise HTTPException(
             status_code=400,
             detail="岗位信息格式错误。",
@@ -421,7 +427,10 @@ async def match_skills(
 
     job = data.job
 
-    if not isinstance(job, dict):
+    if not isinstance(
+        job,
+        dict,
+    ):
         raise HTTPException(
             status_code=400,
             detail="岗位信息格式错误。",
