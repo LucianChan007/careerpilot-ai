@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>能力 Gap 与补强建议 - CareerPilot AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "Microsoft YaHei",
+                sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            width: min(1100px, 94%);
+            margin: 0 auto;
+            padding: 32px 0 60px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 29px;
+            color: #111827;
+        }
+
+        h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            color: #111827;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #111827;
+            line-height: 1.7;
+        }
+
+        .subtitle {
+            margin: 0 0 24px;
+            color: #6b7280;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .card {
+            padding: 24px;
+            margin-bottom: 20px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow:
+                0 4px 16px rgba(15, 23, 42, 0.06);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .job-title {
+            font-size: 25px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .job-company {
+            margin-top: 8px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .salary {
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #fff7ed;
+            color: #c2410c;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-box {
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            background: #f8fafc;
+        }
+
+        .status-box.high {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .status-box.medium {
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+
+        .status-box.low {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+        }
+
+        .status-box.unknown {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+
+        .status-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .text-block {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .notice {
+            margin-top: 15px;
+            padding: 13px 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .section-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .gap-item,
+        .plan-item {
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .gap-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .gap-title {
+            flex: 1;
+            min-width: 0;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .badge {
+            display: inline-block;
+            flex-shrink: 0;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-p0 {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-p1 {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-p2 {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-low {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .field {
+            margin-top: 12px;
+        }
+
+        .field-label {
+            margin-bottom: 5px;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .field-value {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .plan-actions {
+            margin: 10px 0 0;
+            padding-left: 22px;
+        }
+
+        .plan-actions li {
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .simple-list {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        .simple-list li {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .empty {
+            padding: 18px;
+            color: #9ca3af;
+            background: #f8fafc;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        button {
+            padding: 11px 17px;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition:
+                opacity 0.15s ease,
+                transform 0.15s ease;
+        }
+
+        button:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.primary {
+            color: #ffffff;
+            background: #2563eb;
+        }
+
+        button.success {
+            color: #ffffff;
+            background: #059669;
+        }
+
+        button.secondary {
+            color: #374151;
+            background: #e5e7eb;
+        }
+
+        .loading {
+            padding: 50px 16px;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .error {
+            margin-bottom: 20px;
+            padding: 17px;
+            color: #991b1b;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.8;
+        }
+
+        .raw-json summary {
+            cursor: pointer;
+            color: #2563eb;
+            font-size: 14px;
+        }
+
+        .raw-json pre {
+            margin-top: 14px;
+            padding: 16px;
+            color: #e5e7eb;
+            background: #111827;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 760px) {
+            .container {
+                width: 94%;
+                padding-top: 20px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .job-title {
+                font-size: 22px;
+            }
+
+            .gap-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>能力 Gap 与补强建议</h1>
+
+    <p class="subtitle">
+        CareerPilot AI · US08 能力差距分析
+        <br>
+        找出当前岗位要求与已有技能、项目及实习证据之间的差距，
+        并将主要缺口转化为有优先级、有具体行动和可检查产出的计划。
+    </p>
+
+
+    <!-- 错误提示 -->
+
+    <div
+        id="errorBox"
+        class="error"
+        style="display: none;"
+        role="alert"
+    ></div>
+
+
+    <!-- 加载提示 -->
+
+    <div
+        id="loading"
+        class="loading"
+        aria-live="polite"
+    >
+        正在分析能力差距并生成补强计划，请稍候...
+    </div>
+
+
+    <main
+        id="content"
+        style="display: none;"
+    >
+
+        <!-- 岗位信息 -->
+
+        <section class="card">
+
+            <div class="job-header">
+
+                <div>
+                    <div
+                        id="jobPosition"
+                        class="job-title"
+                    >
+                        -
+                    </div>
+
+                    <div
+                        id="jobCompany"
+                        class="job-company"
+                    >
+                        -
+                    </div>
+                </div>
+
+                <div
+                    id="jobSalary"
+                    class="salary"
+                >
+                    -
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 总体判断 -->
+
+        <section class="card">
+
+            <h2>总体 Gap 判断</h2>
+
+            <div
+                id="overallStatusBox"
+                class="status-box unknown"
+            >
+
+                <div
+                    id="overallGapLevel"
+                    class="status-title"
+                >
+                    -
+                </div>
+
+                <div
+                    id="overallSummary"
+                    class="text-block"
+                >
+                    -
+                </div>
+
+            </div>
+
+            <div class="notice">
+                “Gap 程度”反映的是当前岗位要求与现有能力证据之间的差距，
+                并不是对个人价值的评价。资料不足可能意味着简历没有写清楚，
+                不一定代表实际能力不足。
+            </div>
+
+        </section>
+
+
+        <!-- 技能缺口 -->
+
+        <section class="card">
+
+            <h2>技能缺口</h2>
+
+            <p class="muted">
+                重点分析岗位所需技能中，当前掌握程度不足、
+                需要加强或缺少足够证据的部分。
+            </p>
+
+            <div
+                id="skillGaps"
+                class="section-list"
+            >
+            </div>
+
+        </section>
+
+
+        <!-- 经历缺口 -->
+
+        <section class="card">
+
+            <h2>项目 / 实习经历缺口</h2>
+
+            <p class="muted">
+                将技能掌握程度与实际项目证据区分开。
+                已有技能并不自动代表具备对应的项目实战经验。
+            </p>
+
+            <div
+                id="experienceGaps"
+                class="section-list"
+            >
+            </div>
+
+        </section>
+
+
+        <!-- 优先级计划 -->
+
+        <section class="card">
+
+            <h2>分阶段补强计划</h2>
+
+            <p class="muted">
+                建议按 P0、P1、P2 的优先级安排学习或项目练习，
+                每个任务都尽量设置可以检查的交付结果。
+            </p>
+
+            <div
+                id="priorityPlan"
+                class="section-list"
+            >
+            </div>
+
+        </section>
+
+
+        <!-- 快速行动 -->
+
+        <section class="card">
+
+            <h2>可以优先完成的行动</h2>
+
+            <div id="quickWins"></div>
+
+        </section>
+
+
+        <!-- 现有优势 -->
+
+        <section class="card">
+
+            <h2>可利用的现有优势</h2>
+
+            <div id="strengths"></div>
+
+        </section>
+
+
+        <!-- 风险提示 -->
+
+        <section class="card">
+
+            <h2>需要进一步确认的事项</h2>
+
+            <div id="riskNotes"></div>
+
+        </section>
+
+
+        <!-- 总结 -->
+
+        <section class="card">
+
+            <h2>Gap 分析总结</h2>
+
+            <div
+                id="finalSummary"
+                class="text-block"
+            >
+                -
+            </div>
+
+        </section>
+
+
+        <!-- 导航 -->
+
+        <section class="card">
+
+            <h2>继续完善求职准备</h2>
+
+            <div class="button-group">
+
+                <button
+                    class="primary"
+                    type="button"
+                    id="reanalyzeButton"
+                    onclick="loadGapAnalysis()"
+                >
+                    重新分析 Gap
+                </button>
+
+                <button
+                    class="success"
+                    type="button"
+                    onclick="goTo('/conclusion')"
+                >
+                    返回综合匹配结论
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/skills')"
+                >
+                    查看技能匹配
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/experience')"
+                >
+                    查看经历匹配
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/jd')"
+                >
+                    重新选择岗位
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- 原始 JSON -->
+
+        <section class="card raw-json">
+
+            <details>
+
+                <summary>
+                    查看完整 Gap 分析 JSON
+                </summary>
+
+                <pre id="rawJson"></pre>
+
+            </details>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    // ========================================================
+    // 通用工具
+    // ========================================================
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    function normalizeArray(value) {
+
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return [];
+        }
+
+        return [value];
+    }
+
+
+    function getText(value, fallback = "") {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return fallback;
+        }
+
+        if (typeof value === "string") {
+            return value;
+        }
+
+        if (typeof value === "number") {
+            return String(value);
+        }
+
+        if (Array.isArray(value)) {
+            return value
+                .map(item => getText(item))
+                .filter(Boolean)
+                .join("；");
+        }
+
+        if (typeof value === "object") {
+            return JSON.stringify(value);
+        }
+
+        return String(value);
+    }
+
+
+    // ========================================================
+    // 页面 Loading
+    // ========================================================
+
+    function setLoading(isLoading) {
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            isLoading ? "block" : "none";
+
+        document.getElementById(
+            "content"
+        ).style.display =
+            isLoading ? "none" : "block";
+
+        const button =
+            document.getElementById(
+                "reanalyzeButton"
+            );
+
+        if (button) {
+            button.disabled = isLoading;
+            button.textContent =
+                isLoading
+                    ? "正在分析..."
+                    : "重新分析 Gap";
+        }
+    }
+
+
+    // ========================================================
+    // 错误提示
+    // ========================================================
+
+    function showError(message) {
+
+        const box =
+            document.getElementById(
+                "errorBox"
+            );
+
+        box.textContent =
+            "能力 Gap 分析失败：\n" +
+            String(message || "未知错误");
+
+        box.style.display =
+            "block";
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+        document.getElementById(
+            "content"
+        ).style.display =
+            "none";
+    }
+
+
+    function clearError() {
+
+        const box =
+            document.getElementById(
+                "errorBox"
+            );
+
+        box.textContent = "";
+
+        box.style.display =
+            "none";
+    }
+
+
+    // ========================================================
+    // 总体 Gap 等级
+    // ========================================================
+
+    function getGapClass(level) {
+
+        if (level === "高") {
+            return "high";
+        }
+
+        if (level === "中") {
+            return "medium";
+        }
+
+        if (level === "低") {
+            return "low";
+        }
+
+        return "unknown";
+    }
+
+
+    // ========================================================
+    // 优先级样式
+    // ========================================================
+
+    function getPriorityClass(priority) {
+
+        const value =
+            String(priority || "").toUpperCase();
+
+        if (value === "P0") {
+            return "badge-p0";
+        }
+
+        if (value === "P2") {
+            return "badge-p2";
+        }
+
+        return "badge-p1";
+    }
+
+
+    function getSeverityClass(severity) {
+
+        if (
+            severity === "高" ||
+            severity === "高风险"
+        ) {
+            return "badge-high";
+        }
+
+        if (
+            severity === "低" ||
+            severity === "低风险"
+        ) {
+            return "badge-low";
+        }
+
+        return "badge-medium";
+    }
+
+
+    // ========================================================
+    // 单个缺口卡片
+    // ========================================================
+
+    function renderGapItem(item) {
+
+        const name =
+            item.name || "未命名缺口";
+
+        const priority =
+            item.priority || "P1";
+
+        const severity =
+            item.severity || "中";
+
+        const fields = [
+            [
+                "对应岗位要求",
+                item.job_requirement
+            ],
+            [
+                "当前已有证据",
+                item.current_evidence
+            ],
+            [
+                "具体差距",
+                item.gap_description
+            ],
+            [
+                "补强建议",
+                item.suggestion
+            ],
+            [
+                "建议时间范围",
+                item.estimated_period
+            ],
+            [
+                "验收标准 / 预期产出",
+                item.acceptance_criteria
+            ]
+        ];
+
+        return `
+            <article class="gap-item">
+
+                <div class="gap-header">
+
+                    <div class="gap-title">
+                        ${escapeHtml(name)}
+                    </div>
+
+                    <div class="button-group">
+
+                        <span
+                            class="badge ${getPriorityClass(priority)}"
+                        >
+                            ${escapeHtml(priority)}
+                        </span>
+
+                        <span
+                            class="badge ${getSeverityClass(severity)}"
+                        >
+                            缺口程度：${escapeHtml(severity)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                ${
+                    fields.map(
+                        ([label, value]) => {
+
+                            if (
+                                value === null ||
+                                value === undefined ||
+                                value === ""
+                            ) {
+                                return "";
+                            }
+
+                            return `
+                                <div class="field">
+
+                                    <div class="field-label">
+                                        ${escapeHtml(label)}
+                                    </div>
+
+                                    <div class="field-value">
+                                        ${escapeHtml(
+                                            getText(value)
+                                        )}
+                                    </div>
+
+                                </div>
+                            `;
+                        }
+                    ).join("")
+                }
+
+            </article>
+        `;
+    }
+
+
+    // ========================================================
+    // 渲染缺口列表
+    // ========================================================
+
+    function renderGaps(
+        elementId,
+        items,
+        emptyText
+    ) {
+
+        const container =
+            document.getElementById(
+                elementId
+            );
+
+        const list =
+            normalizeArray(items);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    ${escapeHtml(emptyText)}
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML =
+            list.map(
+                item => {
+
+                    if (
+                        typeof item === "string"
+                    ) {
+                        return `
+                            <div class="gap-item">
+                                ${escapeHtml(item)}
+                            </div>
+                        `;
+                    }
+
+                    return renderGapItem(item);
+                }
+            ).join("");
+    }
+
+
+    // ========================================================
+    // 优先级计划
+    // ========================================================
+
+    function renderPriorityPlan(items) {
+
+        const container =
+            document.getElementById(
+                "priorityPlan"
+            );
+
+        const list =
+            normalizeArray(items);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    当前没有生成阶段性补强计划。
+                    请查看技能缺口、经历缺口和风险提示。
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML =
+            list.map(
+                (item, index) => {
+
+                    if (
+                        typeof item === "string"
+                    ) {
+                        return `
+                            <article class="plan-item">
+
+                                <h3>
+                                    ${index + 1}. ${escapeHtml(item)}
+                                </h3>
+
+                            </article>
+                        `;
+                    }
+
+                    const actions =
+                        normalizeArray(
+                            item.actions
+                        );
+
+                    return `
+                        <article class="plan-item">
+
+                            <div class="gap-header">
+
+                                <h3>
+                                    ${index + 1}. 
+                                    ${escapeHtml(
+                                        item.title || "补强任务"
+                                    )}
+                                </h3>
+
+                                <span
+                                    class="badge ${getPriorityClass(item.priority)}"
+                                >
+                                    ${escapeHtml(
+                                        item.priority || "P1"
+                                    )}
+                                </span>
+
+                            </div>
+
+                            ${
+                                item.reason
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                为什么要做
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(item.reason)}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                actions.length > 0
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                具体行动
+                                            </div>
+
+                                            <ol class="plan-actions">
+
+                                                ${
+                                                    actions.map(
+                                                        action => `
+                                                            <li>
+                                                                ${escapeHtml(
+                                                                    getText(action)
+                                                                )}
+                                                            </li>
+                                                        `
+                                                    ).join("")
+                                                }
+
+                                            </ol>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                item.deliverable
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                预期产出
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(
+                                                    item.deliverable
+                                                )}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                item.estimated_period
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                建议时间范围
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(
+                                                    item.estimated_period
+                                                )}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                        </article>
+                    `;
+                }
+            ).join("");
+    }
+
+
+    // ========================================================
+    // 普通文字列表
+    // ========================================================
+
+    function renderTextList(
+        elementId,
+        items,
+        emptyText
+    ) {
+
+        const container =
+            document.getElementById(
+                elementId
+            );
+
+        const list =
+            normalizeArray(items);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    ${escapeHtml(emptyText)}
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = `
+            <ul class="simple-list">
+
+                ${
+                    list.map(
+                        item => `
+                            <li>
+                                ${escapeHtml(
+                                    getText(item)
+                                )}
+                            </li>
+                        `
+                    ).join("")
+                }
+
+            </ul>
+        `;
+    }
+
+
+    // ========================================================
+    // 渲染分析结果
+    // ========================================================
+
+    function renderPage(data) {
+
+        const job =
+            data.job || {};
+
+        const result =
+            data.gap_analysis || {};
+
+
+        // 岗位信息
+
+        document.getElementById(
+            "jobPosition"
+        ).textContent =
+            job.position || "未提供岗位名称";
+
+        document.getElementById(
+            "jobCompany"
+        ).textContent =
+            `公司：${job.company || "未提供"}`;
+
+        document.getElementById(
+            "jobSalary"
+        ).textContent =
+            job.salary || "薪资未提供";
+
+
+        // Gap 总体判断
+
+        const level =
+            result.overall_gap_level ||
+            "信息不足";
+
+        document.getElementById(
+            "overallStatusBox"
+        ).className =
+            "status-box " + getGapClass(level);
+
+        document.getElementById(
+            "overallGapLevel"
+        ).textContent =
+            `整体 Gap 程度：${level}`;
+
+        document.getElementById(
+            "overallSummary"
+        ).textContent =
+            result.overall_summary ||
+            "暂无总体 Gap 分析。";
+
+
+        // 技能缺口
+
+        renderGaps(
+            "skillGaps",
+            result.skill_gaps,
+            "当前没有列出明确的技能缺口。"
+        );
+
+
+        // 经历缺口
+
+        renderGaps(
+            "experienceGaps",
+            result.experience_gaps,
+            "当前没有列出明确的项目 / 实习经历缺口。"
+        );
+
+
+        // 阶段性计划
+
+        renderPriorityPlan(
+            result.priority_plan
+        );
+
+
+        // 快速行动
+
+        renderTextList(
+            "quickWins",
+            result.quick_wins,
+            "当前没有单独列出的快速行动。"
+        );
+
+
+        // 现有优势
+
+        renderTextList(
+            "strengths",
+            result.strengths_to_leverage,
+            "当前没有单独列出的可利用优势。"
+        );
+
+
+        // 风险提示
+
+        renderTextList(
+            "riskNotes",
+            result.risk_notes,
+            "当前没有单独列出的风险提示。"
+        );
+
+
+        // 总结
+
+        document.getElementById(
+            "finalSummary"
+        ).textContent =
+            result.summary ||
+            "暂无总结。";
+
+
+        // 原始 JSON
+
+        document.getElementById(
+            "rawJson"
+        ).textContent =
+            JSON.stringify(
+                data,
+                null,
+                2
+            );
+
+
+        document.getElementById(
+            "content"
+        ).style.display =
+            "block";
+    }
+
+
+    // ========================================================
+    // 调用 US08 API
+    // ========================================================
+
+    async function loadGapAnalysis() {
+
+        clearError();
+
+        setLoading(true);
+
+        try {
+
+            const savedJob =
+                sessionStorage.getItem(
+                    "careerpilot_job"
+                );
+
+            if (!savedJob) {
+
+                throw new Error(
+                    "没有找到已保存的岗位信息，请先完成 JD 解析。"
+                );
+            }
+
+            let job;
+
+            try {
+
+                job = JSON.parse(
+                    savedJob
+                );
+
+            } catch {
+
+                throw new Error(
+                    "保存的岗位信息格式错误，请返回 JD 页面重新解析。"
+                );
+            }
+
+            if (
+                !job ||
+                typeof job !== "object" ||
+                !job.position
+            ) {
+
+                throw new Error(
+                    "岗位信息不完整，缺少岗位名称。"
+                );
+            }
+
+
+            const response =
+                await fetch(
+                    "/api/jd/gap-analysis",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            job: job
+                        })
+                    }
+                );
+
+
+            let data;
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch {
+
+                throw new Error(
+                    "服务器返回的内容不是有效 JSON。"
+                );
+            }
+
+
+            if (!response.ok) {
+
+                const detail =
+                    data.detail;
+
+                const message =
+                    typeof detail === "string"
+                        ? detail
+                        : JSON.stringify(
+                            detail || data,
+                            null,
+                            2
+                        );
+
+                throw new Error(
+                    message ||
+                    "能力 Gap 分析失败。"
+                );
+            }
+
+
+            if (
+                !data.gap_analysis
+            ) {
+
+                throw new Error(
+                    "接口返回成功，但没有 gap_analysis 字段。"
+                );
+            }
+
+
+            renderPage(data);
+
+
+        } catch (error) {
+
+            console.error(
+                "US08 能力 Gap 分析失败：",
+                error
+            );
+
+            showError(
+                error.message ||
+                String(error)
+            );
+
+        } finally {
+
+            setLoading(false);
+        }
+    }
+
+
+    // ========================================================
+    // 页面跳转
+    // ========================================================
+
+    function goTo(path) {
+
+        const savedJob =
+            sessionStorage.getItem(
+                "careerpilot_job"
+            );
+
+        if (!savedJob) {
+
+            alert(
+                "当前没有可用岗位信息，请先完成 JD 解析。"
+            );
+
+            return;
+        }
+
+        window.location.href =
+            path;
+    }
+
+
+    // ========================================================
+    // Loading 与错误状态
+    // ========================================================
+
+    function clearError() {
+
+        const box =
+            document.getElementById(
+                "errorBox"
+            );
+
+        box.textContent = "";
+        box.style.display = "none";
+    }
+
+
+    function setLoading(isLoading) {
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            isLoading ? "block" : "none";
+
+        document.getElementById(
+            "content"
+        ).style.display =
+            isLoading ? "none" : "block";
+
+        const button =
+            document.getElementById(
+                "reanalyzeButton"
+            );
+
+        if (button) {
+
+            button.disabled =
+                isLoading;
+
+            button.textContent =
+                isLoading
+                    ? "正在分析..."
+                    : "重新分析 Gap";
+        }
+    }
+
+
+    function showError(message) {
+
+        const box =
+            document.getElementById(
+                "errorBox"
+            );
+
+        box.textContent =
+            "能力 Gap 分析失败：\n" +
+            String(message || "未知错误");
+
+        box.style.display =
+            "block";
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+        document.getElementById(
+            "content"
+        ).style.display =
+            "none";
+    }
+
+
+    // ========================================================
+    // 页面启动
+    // ========================================================
+
+    loadGapAnalysis();
+
+</script>
+
+</body>
+</html>
