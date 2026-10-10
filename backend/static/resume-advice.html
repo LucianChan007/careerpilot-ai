@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>JD 定制简历建议 - CareerPilot AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "Microsoft YaHei",
+                sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            width: min(1100px, 94%);
+            margin: 0 auto;
+            padding: 32px 0 60px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 29px;
+            color: #111827;
+        }
+
+        h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            color: #111827;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #111827;
+            line-height: 1.7;
+        }
+
+        .subtitle {
+            margin: 0 0 24px;
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            padding: 24px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow:
+                0 4px 16px rgba(15, 23, 42, 0.06);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .job-title {
+            color: #111827;
+            font-size: 25px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .job-company {
+            margin-top: 8px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .salary {
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #fff7ed;
+            color: #c2410c;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .summary-box {
+            padding: 18px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .notice {
+            padding: 14px 16px;
+            margin-top: 14px;
+            border-radius: 10px;
+            background: #fffbeb;
+            color: #78350f;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .section-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .advice-item {
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+            min-width: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .item-title {
+            flex: 1;
+            min-width: 0;
+            color: #111827;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .badge {
+            display: inline-block;
+            flex-shrink: 0;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-p0 {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-p1 {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-p2 {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .field {
+            margin-top: 12px;
+        }
+
+        .field-label {
+            margin-bottom: 5px;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .field-value {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .draft-box {
+            padding: 15px;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: #1e3a8a;
+            font-size: 14px;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .evidence-box {
+            padding: 13px 15px;
+            background: #f8fafc;
+            border-radius: 9px;
+            color: #4b5563;
+            font-size: 13px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .simple-list {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        .simple-list li {
+            margin-bottom: 10px;
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .keyword-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .keyword {
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .empty {
+            padding: 18px;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 11px 17px;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition:
+                opacity 0.15s ease,
+                transform 0.15s ease;
+        }
+
+        button:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.primary {
+            color: #ffffff;
+            background: #2563eb;
+        }
+
+        button.success {
+            color: #ffffff;
+            background: #059669;
+        }
+
+        button.secondary {
+            color: #374151;
+            background: #e5e7eb;
+        }
+
+        .loading {
+            padding: 50px 16px;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .error {
+            display: none;
+            margin-bottom: 20px;
+            padding: 18px;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            background: #fef2f2;
+            color: #991b1b;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .raw-json summary {
+            cursor: pointer;
+            color: #2563eb;
+            font-size: 14px;
+        }
+
+        .raw-json pre {
+            margin-top: 14px;
+            padding: 16px;
+            border-radius: 10px;
+            background: #111827;
+            color: #e5e7eb;
+            font-size: 12px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 760px) {
+            .container {
+                width: 94%;
+                padding-top: 20px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .job-title {
+                font-size: 22px;
+            }
+
+            .item-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>JD 定制简历修改建议</h1>
+
+        <p class="subtitle">
+            CareerPilot AI · US09
+            <br>
+            根据目标岗位调整简历重点、技能顺序和项目描述，
+            生成可供修改的文本草稿与待核实清单。
+        </p>
+    </header>
+
+
+    <!-- 错误提示 -->
+
+    <div
+        id="errorBox"
+        class="error"
+        role="alert"
+    ></div>
+
+
+    <!-- Loading -->
+
+    <div
+        id="loading"
+        class="loading"
+        aria-live="polite"
+    >
+        正在分析 JD 与个人经历，生成简历修改建议...
+    </div>
+
+
+    <main
+        id="content"
+        style="display: none;"
+    >
+
+        <!-- =================================================
+             岗位信息
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>目标岗位</h2>
+
+            <div class="job-header">
+
+                <div>
+                    <div
+                        id="jobPosition"
+                        class="job-title"
+                    >
+                        -
+                    </div>
+
+                    <div
+                        id="jobCompany"
+                        class="job-company"
+                    >
+                        -
+                    </div>
+                </div>
+
+                <div
+                    id="jobSalary"
+                    class="salary"
+                >
+                    -
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             整体建议
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>整体修改方向</h2>
+
+            <div
+                id="overallSummary"
+                class="summary-box"
+            >
+                -
+            </div>
+
+            <div class="field">
+
+                <div class="field-label">
+                    建议的求职定位
+                </div>
+
+                <div
+                    id="resumePositioning"
+                    class="draft-box"
+                >
+                    -
+                </div>
+
+            </div>
+
+            <div class="notice">
+                以下内容均为简历修改建议和文本草稿，
+                不会自动修改你的原始简历。
+                提交前必须核对技术栈、项目职责和成果数据，
+                不确定或不真实的内容不要使用。
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             个人简介
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>个人简介修改建议</h2>
+
+            <div class="field">
+
+                <div class="field-label">
+                    当前情况分析
+                </div>
+
+                <div
+                    id="summaryAssessment"
+                    class="field-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <div class="field-label">
+                    建议版本
+                </div>
+
+                <div
+                    id="summaryDraft"
+                    class="draft-box"
+                >
+                    -
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <div class="field-label">
+                    文本依据
+                </div>
+
+                <div id="summaryEvidence"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             技能建议
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>技能部分怎么调整</h2>
+
+            <p class="muted">
+                根据目标岗位的重要技能调整顺序和表达方式，
+                但不能把 JD 中要求的技能直接写成已经掌握的技能。
+            </p>
+
+            <div
+                id="skillsRecommendations"
+                class="section-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             项目建议
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>项目经历怎么调整</h2>
+
+            <p class="muted">
+                重点展示与岗位职责有关的真实项目内容，
+                对不相关的细节进行压缩，并标明需要补充核实的信息。
+            </p>
+
+            <div
+                id="projectRecommendations"
+                class="section-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             实习建议
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>实习经历怎么调整</h2>
+
+            <div
+                id="internshipRecommendations"
+                class="section-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             要点改写
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>简历要点改写草稿</h2>
+
+            <p class="muted">
+                每条改写都应以现有事实为基础。
+                如果需要补充真实数据，系统会单独列出。
+            </p>
+
+            <div
+                id="bulletRewrites"
+                class="section-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             关键词
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>岗位关键词</h2>
+
+            <div
+                id="keywords"
+                class="keyword-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             不能直接添加的内容
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>不应直接写进简历的内容</h2>
+
+            <div id="doNotClaim"></div>
+
+        </section>
+
+
+        <!-- =================================================
+             优先修改事项
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>修改优先级</h2>
+
+            <div id="priorityActions"></div>
+
+        </section>
+
+
+        <!-- =================================================
+             检查清单
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>简历提交前检查</h2>
+
+            <div id="finalChecklist"></div>
+
+        </section>
+
+
+        <!-- =================================================
+             页面导航
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>继续求职准备</h2>
+
+            <div class="button-group">
+
+                <button
+                    class="primary"
+                    type="button"
+                    id="reanalyzeButton"
+                    onclick="loadResumeAdvice()"
+                >
+                    重新生成建议
+                </button>
+
+                <button
+                    class="success"
+                    type="button"
+                    onclick="goTo('/gap')"
+                >
+                    返回能力 Gap 分析
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/conclusion')"
+                >
+                    返回综合匹配结论
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/experience')"
+                >
+                    查看经历匹配
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/jd')"
+                >
+                    重新选择岗位
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- 原始 JSON -->
+
+        <section class="card raw-json">
+
+            <details>
+
+                <summary>
+                    查看完整简历建议 JSON
+                </summary>
+
+                <pre id="rawJson"></pre>
+
+            </details>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    // ========================================================
+    // 通用工具
+    // ========================================================
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    function normalizeArray(value) {
+
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return [];
+        }
+
+        return [value];
+    }
+
+
+    function getText(value, fallback = "") {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return fallback;
+        }
+
+        if (typeof value === "string") {
+            return value;
+        }
+
+        if (typeof value === "number") {
+            return String(value);
+        }
+
+        if (Array.isArray(value)) {
+            return value
+                .map(item => getText(item))
+                .filter(Boolean)
+                .join("；");
+        }
+
+        if (typeof value === "object") {
+            return (
+                value.name ||
+                value.title ||
+                value.explanation ||
+                value.reason ||
+                JSON.stringify(value)
+            );
+        }
+
+        return String(value);
+    }
+
+
+    // ========================================================
+    // 优先级样式
+    // ========================================================
+
+    function priorityClass(priority) {
+
+        const value =
+            String(priority || "P1").toUpperCase();
+
+        if (value === "P0") {
+            return "badge-p0";
+        }
+
+        if (value === "P2") {
+            return "badge-p2";
+        }
+
+        return "badge-p1";
+    }
+
+
+    // ========================================================
+    // Loading 和错误提示
+    // ========================================================
+
+    function setLoading(isLoading) {
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            isLoading ? "block" : "none";
+
+        if (isLoading) {
+
+            document.getElementById(
+                "content"
+            ).style.display = "none";
+        }
+
+        const button =
+            document.getElementById(
+                "reanalyzeButton"
+            );
+
+        if (button) {
+
+            button.disabled = isLoading;
+
+            button.textContent =
+                isLoading
+                    ? "正在生成..."
+                    : "重新生成建议";
+        }
+    }
+
+
+    function clearError() {
+
+        const box =
+            document.getElementById(
+                "errorBox"
+            );
+
+        box.textContent = "";
+        box.style.display = "none";
+    }
+
+
+    function showError(message) {
+
+        const box =
+            document.getElementById(
+                "errorBox"
+            );
+
+        box.textContent =
+            "简历建议生成失败：\n" +
+            String(message || "未知错误");
+
+        box.style.display = "block";
+
+        document.getElementById(
+            "loading"
+        ).style.display = "none";
+
+        document.getElementById(
+            "content"
+        ).style.display = "none";
+    }
+
+
+    // ========================================================
+    // 普通文本列表
+    // ========================================================
+
+    function renderTextList(
+        elementId,
+        items,
+        emptyText
+    ) {
+
+        const container =
+            document.getElementById(
+                elementId
+            );
+
+        const list =
+            normalizeArray(items);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    ${escapeHtml(emptyText)}
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = `
+            <ul class="simple-list">
+                ${
+                    list.map(
+                        item => `
+                            <li>
+                                ${escapeHtml(
+                                    getText(item)
+                                )}
+                            </li>
+                        `
+                    ).join("")
+                }
+            </ul>
+        `;
+    }
+
+
+    // ========================================================
+    // 技能建议
+    // ========================================================
+
+    function renderSkills(items) {
+
+        const container =
+            document.getElementById(
+                "skillsRecommendations"
+            );
+
+        const list =
+            normalizeArray(items);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    当前没有生成单独的技能修改建议。
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML =
+            list.map(
+                item => {
+
+                    if (typeof item === "string") {
+
+                        return `
+                            <article class="advice-item">
+                                <div class="field-value">
+                                    ${escapeHtml(item)}
+                                </div>
+                            </article>
+                        `;
+                    }
+
+                    return `
+                        <article class="advice-item">
+
+                            <div class="item-header">
+
+                                <div class="item-title">
+                                    ${escapeHtml(
+                                        item.skill || "技能建议"
+                                    )}
+                                </div>
+
+                                <span
+                                    class="badge ${priorityClass(item.priority)}"
+                                >
+                                    ${escapeHtml(
+                                        item.priority || "P1"
+                                    )}
+                                </span>
+
+                            </div>
+
+                            ${
+                                item.action
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                建议操作
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(item.action)}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                item.reason
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                修改理由
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(item.reason)}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                item.evidence
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                现有依据
+                                            </div>
+
+                                            <div class="evidence-box">
+                                                ${escapeHtml(item.evidence)}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                item.suggested_wording
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                建议写法
+                                            </div>
+
+                                            <div class="draft-box">
+                                                ${escapeHtml(
+                                                    item.suggested_wording
+                                                )}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                item.caution
+                                    ? `
+                                        <div class="notice">
+                                            ${escapeHtml(item.caution)}
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                        </article>
+                    `;
+                }
+            ).join("");
+    }
+
+
+    // ========================================================
+    // 项目和实习经历建议
+    // ========================================================
+
+    function renderExperienceRecommendations(
+        elementId,
+        items,
+        type
+    ) {
+
+        const container =
+            document.getElementById(
+                elementId
+            );
+
+        const list =
+            normalizeArray(items);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    当前没有生成单独的${escapeHtml(type)}修改建议。
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML =
+            list.map(
+                item => {
+
+                    if (typeof item === "string") {
+
+                        return `
+                            <article class="advice-item">
+                                <div class="field-value">
+                                    ${escapeHtml(item)}
+                                </div>
+                            </article>
+                        `;
+                    }
+
+                    const title =
+                        item.project_name ||
+                        item.experience_name ||
+                        type;
+
+                    return `
+                        <article class="advice-item">
+
+                            <div class="item-header">
+
+                                <div class="item-title">
+                                    ${escapeHtml(title)}
+                                </div>
+
+                                <span
+                                    class="badge ${priorityClass(item.priority)}"
+                                >
+                                    ${escapeHtml(
+                                        item.priority || "P1"
+                                    )}
+                                </span>
+
+                            </div>
+
+
+                            ${
+                                item.action
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                建议操作
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(item.action)}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+
+                            ${
+                                item.relevance
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                与岗位的关联
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(item.relevance)}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+
+                            ${
+                                item.reason
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                修改理由
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(item.reason)}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+
+                            ${
+                                normalizeArray(item.suggested_bullets).length
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                建议的简历表述草稿
+                                            </div>
+
+                                            <ul class="simple-list">
+
+                                                ${
+                                                    normalizeArray(
+                                                        item.suggested_bullets
+                                                    ).map(
+                                                        bullet => `
+                                                            <li>
+                                                                <div class="draft-box">
+                                                                    ${escapeHtml(
+                                                                        getText(bullet)
+                                                                    )}
+                                                                </div>
+                                                            </li>
+                                                        `
+                                                    ).join("")
+                                                }
+
+                                            </ul>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+
+                            ${
+                                normalizeArray(item.missing_evidence).length
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                需要补充或核实的事实
+                                            </div>
+
+                                            <ul class="simple-list">
+
+                                                ${
+                                                    normalizeArray(
+                                                        item.missing_evidence
+                                                    ).map(
+                                                        evidence => `
+                                                            <li>
+                                                                ${escapeHtml(
+                                                                    getText(evidence)
+                                                                )}
+                                                            </li>
+                                                        `
+                                                    ).join("")
+                                                }
+
+                                            </ul>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                        </article>
+                    `;
+                }
+            ).join("");
+    }
+
+
+    // ========================================================
+    // 简历要点改写
+    // ========================================================
+
+    function renderBulletRewrites(items) {
+
+        const container =
+            document.getElementById(
+                "bulletRewrites"
+            );
+
+        const list =
+            normalizeArray(items);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    当前没有生成单独的简历要点改写草稿。
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML =
+            list.map(
+                (item, index) => {
+
+                    if (typeof item === "string") {
+
+                        return `
+                            <article class="advice-item">
+                                <div class="draft-box">
+                                    ${escapeHtml(item)}
+                                </div>
+                            </article>
+                        `;
+                    }
+
+                    return `
+                        <article class="advice-item">
+
+                            <h3>
+                                ${index + 1}.
+                                ${escapeHtml(
+                                    item.section || "简历要点"
+                                )}
+                            </h3>
+
+                            ${
+                                item.original_evidence
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                现有事实依据
+                                            </div>
+
+                                            <div class="evidence-box">
+                                                ${escapeHtml(
+                                                    item.original_evidence
+                                                )}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                item.suggested_version
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                建议版本
+                                            </div>
+
+                                            <div class="draft-box">
+                                                ${escapeHtml(
+                                                    item.suggested_version
+                                                )}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                item.basis
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                修改依据
+                                            </div>
+
+                                            <div class="field-value">
+                                                ${escapeHtml(item.basis)}
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                normalizeArray(item.missing_data).length
+                                    ? `
+                                        <div class="field">
+
+                                            <div class="field-label">
+                                                使用前必须核实
+                                            </div>
+
+                                            <ul class="simple-list">
+
+                                                ${
+                                                    normalizeArray(
+                                                        item.missing_data
+                                                    ).map(
+                                                        datum => `
+                                                            <li>
+                                                                ${escapeHtml(
+                                                                    getText(datum)
+                                                                )}
+                                                            </li>
+                                                        `
+                                                    ).join("")
+                                                }
+
+                                            </ul>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                        </article>
+                    `;
+                }
+            ).join("");
+    }
+
+
+    // ========================================================
+    // 关键词
+    // ========================================================
+
+    function renderKeywords(items) {
+
+        const container =
+            document.getElementById(
+                "keywords"
+            );
+
+        const list =
+            normalizeArray(items);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    当前没有单独列出的岗位关键词。
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML =
+            list.map(
+                item => {
+
+                    const text =
+                        getText(item);
+
+                    return `
+                        <span class="keyword">
+                            ${escapeHtml(text)}
+                        </span>
+                    `;
+                }
+            ).join("");
+    }
+
+
+    // ========================================================
+    // 渲染全部建议
+    // ========================================================
+
+    function renderPage(data) {
+
+        const job =
+            data.job || {};
+
+        const advice =
+            data.resume_advice || {};
+
+
+        document.getElementById(
+            "jobPosition"
+        ).textContent =
+            job.position || "未提供岗位名称";
+
+        document.getElementById(
+            "jobCompany"
+        ).textContent =
+            `公司：${job.company || "未提供"}`;
+
+        document.getElementById(
+            "jobSalary"
+        ).textContent =
+            job.salary || "薪资未提供";
+
+
+        document.getElementById(
+            "overallSummary"
+        ).textContent =
+            advice.overall_summary ||
+            "暂无整体修改方向。";
+
+        document.getElementById(
+            "resumePositioning"
+        ).textContent =
+            advice.resume_positioning ||
+            "暂无求职定位建议。";
+
+
+        const summary =
+            advice.resume_summary || {};
+
+        document.getElementById(
+            "summaryAssessment"
+        ).textContent =
+            summary.current_assessment ||
+            "暂无当前情况分析。";
+
+        document.getElementById(
+            "summaryDraft"
+        ).textContent =
+            summary.suggested_version ||
+            "暂无个人简介草稿。";
+
+
+        renderTextList(
+            "summaryEvidence",
+            summary.evidence_basis,
+            "当前没有列出个人简介对应的事实依据。"
+        );
+
+
+        renderSkills(
+            advice.skills_recommendations
+        );
+
+
+        renderExperienceRecommendations(
+            "projectRecommendations",
+            advice.project_recommendations,
+            "项目"
+        );
+
+
+        renderExperienceRecommendations(
+            "internshipRecommendations",
+            advice.internship_recommendations,
+            "实习经历"
+        );
+
+
+        renderBulletRewrites(
+            advice.bullet_rewrites
+        );
+
+
+        renderKeywords(
+            advice.keywords_to_emphasize
+        );
+
+
+        renderTextList(
+            "doNotClaim",
+            advice.do_not_claim,
+            "当前没有单独列出需要避免的内容。提交前仍应核对所有事实。"
+        );
+
+
+        renderTextList(
+            "priorityActions",
+            advice.priority_actions,
+            "当前没有列出优先修改事项。"
+        );
+
+
+        renderTextList(
+            "finalChecklist",
+            advice.final_checklist,
+            "请核实所有技能、项目内容、职责和量化成果。"
+        );
+
+
+        document.getElementById(
+            "rawJson"
+        ).textContent =
+            JSON.stringify(
+                data,
+                null,
+                2
+            );
+
+
+        document.getElementById(
+            "content"
+        ).style.display =
+            "block";
+    }
+
+
+    // ========================================================
+    // US09 API 调用
+    // ========================================================
+
+    async function loadResumeAdvice() {
+
+        clearError();
+
+        setLoading(true);
+
+        try {
+
+            const savedJob =
+                sessionStorage.getItem(
+                    "careerpilot_job"
+                );
+
+            if (!savedJob) {
+
+                throw new Error(
+                    "没有找到已保存的岗位信息，请先完成 JD 解析。"
+                );
+            }
+
+
+            let job;
+
+            try {
+
+                job = JSON.parse(
+                    savedJob
+                );
+
+            } catch {
+
+                throw new Error(
+                    "当前保存的岗位信息格式错误，请重新解析 JD。"
+                );
+            }
+
+
+            if (
+                !job ||
+                typeof job !== "object" ||
+                !job.position
+            ) {
+
+                throw new Error(
+                    "岗位信息不完整，缺少岗位名称。"
+                );
+            }
+
+
+            const response =
+                await fetch(
+                    "/api/jd/resume-advice",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            job: job
+                        })
+                    }
+                );
+
+
+            let data;
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch {
+
+                throw new Error(
+                    "服务器返回的内容不是有效 JSON。"
+                );
+            }
+
+
+            if (!response.ok) {
+
+                const detail =
+                    data.detail;
+
+                const message =
+                    typeof detail === "string"
+                        ? detail
+                        : JSON.stringify(
+                            detail || data,
+                            null,
+                            2
+                        );
+
+                throw new Error(
+                    message ||
+                    "简历修改建议生成失败。"
+                );
+            }
+
+
+            if (
+                !data.resume_advice
+            ) {
+
+                throw new Error(
+                    "接口返回成功，但没有 resume_advice 数据。"
+                );
+            }
+
+
+            renderPage(
+                data
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "US09 简历建议生成失败：",
+                error
+            );
+
+            showError(
+                error.message ||
+                String(error)
+            );
+
+        } finally {
+
+            setLoading(false);
+        }
+    }
+
+
+    // ========================================================
+    // 页面跳转
+    // ========================================================
+
+    function goTo(path) {
+
+        const savedJob =
+            sessionStorage.getItem(
+                "careerpilot_job"
+            );
+
+        if (!savedJob) {
+
+            alert(
+                "当前没有可用岗位信息，请先完成 JD 解析。"
+            );
+
+            return;
+        }
+
+        window.location.href =
+            path;
+    }
+
+
+    // ========================================================
+    // 页面启动
+    // ========================================================
+
+    loadResumeAdvice();
+
+</script>
+
+</body>
+
+</html>

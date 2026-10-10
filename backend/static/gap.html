@@ -56,8 +56,8 @@
         .subtitle {
             margin: 0 0 24px;
             color: #6b7280;
-            line-height: 1.8;
             font-size: 14px;
+            line-height: 1.8;
         }
 
         .card {
@@ -78,9 +78,10 @@
         }
 
         .job-title {
+            color: #111827;
             font-size: 25px;
             font-weight: 700;
-            color: #111827;
+            overflow-wrap: anywhere;
         }
 
         .job-company {
@@ -100,9 +101,9 @@
 
         .status-box {
             padding: 20px;
+            border: 1px solid #bfdbfe;
             border-radius: 12px;
-            border: 1px solid #e5e7eb;
-            background: #f8fafc;
+            background: #eff6ff;
         }
 
         .status-box.high {
@@ -126,9 +127,10 @@
         }
 
         .status-title {
+            margin-bottom: 9px;
             font-size: 20px;
             font-weight: 700;
-            margin-bottom: 9px;
+            line-height: 1.6;
         }
 
         .text-block {
@@ -148,8 +150,8 @@
         .notice {
             margin-top: 15px;
             padding: 13px 15px;
-            background: #f8fafc;
             border-radius: 10px;
+            background: #f8fafc;
             color: #6b7280;
             font-size: 13px;
             line-height: 1.8;
@@ -169,20 +171,21 @@
             background: #ffffff;
         }
 
-        .gap-header {
+        .item-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 14px;
         }
 
-        .gap-title {
+        .item-title {
             flex: 1;
             min-width: 0;
+            color: #111827;
             font-size: 16px;
             font-weight: 700;
-            line-height: 1.7;
+            line-height: 1.8;
             overflow-wrap: anywhere;
         }
 
@@ -240,7 +243,7 @@
         .field-value {
             color: #4b5563;
             font-size: 14px;
-            line-height: 1.8;
+            line-height: 1.9;
             white-space: pre-wrap;
             overflow-wrap: anywhere;
         }
@@ -255,6 +258,7 @@
             color: #4b5563;
             font-size: 14px;
             line-height: 1.8;
+            overflow-wrap: anywhere;
         }
 
         .simple-list {
@@ -264,8 +268,8 @@
 
         .simple-list li {
             margin-bottom: 10px;
-            font-size: 14px;
             color: #4b5563;
+            font-size: 14px;
             line-height: 1.8;
             overflow-wrap: anywhere;
         }
@@ -375,7 +379,7 @@
                 font-size: 22px;
             }
 
-            .gap-header {
+            .item-header {
                 flex-direction: column;
             }
         }
@@ -392,11 +396,9 @@
         CareerPilot AI · US08 能力差距分析
         <br>
         找出当前岗位要求与已有技能、项目及实习证据之间的差距，
-        并将主要缺口转化为有优先级、有具体行动和可检查产出的计划。
+        并将主要缺口转化为有优先级、有行动和可检查产出的补强计划。
     </p>
 
-
-    <!-- 错误提示 -->
 
     <div
         id="errorBox"
@@ -406,14 +408,12 @@
     ></div>
 
 
-    <!-- 加载提示 -->
-
     <div
         id="loading"
         class="loading"
         aria-live="polite"
     >
-        正在分析能力差距并生成补强计划，请稍候...
+        正在分析能力差距并生成补强计划...
     </div>
 
 
@@ -456,7 +456,7 @@
         </section>
 
 
-        <!-- 总体判断 -->
+        <!-- 总体 Gap 判断 -->
 
         <section class="card">
 
@@ -484,9 +484,8 @@
             </div>
 
             <div class="notice">
-                “Gap 程度”反映的是当前岗位要求与现有能力证据之间的差距，
-                并不是对个人价值的评价。资料不足可能意味着简历没有写清楚，
-                不一定代表实际能力不足。
+                Gap 程度描述的是当前岗位要求与个人已有证据之间的差距，
+                不是对个人价值的评价。资料不足也不一定代表实际能力不足。
             </div>
 
         </section>
@@ -498,16 +497,10 @@
 
             <h2>技能缺口</h2>
 
-            <p class="muted">
-                重点分析岗位所需技能中，当前掌握程度不足、
-                需要加强或缺少足够证据的部分。
-            </p>
-
             <div
                 id="skillGaps"
                 class="section-list"
-            >
-            </div>
+            ></div>
 
         </section>
 
@@ -518,36 +511,24 @@
 
             <h2>项目 / 实习经历缺口</h2>
 
-            <p class="muted">
-                将技能掌握程度与实际项目证据区分开。
-                已有技能并不自动代表具备对应的项目实战经验。
-            </p>
-
             <div
                 id="experienceGaps"
                 class="section-list"
-            >
-            </div>
+            ></div>
 
         </section>
 
 
-        <!-- 优先级计划 -->
+        <!-- 补强计划 -->
 
         <section class="card">
 
             <h2>分阶段补强计划</h2>
 
-            <p class="muted">
-                建议按 P0、P1、P2 的优先级安排学习或项目练习，
-                每个任务都尽量设置可以检查的交付结果。
-            </p>
-
             <div
                 id="priorityPlan"
                 class="section-list"
-            >
-            </div>
+            ></div>
 
         </section>
 
@@ -563,7 +544,7 @@
         </section>
 
 
-        <!-- 现有优势 -->
+        <!-- 优势 -->
 
         <section class="card">
 
@@ -574,7 +555,7 @@
         </section>
 
 
-        <!-- 风险提示 -->
+        <!-- 风险 -->
 
         <section class="card">
 
@@ -601,21 +582,26 @@
         </section>
 
 
-        <!-- 导航 -->
+        <!-- US09 导航入口 -->
 
         <section class="card">
 
-            <h2>继续完善求职准备</h2>
+            <h2>下一步：针对岗位修改简历</h2>
+
+            <p class="subtitle">
+                Gap 分析帮助你确定需要补强的能力，
+                US09 则进一步分析现有简历应该突出哪些真实优势、
+                调整哪些经历表述，以及还需要核实哪些信息。
+            </p>
 
             <div class="button-group">
 
                 <button
                     class="primary"
                     type="button"
-                    id="reanalyzeButton"
-                    onclick="loadGapAnalysis()"
+                    onclick="goTo('/resume-advice')"
                 >
-                    重新分析 Gap
+                    JD 定制简历建议
                 </button>
 
                 <button
@@ -645,9 +631,10 @@
                 <button
                     class="secondary"
                     type="button"
-                    onclick="goTo('/jd')"
+                    id="reanalyzeButton"
+                    onclick="loadGapAnalysis()"
                 >
-                    重新选择岗位
+                    重新分析 Gap
                 </button>
 
             </div>
@@ -743,7 +730,12 @@
         }
 
         if (typeof value === "object") {
-            return JSON.stringify(value);
+            return (
+                value.name ||
+                value.title ||
+                value.description ||
+                JSON.stringify(value)
+            );
         }
 
         return String(value);
@@ -751,82 +743,7 @@
 
 
     // ========================================================
-    // 页面 Loading
-    // ========================================================
-
-    function setLoading(isLoading) {
-
-        document.getElementById(
-            "loading"
-        ).style.display =
-            isLoading ? "block" : "none";
-
-        document.getElementById(
-            "content"
-        ).style.display =
-            isLoading ? "none" : "block";
-
-        const button =
-            document.getElementById(
-                "reanalyzeButton"
-            );
-
-        if (button) {
-            button.disabled = isLoading;
-            button.textContent =
-                isLoading
-                    ? "正在分析..."
-                    : "重新分析 Gap";
-        }
-    }
-
-
-    // ========================================================
-    // 错误提示
-    // ========================================================
-
-    function showError(message) {
-
-        const box =
-            document.getElementById(
-                "errorBox"
-            );
-
-        box.textContent =
-            "能力 Gap 分析失败：\n" +
-            String(message || "未知错误");
-
-        box.style.display =
-            "block";
-
-        document.getElementById(
-            "loading"
-        ).style.display =
-            "none";
-
-        document.getElementById(
-            "content"
-        ).style.display =
-            "none";
-    }
-
-
-    function clearError() {
-
-        const box =
-            document.getElementById(
-                "errorBox"
-            );
-
-        box.textContent = "";
-
-        box.style.display =
-            "none";
-    }
-
-
-    // ========================================================
-    // 总体 Gap 等级
+    // 状态与优先级样式
     // ========================================================
 
     function getGapClass(level) {
@@ -847,14 +764,10 @@
     }
 
 
-    // ========================================================
-    // 优先级样式
-    // ========================================================
-
     function getPriorityClass(priority) {
 
         const value =
-            String(priority || "").toUpperCase();
+            String(priority || "P1").toUpperCase();
 
         if (value === "P0") {
             return "badge-p0";
@@ -889,68 +802,123 @@
 
 
     // ========================================================
-    // 单个缺口卡片
+    // Loading
+    // ========================================================
+
+    function setLoading(isLoading) {
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            isLoading ? "block" : "none";
+
+        if (isLoading) {
+
+            document.getElementById(
+                "content"
+            ).style.display = "none";
+
+        }
+
+        const button =
+            document.getElementById(
+                "reanalyzeButton"
+            );
+
+        if (button) {
+
+            button.disabled = isLoading;
+
+            button.textContent =
+                isLoading
+                    ? "正在分析..."
+                    : "重新分析 Gap";
+        }
+    }
+
+
+    // ========================================================
+    // 错误处理
+    // ========================================================
+
+    function clearError() {
+
+        const box =
+            document.getElementById(
+                "errorBox"
+            );
+
+        box.textContent = "";
+        box.style.display = "none";
+    }
+
+
+    function showError(message) {
+
+        const box =
+            document.getElementById(
+                "errorBox"
+            );
+
+        box.textContent =
+            "能力 Gap 分析失败：\n" +
+            String(message || "未知错误");
+
+        box.style.display = "block";
+
+        document.getElementById(
+            "loading"
+        ).style.display = "none";
+
+        document.getElementById(
+            "content"
+        ).style.display = "none";
+    }
+
+
+    // ========================================================
+    // 渲染单个 Gap 项
     // ========================================================
 
     function renderGapItem(item) {
 
-        const name =
-            item.name || "未命名缺口";
+        if (typeof item === "string") {
 
-        const priority =
-            item.priority || "P1";
-
-        const severity =
-            item.severity || "中";
+            return `
+                <article class="gap-item">
+                    <div class="text-block">
+                        ${escapeHtml(item)}
+                    </div>
+                </article>
+            `;
+        }
 
         const fields = [
-            [
-                "对应岗位要求",
-                item.job_requirement
-            ],
-            [
-                "当前已有证据",
-                item.current_evidence
-            ],
-            [
-                "具体差距",
-                item.gap_description
-            ],
-            [
-                "补强建议",
-                item.suggestion
-            ],
-            [
-                "建议时间范围",
-                item.estimated_period
-            ],
-            [
-                "验收标准 / 预期产出",
-                item.acceptance_criteria
-            ]
+            ["对应岗位要求", item.job_requirement],
+            ["当前已有证据", item.current_evidence],
+            ["具体差距", item.gap_description],
+            ["补强建议", item.suggestion],
+            ["建议时间范围", item.estimated_period],
+            ["验收标准 / 预期产出", item.acceptance_criteria]
         ];
 
         return `
             <article class="gap-item">
 
-                <div class="gap-header">
+                <div class="item-header">
 
-                    <div class="gap-title">
-                        ${escapeHtml(name)}
+                    <div class="item-title">
+                        ${escapeHtml(item.name || "未命名缺口")}
                     </div>
 
                     <div class="button-group">
 
-                        <span
-                            class="badge ${getPriorityClass(priority)}"
-                        >
-                            ${escapeHtml(priority)}
+                        <span class="badge ${getPriorityClass(item.priority)}">
+                            ${escapeHtml(item.priority || "P1")}
                         </span>
 
-                        <span
-                            class="badge ${getSeverityClass(severity)}"
-                        >
-                            缺口程度：${escapeHtml(severity)}
+                        <span class="badge ${getSeverityClass(item.severity)}">
+                            缺口程度：${escapeHtml(item.severity || "中")}
                         </span>
 
                     </div>
@@ -977,9 +945,7 @@
                                     </div>
 
                                     <div class="field-value">
-                                        ${escapeHtml(
-                                            getText(value)
-                                        )}
+                                        ${escapeHtml(getText(value))}
                                     </div>
 
                                 </div>
@@ -994,7 +960,7 @@
 
 
     // ========================================================
-    // 渲染缺口列表
+    // Gap 列表
     // ========================================================
 
     function renderGaps(
@@ -1023,30 +989,15 @@
         }
 
         container.innerHTML =
-            list.map(
-                item => {
-
-                    if (
-                        typeof item === "string"
-                    ) {
-                        return `
-                            <div class="gap-item">
-                                ${escapeHtml(item)}
-                            </div>
-                        `;
-                    }
-
-                    return renderGapItem(item);
-                }
-            ).join("");
+            list.map(renderGapItem).join("");
     }
 
 
     // ========================================================
-    // 优先级计划
+    // 补强计划
     // ========================================================
 
-    function renderPriorityPlan(items) {
+    function renderPlan(items) {
 
         const container =
             document.getElementById(
@@ -1061,7 +1012,6 @@
             container.innerHTML = `
                 <div class="empty">
                     当前没有生成阶段性补强计划。
-                    请查看技能缺口、经历缺口和风险提示。
                 </div>
             `;
 
@@ -1072,43 +1022,35 @@
             list.map(
                 (item, index) => {
 
-                    if (
-                        typeof item === "string"
-                    ) {
+                    if (typeof item === "string") {
+
                         return `
                             <article class="plan-item">
-
                                 <h3>
-                                    ${index + 1}. ${escapeHtml(item)}
+                                    ${index + 1}.
+                                    ${escapeHtml(item)}
                                 </h3>
-
                             </article>
                         `;
                     }
 
                     const actions =
-                        normalizeArray(
-                            item.actions
-                        );
+                        normalizeArray(item.actions);
 
                     return `
                         <article class="plan-item">
 
-                            <div class="gap-header">
+                            <div class="item-header">
 
                                 <h3>
-                                    ${index + 1}. 
-                                    ${escapeHtml(
-                                        item.title || "补强任务"
-                                    )}
+                                    ${index + 1}.
+                                    ${escapeHtml(item.title || "补强任务")}
                                 </h3>
 
                                 <span
                                     class="badge ${getPriorityClass(item.priority)}"
                                 >
-                                    ${escapeHtml(
-                                        item.priority || "P1"
-                                    )}
+                                    ${escapeHtml(item.priority || "P1")}
                                 </span>
 
                             </div>
@@ -1132,7 +1074,7 @@
                             }
 
                             ${
-                                actions.length > 0
+                                actions.length
                                     ? `
                                         <div class="field">
 
@@ -1171,9 +1113,7 @@
                                             </div>
 
                                             <div class="field-value">
-                                                ${escapeHtml(
-                                                    item.deliverable
-                                                )}
+                                                ${escapeHtml(item.deliverable)}
                                             </div>
 
                                         </div>
@@ -1191,9 +1131,7 @@
                                             </div>
 
                                             <div class="field-value">
-                                                ${escapeHtml(
-                                                    item.estimated_period
-                                                )}
+                                                ${escapeHtml(item.estimated_period)}
                                             </div>
 
                                         </div>
@@ -1209,7 +1147,7 @@
 
 
     // ========================================================
-    // 普通文字列表
+    // 普通列表
     // ========================================================
 
     function renderTextList(
@@ -1244,9 +1182,7 @@
                     list.map(
                         item => `
                             <li>
-                                ${escapeHtml(
-                                    getText(item)
-                                )}
+                                ${escapeHtml(getText(item))}
                             </li>
                         `
                     ).join("")
@@ -1270,8 +1206,6 @@
             data.gap_analysis || {};
 
 
-        // 岗位信息
-
         document.getElementById(
             "jobPosition"
         ).textContent =
@@ -1287,8 +1221,6 @@
         ).textContent =
             job.salary || "薪资未提供";
 
-
-        // Gap 总体判断
 
         const level =
             result.overall_gap_level ||
@@ -1311,16 +1243,11 @@
             "暂无总体 Gap 分析。";
 
 
-        // 技能缺口
-
         renderGaps(
             "skillGaps",
             result.skill_gaps,
             "当前没有列出明确的技能缺口。"
         );
-
-
-        // 经历缺口
 
         renderGaps(
             "experienceGaps",
@@ -1328,15 +1255,9 @@
             "当前没有列出明确的项目 / 实习经历缺口。"
         );
 
-
-        // 阶段性计划
-
-        renderPriorityPlan(
+        renderPlan(
             result.priority_plan
         );
-
-
-        // 快速行动
 
         renderTextList(
             "quickWins",
@@ -1344,17 +1265,11 @@
             "当前没有单独列出的快速行动。"
         );
 
-
-        // 现有优势
-
         renderTextList(
             "strengths",
             result.strengths_to_leverage,
-            "当前没有单独列出的可利用优势。"
+            "当前没有单独列出的现有优势。"
         );
-
-
-        // 风险提示
 
         renderTextList(
             "riskNotes",
@@ -1362,27 +1277,15 @@
             "当前没有单独列出的风险提示。"
         );
 
-
-        // 总结
-
         document.getElementById(
             "finalSummary"
         ).textContent =
-            result.summary ||
-            "暂无总结。";
-
-
-        // 原始 JSON
+            result.summary || "暂无总结。";
 
         document.getElementById(
             "rawJson"
         ).textContent =
-            JSON.stringify(
-                data,
-                null,
-                2
-            );
-
+            JSON.stringify(data, null, 2);
 
         document.getElementById(
             "content"
@@ -1419,14 +1322,12 @@
 
             try {
 
-                job = JSON.parse(
-                    savedJob
-                );
+                job = JSON.parse(savedJob);
 
             } catch {
 
                 throw new Error(
-                    "保存的岗位信息格式错误，请返回 JD 页面重新解析。"
+                    "保存的岗位信息格式错误，请重新解析 JD。"
                 );
             }
 
@@ -1464,8 +1365,7 @@
 
             try {
 
-                data =
-                    await response.json();
+                data = await response.json();
 
             } catch {
 
@@ -1477,8 +1377,7 @@
 
             if (!response.ok) {
 
-                const detail =
-                    data.detail;
+                const detail = data.detail;
 
                 const message =
                     typeof detail === "string"
@@ -1496,12 +1395,10 @@
             }
 
 
-            if (
-                !data.gap_analysis
-            ) {
+            if (!data.gap_analysis) {
 
                 throw new Error(
-                    "接口返回成功，但没有 gap_analysis 字段。"
+                    "接口返回成功，但缺少 gap_analysis 字段。"
                 );
             }
 
@@ -1517,8 +1414,7 @@
             );
 
             showError(
-                error.message ||
-                String(error)
+                error.message || String(error)
             );
 
         } finally {
@@ -1548,80 +1444,7 @@
             return;
         }
 
-        window.location.href =
-            path;
-    }
-
-
-    // ========================================================
-    // Loading 与错误状态
-    // ========================================================
-
-    function clearError() {
-
-        const box =
-            document.getElementById(
-                "errorBox"
-            );
-
-        box.textContent = "";
-        box.style.display = "none";
-    }
-
-
-    function setLoading(isLoading) {
-
-        document.getElementById(
-            "loading"
-        ).style.display =
-            isLoading ? "block" : "none";
-
-        document.getElementById(
-            "content"
-        ).style.display =
-            isLoading ? "none" : "block";
-
-        const button =
-            document.getElementById(
-                "reanalyzeButton"
-            );
-
-        if (button) {
-
-            button.disabled =
-                isLoading;
-
-            button.textContent =
-                isLoading
-                    ? "正在分析..."
-                    : "重新分析 Gap";
-        }
-    }
-
-
-    function showError(message) {
-
-        const box =
-            document.getElementById(
-                "errorBox"
-            );
-
-        box.textContent =
-            "能力 Gap 分析失败：\n" +
-            String(message || "未知错误");
-
-        box.style.display =
-            "block";
-
-        document.getElementById(
-            "loading"
-        ).style.display =
-            "none";
-
-        document.getElementById(
-            "content"
-        ).style.display =
-            "none";
+        window.location.href = path;
     }
 
 

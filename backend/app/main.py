@@ -17,6 +17,7 @@ from app.skill_service import match_skills_to_profile
 from app.experience_service import match_experiences_to_job
 from app.conclusion_service import build_explainable_conclusion
 from app.gap_service import build_gap_analysis
+from app.resume_advice_service import build_resume_advice
 
 
 # ============================================================
@@ -27,7 +28,7 @@ load_dotenv()
 
 app = FastAPI(
     title="CareerPilot AI",
-    version="0.8.0",
+    version="0.9.0",
 )
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -78,6 +79,10 @@ class ConclusionRequest(BaseModel):
 
 
 class GapAnalysisRequest(BaseModel):
+    job: dict
+
+
+class ResumeAdviceRequest(BaseModel):
     job: dict
 
 
@@ -171,6 +176,13 @@ def gap_page():
     )
 
 
+@app.get("/resume-advice")
+def resume_advice_page():
+    return FileResponse(
+        STATIC_DIR / "resume-advice.html"
+    )
+
+
 # ============================================================
 # 健康检查
 # ============================================================
@@ -179,7 +191,7 @@ def gap_page():
 def health():
     return {
         "status": "ok",
-        "version": "0.8.0",
+        "version": "0.9.0",
     }
 
 
@@ -190,7 +202,7 @@ def health():
 @app.get("/api/profile")
 def get_profile():
     """
-    获取当前保存的用户个人画像。
+    获取当前保存的个人画像。
     """
 
     if not PROFILE_FILE.exists():
@@ -547,7 +559,7 @@ async def get_job_conclusion(
     data: ConclusionRequest,
 ):
     """
-    综合 US04、US05、US06 的分析结果，生成可解释结论。
+    综合 US04、US05、US06 的结果，生成可解释结论。
     """
 
     job = data.job
@@ -582,17 +594,6 @@ async def get_job_conclusion(
             job,
         )
 
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=(
-                "生成综合结论时，"
-                "前置匹配服务执行失败："
-                f"{str(e)}"
-            ),
-        )
-
-    try:
         conclusion = build_explainable_conclusion(
             job=job,
             hard_match=hard_match,
@@ -600,20 +601,20 @@ async def get_job_conclusion(
             experience_match=experience_match,
         )
 
+        return {
+            "profile": profile,
+            "job": job,
+            "hard_match": hard_match,
+            "skill_match": skill_match,
+            "experience_match": experience_match,
+            "conclusion": conclusion,
+        }
+
     except Exception as e:
         raise HTTPException(
             status_code=500,
             detail=f"综合结论生成失败：{str(e)}",
         )
-
-    return {
-        "profile": profile,
-        "job": job,
-        "hard_match": hard_match,
-        "skill_match": skill_match,
-        "experience_match": experience_match,
-        "conclusion": conclusion,
-    }
 
 
 # ============================================================
@@ -625,15 +626,75 @@ async def analyze_job_gaps(
     data: GapAnalysisRequest,
 ):
     """
-    基于用户画像以及 US05、US06 的实际匹配结果，
-    分析技能缺口、经历缺口和后续补强计划。
+    根据 US05、US06 的结果识别技能和经历 Gap。
+    """
 
-    US08 不直接把技能缺口等同于用户一定不会该技能，
-    而是区分能力不足与现有资料缺少证据两种情况。
+    job = data.job
+
+    if not isinstance(job, dict):
+        raise HTTPException(
+            status_code=400,
+            detail="岗位信息格式错误。",
+        )
+
+    if not job.get("position"):
+        raise HTTPException(
+            status_code=400,
+            detail="岗位信息缺少岗位名称，请先完成 JD 解析。",
+        )
+
+    profile = load_saved_profile()
+
+    try:
+        skill_match = await match_skills_to_profile(
+            profile,
+            job,
+        )
+
+        experience_match = await match_experiences_to_job(
+            profile,
+            job,
+        )
+
+        gap_analysis = await build_gap_analysis(
+            profile=profile,
+            job=job,
+            skill_match=skill_match,
+            experience_match=experience_match,
+        )
+
+        return {
+            "profile": profile,
+            "job": job,
+            "skill_match": skill_match,
+            "experience_match": experience_match,
+            "gap_analysis": gap_analysis,
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"能力 Gap 分析失败：{str(e)}",
+        )
+
+
+# ============================================================
+# US09：JD 定制简历修改建议
+# ============================================================
+
+@app.post("/api/jd/resume-advice")
+async def get_resume_advice(
+    data: ResumeAdviceRequest,
+):
+    """
+    根据岗位 JD、个人画像、技能匹配和经历匹配结果，
+    生成针对该岗位的简历修改建议。
+
+    建议属于待用户核实和采用的草稿，不会自动修改原简历。
     """
 
     # --------------------------------------------------------
-    # 1. 检查岗位信息
+    # 1. 检查岗位
     # --------------------------------------------------------
 
     job = data.job
@@ -651,13 +712,13 @@ async def analyze_job_gaps(
         )
 
     # --------------------------------------------------------
-    # 2. 读取用户个人画像
+    # 2. 读取个人画像
     # --------------------------------------------------------
 
     profile = load_saved_profile()
 
     # --------------------------------------------------------
-    # 3. 重新执行 US05 技能匹配
+    # 3. 获取技能匹配与经历匹配结果
     # --------------------------------------------------------
 
     try:
@@ -666,21 +727,6 @@ async def analyze_job_gaps(
             job,
         )
 
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=(
-                "能力 Gap 分析前，"
-                "US05 技能匹配失败："
-                f"{str(e)}"
-            ),
-        )
-
-    # --------------------------------------------------------
-    # 4. 重新执行 US06 经历匹配
-    # --------------------------------------------------------
-
-    try:
         experience_match = await match_experiences_to_job(
             profile,
             job,
@@ -690,18 +736,18 @@ async def analyze_job_gaps(
         raise HTTPException(
             status_code=500,
             detail=(
-                "能力 Gap 分析前，"
-                "US06 经历匹配失败："
+                "生成简历修改建议前，"
+                "技能或经历匹配服务执行失败："
                 f"{str(e)}"
             ),
         )
 
     # --------------------------------------------------------
-    # 5. 生成 Gap 分析和补强计划
+    # 4. 生成定制简历建议
     # --------------------------------------------------------
 
     try:
-        gap_analysis = await build_gap_analysis(
+        resume_advice = await build_resume_advice(
             profile=profile,
             job=job,
             skill_match=skill_match,
@@ -711,11 +757,11 @@ async def analyze_job_gaps(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=f"能力 Gap 分析失败：{str(e)}",
+            detail=f"简历修改建议生成失败：{str(e)}",
         )
 
     # --------------------------------------------------------
-    # 6. 返回数据
+    # 5. 返回结果
     # --------------------------------------------------------
 
     return {
@@ -723,7 +769,7 @@ async def analyze_job_gaps(
         "job": job,
         "skill_match": skill_match,
         "experience_match": experience_match,
-        "gap_analysis": gap_analysis,
+        "resume_advice": resume_advice,
     }
 
 
