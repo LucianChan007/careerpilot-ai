@@ -9,9 +9,12 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>CareerPilot AI - 项目经历匹配</title>
+    <title>项目 / 实习经历匹配 - CareerPilot AI</title>
 
     <style>
+        /* =====================================================
+           基础样式
+        ===================================================== */
 
         * {
             box-sizing: border-box;
@@ -19,698 +22,1752 @@
 
         body {
             margin: 0;
-            background: #f5f7fb;
-            color: #1f2937;
             font-family:
-                Arial,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
                 "Microsoft YaHei",
                 sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
         }
 
         .container {
-            max-width: 1100px;
+            width: min(1100px, 94%);
             margin: 0 auto;
-            padding: 40px 20px 60px;
+            padding: 32px 0 60px;
         }
 
-        .header {
-            margin-bottom: 24px;
-        }
-
-        .header h1 {
+        h1 {
             margin: 0 0 8px;
-            font-size: 32px;
+            font-size: 29px;
+            color: #111827;
+        }
+
+        h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            color: #111827;
+        }
+
+        h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+            color: #111827;
+        }
+
+        p {
+            line-height: 1.7;
         }
 
         .subtitle {
+            margin: 0 0 24px;
             color: #6b7280;
-            font-size: 15px;
+            font-size: 14px;
+            line-height: 1.8;
         }
 
+        /* =====================================================
+           卡片
+        ===================================================== */
+
         .card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
             padding: 24px;
             margin-bottom: 20px;
+            background: #ffffff;
+            border-radius: 16px;
             box-shadow:
-                0 4px 16px rgba(0, 0, 0, 0.05);
+                0 4px 16px rgba(15, 23, 42, 0.06);
         }
+
+        /* =====================================================
+           岗位信息
+        ===================================================== */
 
         .job-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
-
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e5e7eb;
+            flex-wrap: wrap;
         }
 
-        .position {
-            margin: 0 0 8px;
-            font-size: 28px;
+        .job-position {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 700;
             color: #111827;
         }
 
-        .company {
+        .job-company {
+            margin-top: 8px;
             color: #6b7280;
             font-size: 14px;
         }
 
-        .badge {
-            background: #eef2ff;
-            color: #4338ca;
-            padding: 8px 13px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: bold;
+        .salary {
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #fff7ed;
+            color: #c2410c;
+            font-weight: 700;
             white-space: nowrap;
         }
 
-        .summary {
-            background: #f8fafc;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            padding: 22px;
-        }
-
-        .summary-title {
-            color: #6b7280;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .summary-value {
-            font-size: 26px;
-            font-weight: bold;
-        }
-
-        .good {
-            color: #15803d;
-        }
-
-        .warning {
-            color: #b45309;
-        }
-
-        .bad {
-            color: #dc2626;
-        }
-
-        .info {
-            color: #4338ca;
-        }
-
-        .stats {
+        .info-grid {
             display: grid;
             grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 12px;
-            margin-top: 20px;
+                repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 22px;
         }
 
-        .stat {
+        .info-item {
+            padding: 14px;
             background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            margin-bottom: 6px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .info-value {
+            color: #111827;
+            font-size: 14px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        /* =====================================================
+           总体结论
+        ===================================================== */
+
+        .status-box {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
             border-radius: 12px;
-            padding: 15px;
+        }
+
+        .status-box.positive {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+        }
+
+        .status-box.warning {
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+
+        .status-box.negative {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .status-box.unknown {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+
+        .status-icon {
+            font-size: 27px;
+            line-height: 1.2;
+        }
+
+        .status-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .status-title {
+            margin-bottom: 7px;
+            color: #111827;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .status-description {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           统计
+        ===================================================== */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .stat-card {
+            padding: 18px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
         }
 
         .stat-label {
+            margin-bottom: 10px;
             color: #6b7280;
-            font-size: 12px;
-            margin-bottom: 6px;
+            font-size: 13px;
         }
 
         .stat-value {
-            font-size: 20px;
-            font-weight: bold;
+            color: #111827;
+            font-size: 27px;
+            font-weight: 700;
         }
+
+        .stat-matched .stat-value {
+            color: #15803d;
+        }
+
+        .stat-partial .stat-value {
+            color: #b45309;
+        }
+
+        .stat-unmatched .stat-value {
+            color: #b91c1c;
+        }
+
+        .stat-unknown .stat-value {
+            color: #1d4ed8;
+        }
+
+        /* =====================================================
+           匹配工作内容
+        ===================================================== */
 
         .work-list {
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            margin-top: 16px;
+            gap: 16px;
         }
 
-        .work-item {
+        .work-card {
+            padding: 20px;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
-            padding: 18px;
+            background: #ffffff;
         }
 
-        .work-top {
+        .work-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 15px;
+            gap: 14px;
+            margin-bottom: 18px;
         }
 
         .work-title {
-            font-weight: bold;
-            font-size: 15px;
-            line-height: 1.7;
+            flex: 1;
+            min-width: 0;
+            margin: 0;
             color: #111827;
+            font-size: 16px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
         }
 
-        .status {
+        .badge {
+            display: inline-block;
             flex-shrink: 0;
             padding: 6px 10px;
             border-radius: 999px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
-        .status-match {
-            background: #dcfce7;
+        .badge-success {
             color: #166534;
+            background: #dcfce7;
         }
 
-        .status-partial {
-            background: #e0e7ff;
-            color: #3730a3;
-        }
-
-        .status-unknown {
-            background: #fef3c7;
+        .badge-warning {
             color: #92400e;
+            background: #fef3c7;
         }
 
-        .status-fail {
-            background: #fee2e2;
+        .badge-danger {
             color: #991b1b;
+            background: #fee2e2;
         }
 
-        .subsection {
-            margin-top: 14px;
+        .badge-info {
+            color: #1d4ed8;
+            background: #dbeafe;
         }
 
-        .label {
-            font-size: 12px;
-            font-weight: bold;
-            color: #6b7280;
-            margin-bottom: 7px;
+        .detail-section {
+            margin-top: 16px;
         }
 
-        .experience-tag {
-            display: inline-block;
-            margin: 0 8px 8px 0;
-            padding: 7px 11px;
-            border-radius: 999px;
-            background: #eef2ff;
-            color: #4338ca;
-            font-size: 13px;
+        .detail-label {
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 700;
         }
 
-        .evidence,
-        .explanation {
-            font-size: 13px;
-            line-height: 1.7;
+        .detail-content {
             color: #4b5563;
+            font-size: 14px;
+            line-height: 1.9;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
         }
 
-        .explanation {
-            margin-top: 7px;
+        .experience-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .experience-item {
+            padding: 12px 14px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 9px;
+        }
+
+        .experience-name {
+            margin-bottom: 5px;
+            color: #111827;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .experience-description {
             color: #6b7280;
+            font-size: 13px;
+            line-height: 1.8;
         }
 
-        .gap-list,
-        .summary-list {
+        .evidence-box {
+            padding: 14px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+        }
+
+        .analysis-box {
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        /* =====================================================
+           通用列表和缺口
+        ===================================================== */
+
+        .text-list {
             margin: 0;
             padding-left: 22px;
         }
 
-        .gap-list li,
-        .summary-list li {
-            margin-bottom: 8px;
-            line-height: 1.7;
+        .text-list li {
+            margin-bottom: 10px;
+            color: #4b5563;
             font-size: 14px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
         }
 
-        .buttons {
+        .gap-list {
             display: flex;
+            flex-direction: column;
             gap: 12px;
-            flex-wrap: wrap;
         }
 
-        button {
-            border: none;
+        .gap-item {
+            padding: 14px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
             border-radius: 10px;
-            padding: 11px 18px;
-            cursor: pointer;
+            color: #78350f;
             font-size: 14px;
-            font-family: inherit;
-        }
-
-        .primary {
-            background: #4f46e5;
-            color: white;
-        }
-
-        .primary:hover {
-            background: #4338ca;
-        }
-
-        .secondary {
-            background: #eef2ff;
-            color: #4338ca;
-        }
-
-        #message {
-            margin-top: 14px;
-            min-height: 22px;
-            font-size: 14px;
-        }
-
-        .success {
-            color: #15803d;
-        }
-
-        .error {
-            color: #dc2626;
-        }
-
-        .loading {
-            color: #4338ca;
-        }
-
-        pre {
-            background: #111827;
-            color: #e5e7eb;
-            border-radius: 12px;
-            padding: 16px;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-break: break-word;
-            font-size: 12px;
-            line-height: 1.6;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
         }
 
         .empty {
+            padding: 18px;
             color: #9ca3af;
+            background: #f8fafc;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .summary-box {
+            padding: 18px;
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            border-radius: 8px;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* =====================================================
+           按钮
+        ===================================================== */
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        button {
+            padding: 11px 17px;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition:
+                opacity 0.15s ease,
+                transform 0.15s ease;
+        }
+
+        button:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.primary {
+            color: #ffffff;
+            background: #2563eb;
+        }
+
+        button.success {
+            color: #ffffff;
+            background: #059669;
+        }
+
+        button.secondary {
+            color: #374151;
+            background: #e5e7eb;
+        }
+
+        /* =====================================================
+           页面状态
+        ===================================================== */
+
+        .loading {
+            padding: 48px 20px;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .error {
+            padding: 18px;
+            margin-bottom: 20px;
+            color: #991b1b;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .notice {
+            padding: 13px 15px;
+            margin-bottom: 18px;
+            color: #6b7280;
+            background: #f8fafc;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .raw-json summary {
+            cursor: pointer;
+            color: #2563eb;
             font-size: 14px;
         }
 
-        @media (max-width: 800px) {
-
-            .stats {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .job-header {
-                flex-direction: column;
-            }
+        .raw-json pre {
+            margin-top: 14px;
+            padding: 16px;
+            color: #e5e7eb;
+            background: #111827;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            overflow-x: auto;
         }
 
-        @media (max-width: 500px) {
+        /* =====================================================
+           移动端适配
+        ===================================================== */
 
+        @media (max-width: 760px) {
             .container {
-                padding: 24px 14px;
+                width: 94%;
+                padding-top: 20px;
             }
 
-            .stats {
+            .card {
+                padding: 18px;
+            }
+
+            .info-grid {
                 grid-template-columns: 1fr;
             }
 
-            .work-top {
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .work-header {
                 flex-direction: column;
             }
+
+            .job-position {
+                font-size: 22px;
+            }
+
+            .status-title {
+                font-size: 18px;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
 <div class="container">
 
-    <div class="header">
+    <!-- =====================================================
+         页面标题
+    ====================================================== -->
 
-        <h1>
-            CareerPilot AI
-        </h1>
+    <header>
+        <h1>项目 / 实习经历匹配</h1>
 
-        <div class="subtitle">
-            US06：项目 / 实习经历与岗位工作内容匹配
-        </div>
+        <p class="subtitle">
+            CareerPilot AI · US06 项目与岗位工作内容匹配
+            <br>
+            根据当前岗位的工作内容，对照个人项目经历和实习经历，
+            展示匹配状态、具体依据和尚待补强的经历缺口。
+        </p>
+    </header>
 
+
+    <!-- =====================================================
+         错误提示
+    ====================================================== -->
+
+    <div
+        id="errorBox"
+        class="error"
+        style="display: none;"
+        role="alert"
+    ></div>
+
+
+    <!-- =====================================================
+         加载提示
+    ====================================================== -->
+
+    <div
+        id="loading"
+        class="loading"
+        aria-live="polite"
+    >
+        正在分析岗位工作内容与个人经历，请稍候...
     </div>
 
 
     <!-- =====================================================
-         岗位
+         页面内容
     ====================================================== -->
 
-    <div class="card">
+    <main
+        id="content"
+        style="display: none;"
+    >
 
-        <div class="job-header">
+        <!-- 岗位基本信息 -->
 
-            <div>
+        <section class="card">
 
-                <h2
-                    id="position"
-                    class="position"
-                >
-                    正在读取岗位……
-                </h2>
+            <div class="job-header">
+
+                <div>
+                    <h2
+                        id="jobPosition"
+                        class="job-position"
+                    >
+                        -
+                    </h2>
+
+                    <div
+                        id="jobCompany"
+                        class="job-company"
+                    >
+                        -
+                    </div>
+                </div>
 
                 <div
-                    id="company"
-                    class="company"
+                    id="jobSalary"
+                    class="salary"
                 >
-                    公司：-
+                    薪资未提供
                 </div>
 
             </div>
 
+            <div class="info-grid">
 
-            <div class="badge">
-                AI 经历匹配
+                <div class="info-item">
+                    <div class="info-label">
+                        工作地点
+                    </div>
+
+                    <div
+                        id="jobLocation"
+                        class="info-value"
+                    >
+                        -
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        学历要求
+                    </div>
+
+                    <div
+                        id="jobEducation"
+                        class="info-value"
+                    >
+                        -
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        专业要求
+                    </div>
+
+                    <div
+                        id="jobMajor"
+                        class="info-value"
+                    >
+                        -
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        实习时间
+                    </div>
+
+                    <div
+                        id="jobInternshipDays"
+                        class="info-value"
+                    >
+                        -
+                    </div>
+                </div>
+
             </div>
 
-        </div>
-
-    </div>
+        </section>
 
 
-    <!-- =====================================================
-         综合结果
-    ====================================================== -->
+        <!-- 综合经历匹配结论 -->
 
-    <div class="card">
+        <section class="card">
 
-        <div class="summary">
-
-            <div class="summary-title">
-                综合经历匹配结论
-            </div>
+            <h2>综合经历匹配结论</h2>
 
             <div
-                id="overallStatus"
-                class="summary-value info"
+                id="overallStatusBox"
+                class="status-box unknown"
             >
-                分析中……
-            </div>
-
-        </div>
-
-
-        <div class="stats">
-
-            <div class="stat">
-
-                <div class="stat-label">
-                    工作内容
-                </div>
 
                 <div
-                    id="workItemCount"
-                    class="stat-value"
+                    id="statusIcon"
+                    class="status-icon"
+                    aria-hidden="true"
                 >
-                    0
+                    ℹ️
+                </div>
+
+                <div class="status-content">
+
+                    <div
+                        id="overallStatus"
+                        class="status-title"
+                    >
+                        -
+                    </div>
+
+                    <div
+                        id="overallDescription"
+                        class="status-description"
+                    >
+                        -
+                    </div>
+
                 </div>
 
             </div>
 
+            <div class="notice">
+                本模块主要分析项目和实习经历与岗位工作内容的对应关系。
+                拥有某项技能不代表一定有使用该技能完成实际项目的证据。
+                系统会尽量区分直接经历、间接相关经历和目前无法确认的经历。
+            </div>
 
-            <div class="stat">
+        </section>
 
-                <div class="stat-label">
-                    匹配
+
+        <!-- 匹配统计 -->
+
+        <section class="card">
+
+            <h2>工作内容匹配统计</h2>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        工作内容总数
+                    </div>
+
+                    <div
+                        id="totalCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
                 </div>
 
-                <div
-                    id="matchedCount"
-                    class="stat-value good"
-                >
-                    0
+                <div class="stat-card stat-matched">
+                    <div class="stat-label">
+                        匹配
+                    </div>
+
+                    <div
+                        id="matchedCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card stat-partial">
+                    <div class="stat-label">
+                        部分匹配
+                    </div>
+
+                    <div
+                        id="partialCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card stat-unknown">
+                    <div class="stat-label">
+                        信息不足 / 不匹配
+                    </div>
+
+                    <div
+                        id="unknownCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
                 </div>
 
             </div>
 
-
-            <div class="stat">
-
-                <div class="stat-label">
-                    部分匹配
-                </div>
-
-                <div
-                    id="partialCount"
-                    class="stat-value"
-                >
-                    0
-                </div>
-
-            </div>
+        </section>
 
 
-            <div class="stat">
+        <!-- 每项工作内容的分析 -->
 
-                <div class="stat-label">
-                    信息不足 / 缺口
-                </div>
+        <section class="card">
 
-                <div
-                    id="gapCount"
-                    class="stat-value warning"
-                >
-                    0
-                </div>
+            <h2>岗位工作内容与我的经历</h2>
 
-            </div>
+            <p class="subtitle">
+                每一项岗位职责都会单独展示匹配状态、对应经历、
+                匹配依据和分析说明，方便核对 AI 是否理解正确。
+            </p>
 
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         工作内容匹配
-    ====================================================== -->
-
-    <div class="card">
-
-        <h2>
-            岗位工作内容与我的经历
-        </h2>
-
-
-        <div
-            id="workList"
-            class="work-list"
-        >
-
-            <div class="empty">
-                正在分析……
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         经历 Gap
-    ====================================================== -->
-
-    <div
-        id="gapSection"
-        class="card"
-        style="display: none;"
-    >
-
-        <h2>
-            经历缺口
-        </h2>
-
-
-        <ul
-            id="gapList"
-            class="gap-list"
-        >
-        </ul>
-
-    </div>
-
-
-    <!-- =====================================================
-         总结
-    ====================================================== -->
-
-    <div
-        id="summarySection"
-        class="card"
-        style="display: none;"
-    >
-
-        <h2>
-            匹配总结
-        </h2>
-
-
-        <div
-            id="summaryText"
-            class="evidence"
-        >
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         操作
-    ====================================================== -->
-
-    <div class="card">
-
-        <div class="buttons">
-
-            <button
-                class="primary"
-                type="button"
-                onclick="matchExperiences()"
+            <div
+                id="workItems"
+                class="work-list"
             >
-                重新分析经历
-            </button>
+            </div>
+
+        </section>
 
 
-            <button
-                class="secondary"
-                type="button"
-                onclick="goBack()"
+        <!-- 经历缺口 -->
+
+        <section class="card">
+
+            <h2>经历缺口</h2>
+
+            <div
+                id="gaps"
+                class="gap-list"
             >
-                返回岗位匹配
-            </button>
+            </div>
 
-        </div>
-
-
-        <div id="message">
-        </div>
-
-    </div>
+        </section>
 
 
-    <!-- =====================================================
-         JSON
-    ====================================================== -->
+        <!-- 总结 -->
 
-    <div class="card">
+        <section class="card">
 
-        <h2>
-            匹配结果 JSON
-        </h2>
+            <h2>匹配总结</h2>
 
-        <pre id="rawJSON">
-等待分析……
-        </pre>
+            <div
+                id="summary"
+                class="summary-box"
+            >
+                -
+            </div>
 
-    </div>
+        </section>
+
+
+        <!-- 操作入口 -->
+
+        <section class="card">
+
+            <h2>下一步操作</h2>
+
+            <p class="subtitle">
+                经历匹配完成后，可以返回之前的分析结果，
+                或继续生成综合岗位匹配结论。
+            </p>
+
+            <div class="button-group">
+
+                <button
+                    id="reanalyzeButton"
+                    class="primary"
+                    type="button"
+                    onclick="reanalyze()"
+                >
+                    重新分析经历
+                </button>
+
+                <button
+                    class="success"
+                    type="button"
+                    onclick="goToConclusion()"
+                >
+                    生成综合匹配结论
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/skills')"
+                >
+                    返回技能匹配
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/match')"
+                >
+                    返回岗位匹配
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/jd')"
+                >
+                    重新选择岗位
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- 原始 JSON -->
+
+        <section class="card raw-json">
+
+            <details>
+
+                <summary>
+                    查看原始经历匹配结果 JSON
+                </summary>
+
+                <pre id="rawJson"></pre>
+
+            </details>
+
+        </section>
+
+    </main>
 
 </div>
 
 
 <script>
 
-    let currentJob = null;
+    // ========================================================
+    // 基础工具
+    // ========================================================
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
 
-    const positionElement =
-        document.getElementById(
-            "position"
+    function normalizeArray(value) {
+
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return [];
+        }
+
+        return [value];
+    }
+
+
+    function displayValue(value, fallback = "暂无信息") {
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return fallback;
+        }
+
+        if (typeof value === "object") {
+            return JSON.stringify(value, null, 2);
+        }
+
+        return String(value);
+    }
+
+
+    function getNestedText(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        if (typeof value === "string") {
+            return value;
+        }
+
+        if (typeof value === "number") {
+            return String(value);
+        }
+
+        if (Array.isArray(value)) {
+            return value
+                .map(item => getNestedText(item))
+                .filter(Boolean)
+                .join("\n");
+        }
+
+        if (typeof value === "object") {
+
+            const name =
+                value.name ||
+                value.title ||
+                value.project_name ||
+                value.company ||
+                value.position ||
+                "";
+
+            const description =
+                value.description ||
+                value.content ||
+                value.detail ||
+                value.experience ||
+                "";
+
+            if (name && description) {
+                return `${name}：${description}`;
+            }
+
+            if (name) {
+                return String(name);
+            }
+
+            if (description) {
+                return String(description);
+            }
+
+            return JSON.stringify(value);
+        }
+
+        return String(value);
+    }
+
+
+    function getField(item, keys, fallback = "") {
+
+        if (!item || typeof item !== "object") {
+            return fallback;
+        }
+
+        for (const key of keys) {
+
+            const value = item[key];
+
+            if (
+                value !== null &&
+                value !== undefined &&
+                value !== ""
+            ) {
+                return value;
+            }
+        }
+
+        return fallback;
+    }
+
+
+    // ========================================================
+    // 状态处理
+    // ========================================================
+
+    function normalizeStatus(status) {
+
+        const value = String(status || "")
+            .trim()
+            .toLowerCase();
+
+        // 先判断否定状态，避免“不满足”被识别为“满足”。
+        if (
+            value.includes("不满足") ||
+            value.includes("不匹配") ||
+            value.includes("未发现相关") ||
+            value.includes("无相关经历")
+        ) {
+            return "unmatched";
+        }
+
+        if (
+            value.includes("部分匹配") ||
+            value.includes("部分满足") ||
+            value.includes("一般")
+        ) {
+            return "partial";
+        }
+
+        if (
+            value.includes("信息不足") ||
+            value.includes("未知") ||
+            value.includes("无法判断") ||
+            value.includes("证据不足")
+        ) {
+            return "unknown";
+        }
+
+        if (
+            value === "匹配" ||
+            value.includes("完全匹配") ||
+            value === "满足" ||
+            value.includes("直接匹配")
+        ) {
+            return "matched";
+        }
+
+        return "unknown";
+    }
+
+
+    function getBadgeClass(status) {
+
+        const type = normalizeStatus(status);
+
+        if (type === "matched") {
+            return "badge-success";
+        }
+
+        if (type === "partial") {
+            return "badge-warning";
+        }
+
+        if (type === "unmatched") {
+            return "badge-danger";
+        }
+
+        return "badge-info";
+    }
+
+
+    function getOverallClass(status) {
+
+        const value = String(status || "");
+
+        if (
+            value.includes("存在明显经历缺口") ||
+            value.includes("不匹配") ||
+            value.includes("较低")
+        ) {
+            return "negative";
+        }
+
+        if (
+            value.includes("一般") ||
+            value.includes("部分")
+        ) {
+            return "warning";
+        }
+
+        if (
+            value.includes("较高") ||
+            value === "经历匹配度高"
+        ) {
+            return "positive";
+        }
+
+        return "unknown";
+    }
+
+
+    function getStatusIcon(status) {
+
+        const className = getOverallClass(status);
+
+        if (className === "positive") {
+            return "✅";
+        }
+
+        if (className === "warning") {
+            return "⚠️";
+        }
+
+        if (className === "negative") {
+            return "❗";
+        }
+
+        return "ℹ️";
+    }
+
+
+    // ========================================================
+    // 显示页面加载状态
+    // ========================================================
+
+    function showLoading(isLoading) {
+
+        document.getElementById("loading").style.display =
+            isLoading ? "block" : "none";
+
+        document.getElementById("content").style.display =
+            isLoading ? "none" : "block";
+
+        const button =
+            document.getElementById("reanalyzeButton");
+
+        if (button) {
+            button.disabled = isLoading;
+            button.textContent =
+                isLoading
+                    ? "正在分析..."
+                    : "重新分析经历";
+        }
+    }
+
+
+    // ========================================================
+    // 错误显示
+    // ========================================================
+
+    function showError(message) {
+
+        const errorBox =
+            document.getElementById("errorBox");
+
+        errorBox.textContent =
+            "经历匹配失败：\n" +
+            String(message || "未知错误");
+
+        errorBox.style.display = "block";
+
+        document.getElementById("loading").style.display =
+            "none";
+
+        document.getElementById("content").style.display =
+            "none";
+    }
+
+
+    function clearError() {
+
+        const errorBox =
+            document.getElementById("errorBox");
+
+        errorBox.textContent = "";
+        errorBox.style.display = "none";
+    }
+
+
+    // ========================================================
+    // 岗位信息渲染
+    // ========================================================
+
+    function renderJob(job) {
+
+        document.getElementById("jobPosition").textContent =
+            job.position || "未提供岗位名称";
+
+        document.getElementById("jobCompany").textContent =
+            `公司：${job.company || "未提供"}`;
+
+        document.getElementById("jobSalary").textContent =
+            job.salary || "薪资未提供";
+
+        document.getElementById("jobLocation").textContent =
+            job.location || "未提供";
+
+        document.getElementById("jobEducation").textContent =
+            job.required_education || "未提供";
+
+        document.getElementById("jobMajor").textContent =
+            normalizeArray(job.required_major)
+                .map(item => getNestedText(item))
+                .filter(Boolean)
+                .join("、") || "未提供";
+
+        document.getElementById("jobInternshipDays").textContent =
+            job.internship_days || "未提供";
+    }
+
+
+    // ========================================================
+    // 统计渲染
+    // ========================================================
+
+    function renderCounts(result, items) {
+
+        const total = Number(
+            result.work_item_count ??
+            items.length
         );
 
-    const companyElement =
-        document.getElementById(
-            "company"
+        const matched = Number(
+            result.matched_count ??
+            items.filter(
+                item => normalizeStatus(
+                    getField(
+                        item,
+                        ["status", "match_status", "result"]
+                    )
+                ) === "matched"
+            ).length
         );
 
-    const overallStatusElement =
+        const partial = Number(
+            result.partial_count ??
+            items.filter(
+                item => normalizeStatus(
+                    getField(
+                        item,
+                        ["status", "match_status", "result"]
+                    )
+                ) === "partial"
+            ).length
+        );
+
+        const unknown = Number(
+            (
+                result.unknown_count ?? 0
+            ) +
+            (
+                result.unmatched_count ?? 0
+            )
+        );
+
+        document.getElementById("totalCount").textContent =
+            total;
+
+        document.getElementById("matchedCount").textContent =
+            matched;
+
+        document.getElementById("partialCount").textContent =
+            partial;
+
+        document.getElementById("unknownCount").textContent =
+            unknown;
+    }
+
+
+    // ========================================================
+    // 对应经历渲染
+    // ========================================================
+
+    function renderMatchedExperiences(value) {
+
+        const list =
+            normalizeArray(value);
+
+        if (list.length === 0) {
+
+            return `
+                <div class="empty">
+                    未提供明确的对应经历。
+                </div>
+            `;
+        }
+
+        return `
+            <div class="experience-list">
+                ${
+                    list.map(item => {
+
+                        if (
+                            typeof item === "object" &&
+                            item !== null
+                        ) {
+
+                            const name = getField(
+                                item,
+                                [
+                                    "name",
+                                    "title",
+                                    "project_name",
+                                    "company",
+                                    "position"
+                                ],
+                                "相关经历"
+                            );
+
+                            const description = getField(
+                                item,
+                                [
+                                    "description",
+                                    "content",
+                                    "detail",
+                                    "reason"
+                                ],
+                                ""
+                            );
+
+                            return `
+                                <div class="experience-item">
+
+                                    <div class="experience-name">
+                                        ${escapeHtml(name)}
+                                    </div>
+
+                                    ${
+                                        description
+                                            ? `
+                                                <div class="experience-description">
+                                                    ${escapeHtml(
+                                                        getNestedText(description)
+                                                    )}
+                                                </div>
+                                            `
+                                            : ""
+                                    }
+
+                                </div>
+                            `;
+                        }
+
+                        return `
+                            <div class="experience-item">
+                                <div class="experience-name">
+                                    ${escapeHtml(
+                                        getNestedText(item)
+                                    )}
+                                </div>
+                            </div>
+                        `;
+                    }).join("")
+                }
+            </div>
+        `;
+    }
+
+
+    // ========================================================
+    // 工作内容卡片渲染
+    // ========================================================
+
+    function renderWorkItems(items) {
+
+        const container =
+            document.getElementById("workItems");
+
+        if (items.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    暂无岗位工作内容分析结果。
+                    请检查 JD 中是否包含 responsibilities。
+                </div>
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML = items.map(
+            (item, index) => {
+
+                const workItem = getField(
+                    item,
+                    [
+                        "work_item",
+                        "responsibility",
+                        "job_requirement",
+                        "requirement",
+                        "title",
+                        "name"
+                    ],
+                    `工作内容 ${index + 1}`
+                );
+
+                const status = getField(
+                    item,
+                    [
+                        "status",
+                        "match_status",
+                        "result"
+                    ],
+                    "信息不足"
+                );
+
+                const matchedExperiences = getField(
+                    item,
+                    [
+                        "matched_experiences",
+                        "related_experiences",
+                        "experiences"
+                    ],
+                    []
+                );
+
+                const evidence = getField(
+                    item,
+                    [
+                        "evidence",
+                        "match_evidence",
+                        "matching_evidence"
+                    ],
+                    ""
+                );
+
+                const explanation = getField(
+                    item,
+                    [
+                        "explanation",
+                        "reason",
+                        "analysis"
+                    ],
+                    ""
+                );
+
+
+                const evidenceText =
+                    getNestedText(evidence);
+
+                const explanationText =
+                    getNestedText(explanation);
+
+
+                return `
+                    <article class="work-card">
+
+                        <div class="work-header">
+
+                            <h3 class="work-title">
+                                ${index + 1}.
+                                ${escapeHtml(
+                                    getNestedText(workItem)
+                                )}
+                            </h3>
+
+                            <span
+                                class="badge ${getBadgeClass(status)}"
+                            >
+                                ${escapeHtml(status)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-section">
+
+                            <div class="detail-label">
+                                对应经历
+                            </div>
+
+                            ${renderMatchedExperiences(
+                                matchedExperiences
+                            )}
+
+                        </div>
+
+
+                        <div class="detail-section">
+
+                            <div class="detail-label">
+                                匹配依据
+                            </div>
+
+                            <div class="evidence-box">
+
+                                <div class="detail-content">
+                                    ${
+                                        evidenceText
+                                            ? escapeHtml(evidenceText)
+                                            : "当前没有提供单独的匹配依据。"
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-section">
+
+                            <div class="detail-label">
+                                分析说明
+                            </div>
+
+                            <div class="analysis-box">
+
+                                <div class="detail-content">
+                                    ${
+                                        explanationText
+                                            ? escapeHtml(explanationText)
+                                            : "当前没有提供额外分析说明。"
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+                `;
+            }
+        ).join("");
+    }
+
+
+    // ========================================================
+    // 经历缺口渲染
+    // ========================================================
+
+    function renderGaps(gaps) {
+
+        const container =
+            document.getElementById("gaps");
+
+        const list =
+            normalizeArray(gaps);
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    当前结果中没有单独列出经历缺口。
+                    这不代表一定不存在缺口，请结合上方逐项分析进行判断。
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = list.map(
+            gap => {
+
+                const text = getNestedText(gap);
+
+                return `
+                    <div class="gap-item">
+                        ${escapeHtml(text)}
+                    </div>
+                `;
+            }
+        ).join("");
+    }
+
+
+    // ========================================================
+    // 总体结论渲染
+    // ========================================================
+
+    function renderOverall(result) {
+
+        const status =
+            result.overall_status ||
+            "信息不足";
+
+        const box =
+            document.getElementById(
+                "overallStatusBox"
+            );
+
+        box.className =
+            "status-box " +
+            getOverallClass(status);
+
+        document.getElementById(
+            "statusIcon"
+        ).textContent =
+            getStatusIcon(status);
+
         document.getElementById(
             "overallStatus"
-        );
+        ).textContent =
+            status;
 
-    const workItemCountElement =
         document.getElementById(
-            "workItemCount"
-        );
+            "overallDescription"
+        ).textContent =
+            result.summary ||
+            "系统已完成经历分析，具体结果请查看各项岗位工作内容。";
 
-    const matchedCountElement =
         document.getElementById(
-            "matchedCount"
+            "summary"
+        ).textContent =
+            result.summary ||
+            "暂无匹配总结。";
+    }
+
+
+    // ========================================================
+    // 渲染整页
+    // ========================================================
+
+    function renderPage(data) {
+
+        const job =
+            data.job || {};
+
+        const result =
+            data.experience_match || {};
+
+
+        renderJob(job);
+
+
+        const items =
+            normalizeArray(
+                result.work_items
+            ).filter(
+                item =>
+                    item !== null &&
+                    item !== undefined
+            );
+
+
+        renderOverall(result);
+
+        renderCounts(
+            result,
+            items
         );
 
-    const partialCountElement =
+        renderWorkItems(
+            items
+        );
+
+        renderGaps(
+            result.gaps
+        );
+
+
         document.getElementById(
-            "partialCount"
-        );
+            "rawJson"
+        ).textContent =
+            JSON.stringify(
+                data,
+                null,
+                2
+            );
 
-    const gapCountElement =
+
         document.getElementById(
-            "gapCount"
-        );
-
-    const workListElement =
-        document.getElementById(
-            "workList"
-        );
-
-    const gapSection =
-        document.getElementById(
-            "gapSection"
-        );
-
-    const gapListElement =
-        document.getElementById(
-            "gapList"
-        );
-
-    const summarySection =
-        document.getElementById(
-            "summarySection"
-        );
-
-    const summaryTextElement =
-        document.getElementById(
-            "summaryText"
-        );
-
-    const messageElement =
-        document.getElementById(
-            "message"
-        );
-
-    const rawJSONElement =
-        document.getElementById(
-            "rawJSON"
-        );
+            "content"
+        ).style.display =
+            "block";
+    }
 
 
-    // =========================================================
-    // 页面加载
-    // =========================================================
+    // ========================================================
+    // 调用 US06 API
+    // ========================================================
 
-    window.addEventListener(
-        "DOMContentLoaded",
-        async () => {
+    async function loadExperienceMatch() {
 
-            await loadJob();
+        clearError();
 
-        }
-    );
-
-
-    // =========================================================
-    // 加载岗位
-    // =========================================================
-
-    async function loadJob() {
+        showLoading(true);
 
         const savedJob =
             sessionStorage.getItem(
@@ -720,91 +1777,50 @@
 
         if (!savedJob) {
 
-            positionElement.textContent =
-                "没有找到岗位信息";
+            showLoading(false);
 
-            messageElement.textContent =
-                "请先完成 JD 解析。";
-
-            messageElement.className =
-                "error";
+            showError(
+                "没有找到已保存的岗位信息，请先到 JD 页面完成岗位解析。"
+            );
 
             return;
         }
 
+
+        let job;
 
         try {
 
-            currentJob =
-                JSON.parse(
-                    savedJob
-                );
+            job = JSON.parse(
+                savedJob
+            );
 
         } catch (error) {
 
-            positionElement.textContent =
-                "岗位信息读取失败";
+            showLoading(false);
 
-            messageElement.textContent =
-                "岗位数据格式错误。";
-
-            messageElement.className =
-                "error";
-
-            return;
-
-        }
-
-
-        positionElement.textContent =
-            currentJob.position ||
-            "未识别岗位";
-
-
-        companyElement.textContent =
-            "公司：" +
-            (
-                currentJob.company ||
-                "未提供"
+            showError(
+                "读取已保存的岗位信息失败，请重新解析 JD。"
             );
 
-
-        await matchExperiences();
-
-    }
-
-
-    // =========================================================
-    // 执行匹配
-    // =========================================================
-
-    async function matchExperiences() {
-
-        if (!currentJob) {
-
-            messageElement.textContent =
-                "没有可分析的岗位。";
-
-            messageElement.className =
-                "error";
-
             return;
-
         }
 
 
-        messageElement.textContent =
-            "正在分析岗位工作内容与项目、实习经历，请稍候……";
+        if (
+            !job ||
+            typeof job !== "object" ||
+            !job.position
+        ) {
 
-        messageElement.className =
-            "loading";
+            showLoading(false);
 
+            showError(
+                "当前岗位信息不完整或缺少岗位名称，请返回 JD 页面重新解析。"
+            );
 
-        overallStatusElement.textContent =
-            "分析中……";
-
-        overallStatusElement.className =
-            "summary-value info";
+            return;
+        }
 
 
         try {
@@ -817,591 +1833,185 @@
 
                         headers: {
                             "Content-Type":
-                                "application/json",
-
-                            "Accept":
                                 "application/json"
                         },
 
                         body: JSON.stringify({
-                            job:
-                                currentJob
+                            job: job
                         })
                     }
                 );
 
 
-            const data =
-                await response.json();
+            let data;
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch (error) {
+
+                throw new Error(
+                    "服务器返回内容不是有效 JSON。"
+                );
+            }
 
 
             if (!response.ok) {
 
-                throw new Error(
-                    data.detail ||
-                    "经历匹配失败。"
-                );
+                const detail =
+                    data.detail;
 
+                const errorMessage =
+                    typeof detail === "string"
+                        ? detail
+                        : JSON.stringify(
+                            detail || data,
+                            null,
+                            2
+                        );
+
+                throw new Error(
+                    errorMessage ||
+                    "项目 / 实习经历匹配失败。"
+                );
             }
 
 
-            renderResult(
+            if (
+                !data.experience_match
+            ) {
+
+                throw new Error(
+                    "接口返回成功，但缺少 experience_match 数据。"
+                );
+            }
+
+
+            renderPage(
                 data
             );
-
-
-            rawJSONElement.textContent =
-                JSON.stringify(
-                    data,
-                    null,
-                    2
-                );
-
-
-            messageElement.textContent =
-                "项目 / 经历匹配分析完成。";
-
-            messageElement.className =
-                "success";
 
 
         } catch (error) {
 
             console.error(
+                "US06 经历匹配失败：",
                 error
             );
 
-
-            messageElement.textContent =
-                "分析失败：" +
-                error.message;
-
-            messageElement.className =
-                "error";
-
-
-            overallStatusElement.textContent =
-                "分析失败";
-
-            overallStatusElement.className =
-                "summary-value bad";
-
-        }
-
-    }
-
-
-    // =========================================================
-    // 展示结果
-    // =========================================================
-
-    function renderResult(
-        data
-    ) {
-
-        const result =
-            data.experience_match ||
-            {};
-
-
-        const overallStatus =
-            result.overall_status ||
-            "信息不足";
-
-
-        overallStatusElement.textContent =
-            overallStatus;
-
-
-        if (
-            overallStatus ===
-            "经历匹配度高"
-        ) {
-
-            overallStatusElement.className =
-                "summary-value good";
-
-        } else if (
-            overallStatus ===
-            "存在明显经历缺口"
-        ) {
-
-            overallStatusElement.className =
-                "summary-value bad";
-
-        } else if (
-            overallStatus ===
-            "经历匹配度一般"
-        ) {
-
-            overallStatusElement.className =
-                "summary-value warning";
-
-        } else {
-
-            overallStatusElement.className =
-                "summary-value info";
-
-        }
-
-
-        workItemCountElement.textContent =
-            result.work_item_count ||
-            0;
-
-
-        matchedCountElement.textContent =
-            result.matched_count ||
-            0;
-
-
-        partialCountElement.textContent =
-            result.partial_count ||
-            0;
-
-
-        gapCountElement.textContent =
-            (
-                (result.unknown_count || 0) +
-                (result.unmatched_count || 0)
+            showError(
+                error.message ||
+                String(error)
             );
 
+        } finally {
 
-        renderWorkItems(
-            result.work_items
-        );
-
-
-        renderGaps(
-            result.gaps
-        );
-
-
-        renderSummary(
-            result.summary
-        );
-
+            showLoading(false);
+        }
     }
 
 
-    // =========================================================
-    // 工作内容
-    // =========================================================
+    // ========================================================
+    // 重新分析
+    // ========================================================
 
-    function renderWorkItems(
-        workItems
-    ) {
+    function reanalyze() {
 
-        workListElement.innerHTML =
-            "";
+        loadExperienceMatch();
+    }
 
 
-        if (
-            !Array.isArray(workItems) ||
-            workItems.length === 0
-        ) {
+    // ========================================================
+    // 页面跳转
+    // ========================================================
 
-            workListElement.innerHTML =
-                `
-                <div class="empty">
-                    当前岗位没有明确的工作内容，
-                    或暂时无法提取工作内容。
-                </div>
-                `;
+    function goTo(path) {
+
+        const savedJob =
+            sessionStorage.getItem(
+                "careerpilot_job"
+            );
+
+        if (!savedJob) {
+
+            alert(
+                "当前没有可用岗位信息，请先完成 JD 解析。"
+            );
 
             return;
-
         }
-
-
-        workItems.forEach(
-            item => {
-
-                const wrapper =
-                    document.createElement(
-                        "div"
-                    );
-
-                wrapper.className =
-                    "work-item";
-
-
-                const top =
-                    document.createElement(
-                        "div"
-                    );
-
-                top.className =
-                    "work-top";
-
-
-                const title =
-                    document.createElement(
-                        "div"
-                    );
-
-                title.className =
-                    "work-title";
-
-                title.textContent =
-                    item.work_item ||
-                    "未明确工作内容";
-
-
-                const badge =
-                    document.createElement(
-                        "span"
-                    );
-
-                badge.className =
-                    "status";
-
-
-                const status =
-                    item.status ||
-                    "信息不足";
-
-
-                badge.textContent =
-                    status;
-
-
-                if (
-                    status === "匹配"
-                ) {
-
-                    badge.classList.add(
-                        "status-match"
-                    );
-
-                } else if (
-                    status === "部分匹配"
-                ) {
-
-                    badge.classList.add(
-                        "status-partial"
-                    );
-
-                } else if (
-                    status === "不匹配"
-                ) {
-
-                    badge.classList.add(
-                        "status-fail"
-                    );
-
-                } else {
-
-                    badge.classList.add(
-                        "status-unknown"
-                    );
-
-                }
-
-
-                top.appendChild(
-                    title
-                );
-
-                top.appendChild(
-                    badge
-                );
-
-
-                wrapper.appendChild(
-                    top
-                );
-
-
-                // -------------------------------------------------
-                // 对应经历
-                // -------------------------------------------------
-
-                const experiences =
-                    Array.isArray(
-                        item.matched_experiences
-                    )
-                        ? item.matched_experiences
-                        : [];
-
-
-                const experienceSection =
-                    document.createElement(
-                        "div"
-                    );
-
-                experienceSection.className =
-                    "subsection";
-
-
-                const experienceLabel =
-                    document.createElement(
-                        "div"
-                    );
-
-                experienceLabel.className =
-                    "label";
-
-                experienceLabel.textContent =
-                    "对应经历";
-
-
-                experienceSection.appendChild(
-                    experienceLabel
-                );
-
-
-                if (
-                    experiences.length > 0
-                ) {
-
-                    experiences.forEach(
-                        experience => {
-
-                            const tag =
-                                document.createElement(
-                                    "span"
-                                );
-
-                            tag.className =
-                                "experience-tag";
-
-                            tag.textContent =
-                                experience;
-
-                            experienceSection.appendChild(
-                                tag
-                            );
-
-                        }
-                    );
-
-                } else {
-
-                    const empty =
-                        document.createElement(
-                            "div"
-                        );
-
-                    empty.className =
-                        "empty";
-
-                    empty.textContent =
-                        "未发现相关经历";
-
-                    experienceSection.appendChild(
-                        empty
-                    );
-
-                }
-
-
-                wrapper.appendChild(
-                    experienceSection
-                );
-
-
-                // -------------------------------------------------
-                // 证据
-                // -------------------------------------------------
-
-                const evidenceSection =
-                    document.createElement(
-                        "div"
-                    );
-
-                evidenceSection.className =
-                    "subsection";
-
-
-                const evidenceLabel =
-                    document.createElement(
-                        "div"
-                    );
-
-                evidenceLabel.className =
-                    "label";
-
-                evidenceLabel.textContent =
-                    "匹配依据";
-
-
-                evidenceSection.appendChild(
-                    evidenceLabel
-                );
-
-
-                const evidenceData =
-                    Array.isArray(
-                        item.evidence
-                    )
-                        ? item.evidence
-                        : [];
-
-
-                const evidence =
-                    document.createElement(
-                        "div"
-                    );
-
-                evidence.className =
-                    "evidence";
-
-
-                if (
-                    evidenceData.length > 0
-                ) {
-
-                    evidence.textContent =
-                        evidenceData.join(
-                            "；"
-                        );
-
-                } else {
-
-                    evidence.textContent =
-                        "暂无明确证据";
-
-                }
-
-
-                evidenceSection.appendChild(
-                    evidence
-                );
-
-                wrapper.appendChild(
-                    evidenceSection
-                );
-
-
-                // -------------------------------------------------
-                // 分析说明
-                // -------------------------------------------------
-
-                const explanation =
-                    document.createElement(
-                        "div"
-                    );
-
-                explanation.className =
-                    "explanation";
-
-                explanation.textContent =
-                    "分析：" +
-                    (
-                        item.explanation ||
-                        "暂无说明"
-                    );
-
-
-                wrapper.appendChild(
-                    explanation
-                );
-
-
-                workListElement.appendChild(
-                    wrapper
-                );
-
-            }
-        );
-
-    }
-
-
-    // =========================================================
-    // Gap
-    // =========================================================
-
-    function renderGaps(
-        gaps
-    ) {
-
-        gapListElement.innerHTML =
-            "";
-
-
-        if (
-            !Array.isArray(gaps) ||
-            gaps.length === 0
-        ) {
-
-            gapSection.style.display =
-                "none";
-
-            return;
-
-        }
-
-
-        gaps.forEach(
-            gap => {
-
-                const li =
-                    document.createElement(
-                        "li"
-                    );
-
-                li.textContent =
-                    gap;
-
-                gapListElement.appendChild(
-                    li
-                );
-
-            }
-        );
-
-
-        gapSection.style.display =
-            "block";
-
-    }
-
-
-    // =========================================================
-    // 总结
-    // =========================================================
-
-    function renderSummary(
-        summary
-    ) {
-
-        if (
-            !summary
-        ) {
-
-            summarySection.style.display =
-                "none";
-
-            return;
-
-        }
-
-
-        summaryTextElement.textContent =
-            summary;
-
-
-        summarySection.style.display =
-            "block";
-
-    }
-
-
-    // =========================================================
-    // 返回 US04
-    // =========================================================
-
-    function goBack() {
 
         window.location.href =
-            "/match";
-
+            path;
     }
+
+
+    // ========================================================
+    // 跳转到 US07 综合结论
+    // ========================================================
+
+    function goToConclusion() {
+
+        const savedJob =
+            sessionStorage.getItem(
+                "careerpilot_job"
+            );
+
+        if (!savedJob) {
+
+            alert(
+                "当前没有可用岗位信息，请先完成 JD 解析。"
+            );
+
+            return;
+        }
+
+
+        let job;
+
+        try {
+
+            job =
+                JSON.parse(savedJob);
+
+        } catch (error) {
+
+            alert(
+                "当前保存的岗位信息已损坏，请重新解析 JD。"
+            );
+
+            return;
+        }
+
+
+        if (
+            !job ||
+            typeof job !== "object" ||
+            !job.position
+        ) {
+
+            alert(
+                "当前岗位信息不完整，请重新解析 JD。"
+            );
+
+            return;
+        }
+
+
+        window.location.href =
+            "/conclusion";
+    }
+
+
+    // ========================================================
+    // 页面启动
+    // ========================================================
+
+    loadExperienceMatch();
 
 </script>
 
 </body>
-
 </html>

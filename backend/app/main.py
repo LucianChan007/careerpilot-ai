@@ -1,6 +1,6 @@
 from pathlib import Path
-import os
 import json
+import os
 import tempfile
 
 from dotenv import load_dotenv
@@ -15,6 +15,7 @@ from app.jd_service import build_job
 from app.match_service import match_profile_to_job
 from app.skill_service import match_skills_to_profile
 from app.experience_service import match_experiences_to_job
+from app.conclusion_service import build_explainable_conclusion
 
 
 # ============================================================
@@ -25,7 +26,7 @@ load_dotenv()
 
 app = FastAPI(
     title="CareerPilot AI",
-    version="0.6.0",
+    version="0.7.0",
 )
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -71,6 +72,47 @@ class ExperienceMatchRequest(BaseModel):
     job: dict
 
 
+class ConclusionRequest(BaseModel):
+    job: dict
+
+
+# ============================================================
+# 公共工具：读取已保存的个人画像
+# ============================================================
+
+def load_saved_profile() -> dict:
+    """
+    从 backend/data/profile.json 读取个人画像。
+    """
+
+    if not PROFILE_FILE.exists():
+        raise HTTPException(
+            status_code=400,
+            detail="当前没有保存的个人画像，请先上传简历。",
+        )
+
+    try:
+        profile = json.loads(
+            PROFILE_FILE.read_text(
+                encoding="utf-8"
+            )
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"读取个人画像失败：{str(e)}",
+        )
+
+    if not isinstance(profile, dict) or not profile:
+        raise HTTPException(
+            status_code=400,
+            detail="当前个人画像为空或格式错误，请重新上传简历。",
+        )
+
+    return profile
+
+
 # ============================================================
 # 页面路由
 # ============================================================
@@ -110,6 +152,13 @@ def experience_page():
     )
 
 
+@app.get("/conclusion")
+def conclusion_page():
+    return FileResponse(
+        STATIC_DIR / "conclusion.html"
+    )
+
+
 # ============================================================
 # 健康检查
 # ============================================================
@@ -117,7 +166,8 @@ def experience_page():
 @app.get("/api/health")
 def health():
     return {
-        "status": "ok"
+        "status": "ok",
+        "version": "0.7.0",
     }
 
 
@@ -194,24 +244,18 @@ async def update_profile(data: dict):
 
 @app.post("/api/resume/parse")
 async def parse_resume(
-    file: UploadFile = File(...)
+    file: UploadFile = File(...),
 ):
     """
-    上传 PDF / DOCX 简历，
-    提取文本并调用 LLM 生成结构化个人画像。
-
-    解析完成后自动保存到：
-    backend/data/profile.json
+    上传 PDF / DOCX 简历，提取文本并构建个人画像。
+    解析成功后自动保存个人画像。
     """
 
     suffix = Path(
         file.filename or ""
     ).suffix.lower()
 
-    if suffix not in {
-        ".pdf",
-        ".docx",
-    }:
+    if suffix not in {".pdf", ".docx"}:
         raise HTTPException(
             status_code=400,
             detail="仅支持 PDF 或 DOCX。",
@@ -222,7 +266,7 @@ async def parse_resume(
     if not data:
         raise HTTPException(
             status_code=400,
-            detail="文件为空。",
+            detail="上传文件为空。",
         )
 
     if len(data) > MAX_FILE_SIZE:
@@ -238,15 +282,10 @@ async def parse_resume(
         delete=False,
         suffix=suffix,
     ) as tmp:
-
         tmp.write(data)
         path = Path(tmp.name)
 
     try:
-        # ----------------------------------------------------
-        # 1. 提取简历文本
-        # ----------------------------------------------------
-
         text = extract_text(path)
 
         if len(text.strip()) < 30:
@@ -258,15 +297,7 @@ async def parse_resume(
                 ),
             )
 
-        # ----------------------------------------------------
-        # 2. LLM 生成结构化画像
-        # ----------------------------------------------------
-
         profile = await build_profile(text)
-
-        # ----------------------------------------------------
-        # 3. 自动保存个人画像
-        # ----------------------------------------------------
 
         PROFILE_FILE.write_text(
             json.dumps(
@@ -289,7 +320,7 @@ async def parse_resume(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=str(e),
+            detail=f"简历解析失败：{str(e)}",
         )
 
     finally:
@@ -304,10 +335,10 @@ async def parse_resume(
 
 @app.post("/api/jd/parse")
 async def parse_job(
-    data: JDParseRequest
+    data: JDParseRequest,
 ):
     """
-    将原始岗位描述解析为结构化岗位信息。
+    将原始 JD 转换为结构化岗位信息。
     """
 
     text = data.text.strip()
@@ -335,7 +366,7 @@ async def parse_job(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=str(e),
+            detail=f"JD 解析失败：{str(e)}",
         )
 
 
@@ -345,18 +376,15 @@ async def parse_job(
 
 @app.post("/api/jd/match")
 async def match_job(
-    data: MatchRequest
+    data: MatchRequest,
 ):
     """
-    将岗位硬性条件与用户个人画像进行匹配。
+    将岗位硬性条件与个人画像进行匹配。
     """
 
     job = data.job
 
-    if not isinstance(
-        job,
-        dict,
-    ):
+    if not isinstance(job, dict):
         raise HTTPException(
             status_code=400,
             detail="岗位信息格式错误。",
@@ -368,30 +396,7 @@ async def match_job(
             detail="岗位信息缺少岗位名称。",
         )
 
-    if not PROFILE_FILE.exists():
-        raise HTTPException(
-            status_code=400,
-            detail="当前没有保存的个人画像，请先上传简历。",
-        )
-
-    try:
-        profile = json.loads(
-            PROFILE_FILE.read_text(
-                encoding="utf-8"
-            )
-        )
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"读取个人画像失败：{str(e)}",
-        )
-
-    if not profile:
-        raise HTTPException(
-            status_code=400,
-            detail="当前个人画像为空，请先上传简历。",
-        )
+    profile = load_saved_profile()
 
     try:
         result = await match_profile_to_job(
@@ -408,12 +413,12 @@ async def match_job(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=str(e),
+            detail=f"硬性条件匹配失败：{str(e)}",
         )
 
 
 # ============================================================
-# US05：技能与岗位匹配
+# US05：技能匹配
 # ============================================================
 
 @app.post("/api/jd/skills-match")
@@ -421,16 +426,13 @@ async def match_skills(
     data: SkillMatchRequest,
 ):
     """
-    将岗位要求技能与用户技能、项目经历、
+    将岗位技能要求与用户技能、项目经历、
     实习经历进行逐项匹配。
     """
 
     job = data.job
 
-    if not isinstance(
-        job,
-        dict,
-    ):
+    if not isinstance(job, dict):
         raise HTTPException(
             status_code=400,
             detail="岗位信息格式错误。",
@@ -442,30 +444,7 @@ async def match_skills(
             detail="岗位信息缺少岗位名称。",
         )
 
-    if not PROFILE_FILE.exists():
-        raise HTTPException(
-            status_code=400,
-            detail="当前没有保存的个人画像，请先上传简历。",
-        )
-
-    try:
-        profile = json.loads(
-            PROFILE_FILE.read_text(
-                encoding="utf-8"
-            )
-        )
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"读取个人画像失败：{str(e)}",
-        )
-
-    if not profile:
-        raise HTTPException(
-            status_code=400,
-            detail="当前个人画像为空，请先上传简历。",
-        )
+    profile = load_saved_profile()
 
     try:
         result = await match_skills_to_profile(
@@ -482,12 +461,12 @@ async def match_skills(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=str(e),
+            detail=f"技能匹配失败：{str(e)}",
         )
 
 
 # ============================================================
-# US06：项目 / 经历与岗位工作内容匹配
+# US06：项目 / 实习经历匹配
 # ============================================================
 
 @app.post("/api/jd/experience-match")
@@ -495,27 +474,16 @@ async def match_experience(
     data: ExperienceMatchRequest,
 ):
     """
-    将岗位工作内容与用户项目经历、实习经历进行匹配。
+    将岗位工作内容与用户项目、实习经历进行匹配。
     """
-
-    # --------------------------------------------------------
-    # 1. 获取岗位
-    # --------------------------------------------------------
 
     job = data.job
 
-    if not isinstance(
-        job,
-        dict,
-    ):
+    if not isinstance(job, dict):
         raise HTTPException(
             status_code=400,
             detail="岗位信息格式错误。",
         )
-
-    # --------------------------------------------------------
-    # 2. 检查岗位名称
-    # --------------------------------------------------------
 
     if not job.get("position"):
         raise HTTPException(
@@ -523,61 +491,21 @@ async def match_experience(
             detail="岗位信息缺少岗位名称。",
         )
 
-    # --------------------------------------------------------
-    # 3. 检查岗位工作内容
-    # --------------------------------------------------------
-
     responsibilities = job.get(
         "responsibilities",
         [],
     )
 
-    if not isinstance(
-        responsibilities,
-        list,
-    ) or not responsibilities:
-
+    if (
+        not isinstance(responsibilities, list)
+        or not responsibilities
+    ):
         raise HTTPException(
             status_code=400,
             detail="岗位信息缺少工作内容，无法进行经历匹配。",
         )
 
-    # --------------------------------------------------------
-    # 4. 检查个人画像
-    # --------------------------------------------------------
-
-    if not PROFILE_FILE.exists():
-        raise HTTPException(
-            status_code=400,
-            detail="当前没有保存的个人画像，请先上传简历。",
-        )
-
-    try:
-        profile = json.loads(
-            PROFILE_FILE.read_text(
-                encoding="utf-8"
-            )
-        )
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"读取个人画像失败：{str(e)}",
-        )
-
-    # --------------------------------------------------------
-    # 5. 检查个人画像是否为空
-    # --------------------------------------------------------
-
-    if not profile:
-        raise HTTPException(
-            status_code=400,
-            detail="当前个人画像为空，请先上传简历。",
-        )
-
-    # --------------------------------------------------------
-    # 6. 调用 US06 经历匹配服务
-    # --------------------------------------------------------
+    profile = load_saved_profile()
 
     try:
         result = await match_experiences_to_job(
@@ -594,12 +522,114 @@ async def match_experience(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=str(e),
+            detail=f"项目 / 实习经历匹配失败：{str(e)}",
         )
 
 
 # ============================================================
-# 启动配置
+# US07：可解释岗位匹配结论
+# ============================================================
+
+@app.post("/api/jd/conclusion")
+async def get_job_conclusion(
+    data: ConclusionRequest,
+):
+    """
+    汇总 US04、US05、US06 的分析结果，输出可解释的综合结论。
+
+    注意：
+    该接口会重新运行三个匹配服务，不直接信任浏览器传入的
+    分析结果。这样可以确保结论基于服务端实际分析结果生成。
+    """
+
+    job = data.job
+
+    # --------------------------------------------------------
+    # 1. 检查岗位
+    # --------------------------------------------------------
+
+    if not isinstance(job, dict):
+        raise HTTPException(
+            status_code=400,
+            detail="岗位信息格式错误。",
+        )
+
+    if not job.get("position"):
+        raise HTTPException(
+            status_code=400,
+            detail="岗位信息缺少岗位名称，请先完成 JD 解析。",
+        )
+
+    # --------------------------------------------------------
+    # 2. 读取个人画像
+    # --------------------------------------------------------
+
+    profile = load_saved_profile()
+
+    # --------------------------------------------------------
+    # 3. 重新执行 US04、US05、US06
+    # --------------------------------------------------------
+
+    try:
+        hard_match = await match_profile_to_job(
+            profile,
+            job,
+        )
+
+        skill_match = await match_skills_to_profile(
+            profile,
+            job,
+        )
+
+        experience_match = await match_experiences_to_job(
+            profile,
+            job,
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "生成综合结论时，"
+                "前置匹配服务执行失败："
+                f"{str(e)}"
+            ),
+        )
+
+    # --------------------------------------------------------
+    # 4. 根据真实分析结果生成可解释结论
+    # --------------------------------------------------------
+
+    try:
+        conclusion = build_explainable_conclusion(
+            job=job,
+            hard_match=hard_match,
+            skill_match=skill_match,
+            experience_match=experience_match,
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"综合结论生成失败：{str(e)}",
+        )
+
+    # --------------------------------------------------------
+    # 5. 返回结果
+    # --------------------------------------------------------
+
+    return {
+        "profile": profile,
+        "job": job,
+        "hard_match": hard_match,
+        "skill_match": skill_match,
+        "experience_match": experience_match,
+        "conclusion": conclusion,
+    }
+
+
+# ============================================================
+# 本地启动
 # ============================================================
 
 if __name__ == "__main__":

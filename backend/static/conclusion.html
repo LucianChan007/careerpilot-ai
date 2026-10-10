@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>综合岗位匹配结论 - CareerPilot AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "Microsoft YaHei",
+                sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            width: min(1100px, 94%);
+            margin: 0 auto;
+            padding: 32px 0 60px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 29px;
+            color: #111827;
+        }
+
+        h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            color: #111827;
+        }
+
+        h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .subtitle {
+            margin: 0 0 24px;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            padding: 24px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow:
+                0 4px 16px rgba(15, 23, 42, 0.06);
+        }
+
+        .job-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .muted {
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .status-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+
+        .status-box.positive {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+        }
+
+        .status-box.warning {
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+
+        .status-box.negative {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .status-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .score-row {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .score-box {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .score-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .score-value {
+            font-size: 25px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .dimension-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .dimension-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            background: #ffffff;
+        }
+
+        .dimension-score {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 12px 0;
+        }
+
+        .dimension-counts {
+            font-size: 13px;
+            line-height: 1.9;
+            color: #4b5563;
+        }
+
+        .progress {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-inner {
+            height: 100%;
+            background: #2563eb;
+            border-radius: 999px;
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            background: #ffffff;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .item-title {
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            flex-shrink: 0;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .evidence {
+            margin-top: 8px;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .empty {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .simple-list {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        .simple-list li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        button.primary {
+            color: white;
+            background: #2563eb;
+        }
+
+        button.secondary {
+            color: #374151;
+            background: #e5e7eb;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error {
+            margin-bottom: 20px;
+            padding: 16px;
+            color: #991b1b;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px 16px;
+            color: #6b7280;
+        }
+
+        details summary {
+            cursor: pointer;
+            color: #2563eb;
+        }
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 760px) {
+            .container {
+                padding-top: 20px;
+            }
+
+            .dimension-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-row {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .item-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>综合岗位匹配结论</h1>
+
+    <p class="subtitle">
+        CareerPilot AI · US07 可解释岗位匹配结论
+        <br>
+        综合硬性条件、技能和项目 / 实习经历分析，
+        展示结论依据、主要风险与补强建议。
+    </p>
+
+    <div id="errorBox"></div>
+
+    <div id="loading" class="loading">
+        正在汇总岗位匹配分析结果，请稍候...
+    </div>
+
+    <div id="content" style="display: none;">
+
+        <!-- 岗位信息 -->
+        <section class="card">
+            <h2>分析对象</h2>
+
+            <div id="jobPosition" class="job-name">-</div>
+
+            <div id="jobCompany" class="muted">-</div>
+        </section>
+
+        <!-- 综合结论 -->
+        <section class="card">
+
+            <h2>综合匹配结论</h2>
+
+            <div id="statusBox" class="status-box">
+
+                <div id="overallStatus" class="status-title">
+                    -
+                </div>
+
+                <div id="summary" class="muted">
+                    -
+                </div>
+
+                <div class="score-row">
+
+                    <div class="score-box">
+                        <div class="score-label">
+                            综合规则评分
+                        </div>
+                        <div id="overallScore" class="score-value">
+                            -
+                        </div>
+                    </div>
+
+                    <div class="score-box">
+                        <div class="score-label">
+                            证据覆盖率
+                        </div>
+                        <div id="coverage" class="score-value">
+                            -
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <p class="muted">
+                说明：综合评分是 CareerPilot AI 的项目内规则评分，
+                不是获得面试或录用的概率。证据覆盖率用于展示有多少
+                分析条目具有可判断的状态。
+            </p>
+        </section>
+
+        <!-- 三个维度 -->
+        <section class="card">
+            <h2>三个维度的分析结果</h2>
+
+            <div id="dimensionGrid" class="dimension-grid"></div>
+        </section>
+
+        <!-- 结论依据 -->
+        <section class="card">
+            <h2>结论依据</h2>
+            <div id="reasoning"></div>
+        </section>
+
+        <!-- 优势 -->
+        <section class="card">
+            <h2>已有优势</h2>
+            <div id="highlights" class="item-list"></div>
+        </section>
+
+        <!-- 风险 -->
+        <section class="card">
+            <h2>主要风险与缺口</h2>
+            <div id="risks" class="item-list"></div>
+        </section>
+
+        <!-- 建议 -->
+        <section class="card">
+            <h2>后续行动建议</h2>
+            <div id="recommendations"></div>
+        </section>
+
+        <!-- 导航 -->
+        <section class="card">
+            <h2>返回其他分析</h2>
+
+            <div class="button-group">
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/match')"
+                >
+                    硬性条件
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/skills')"
+                >
+                    技能匹配
+                </button>
+
+                <button
+                    class="secondary"
+                    type="button"
+                    onclick="goTo('/experience')"
+                >
+                    项目 / 实习经历
+                </button>
+
+                <button
+                    class="primary"
+                    id="reloadButton"
+                    type="button"
+                    onclick="loadConclusion()"
+                >
+                    重新生成结论
+                </button>
+            </div>
+        </section>
+
+        <!-- 原始结果 -->
+        <section class="card">
+            <details>
+                <summary>查看完整分析数据 JSON</summary>
+                <pre id="rawJson"></pre>
+            </details>
+        </section>
+
+    </div>
+</div>
+
+<script>
+    function escapeHtml(value) {
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function statusClass(status) {
+        const value = String(status || "");
+
+        if (
+            value.includes("不匹配") ||
+            value.includes("不满足") ||
+            value.includes("风险") ||
+            value.includes("较低") ||
+            value.includes("缺口")
+        ) {
+            return "badge-danger";
+        }
+
+        if (
+            value.includes("部分") ||
+            value.includes("一般")
+        ) {
+            return "badge-warning";
+        }
+
+        if (
+            value.includes("满足") ||
+            value.includes("匹配") ||
+            value.includes("较高")
+        ) {
+            return "badge-success";
+        }
+
+        return "badge-info";
+    }
+
+    function statusBoxClass(status) {
+        const value = String(status || "");
+
+        if (
+            value.includes("硬性条件风险") ||
+            value.includes("较低")
+        ) {
+            return "negative";
+        }
+
+        if (value.includes("一般")) {
+            return "warning";
+        }
+
+        if (value.includes("较高")) {
+            return "positive";
+        }
+
+        return "";
+    }
+
+    function arrayOf(value) {
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        if (value === null || value === undefined || value === "") {
+            return [];
+        }
+
+        return [value];
+    }
+
+    function renderDimensions(dimensions) {
+        const container =
+            document.getElementById("dimensionGrid");
+
+        const labels = [
+            ["hard_conditions", "硬性条件"],
+            ["skills", "技能匹配"],
+            ["experiences", "项目 / 实习经历"]
+        ];
+
+        container.innerHTML = labels.map(([key, label]) => {
+            const dimension = dimensions?.[key] || {};
+            const score = dimension.score;
+            const scoreText =
+                score === null || score === undefined
+                    ? "暂无评分"
+                    : `${score}/100`;
+
+            const barWidth =
+                score === null || score === undefined
+                    ? 0
+                    : Math.max(0, Math.min(100, Number(score)));
+
+            return `
+                <div class="dimension-card">
+                    <h3>${escapeHtml(label)}</h3>
+
+                    <div class="dimension-score">
+                        ${escapeHtml(scoreText)}
+                    </div>
+
+                    <div class="progress">
+                        <div
+                            class="progress-inner"
+                            style="width: ${barWidth}%"
+                        ></div>
+                    </div>
+
+                    <div class="dimension-counts">
+                        总条目：${escapeHtml(dimension.total_count ?? 0)}<br>
+                        匹配：${escapeHtml(dimension.matched_count ?? 0)}<br>
+                        部分匹配：${escapeHtml(dimension.partial_count ?? 0)}<br>
+                        不匹配：${escapeHtml(dimension.unmatched_count ?? 0)}<br>
+                        信息不足：${escapeHtml(dimension.unknown_count ?? 0)}<br>
+                        证据覆盖率：${escapeHtml(dimension.coverage ?? 0)}%
+                    </div>
+
+                    <p class="muted">
+                        ${escapeHtml(dimension.summary || "暂无维度总结")}
+                    </p>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function renderEvidenceItems(elementId, items, emptyText) {
+        const container = document.getElementById(elementId);
+        const list = arrayOf(items);
+
+        if (list.length === 0) {
+            container.innerHTML = `
+                <div class="empty">${escapeHtml(emptyText)}</div>
+            `;
+            return;
+        }
+
+        container.innerHTML = list.map(item => {
+            if (typeof item === "string") {
+                return `
+                    <div class="item">
+                        <div class="evidence">
+                            ${escapeHtml(item)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            const title =
+                item.title ||
+                item.dimension ||
+                "分析条目";
+
+            const status = item.status || "";
+
+            const evidence = item.evidence || "";
+            const explanation = item.explanation || "";
+
+            return `
+                <div class="item">
+                    <div class="item-header">
+                        <div class="item-title">
+                            ${escapeHtml(title)}
+                        </div>
+
+                        <span class="badge ${statusClass(status)}">
+                            ${escapeHtml(status || "信息不足")}
+                        </span>
+                    </div>
+
+                    ${
+                        item.dimension
+                            ? `<div class="muted">维度：${escapeHtml(item.dimension)}</div>`
+                            : ""
+                    }
+
+                    ${
+                        evidence
+                            ? `<div class="evidence">${escapeHtml(evidence)}</div>`
+                            : ""
+                    }
+
+                    ${
+                        explanation
+                            ? `<div class="evidence">${escapeHtml(explanation)}</div>`
+                            : ""
+                    }
+                </div>
+            `;
+        }).join("");
+    }
+
+    function renderRecommendations(items) {
+        const container =
+            document.getElementById("recommendations");
+
+        const list = arrayOf(items);
+
+        if (list.length === 0) {
+            container.innerHTML = `
+                <div class="empty">暂无建议。</div>
+            `;
+            return;
+        }
+
+        container.innerHTML = `
+            <ol class="simple-list">
+                ${list.map(item => `
+                    <li>${escapeHtml(item)}</li>
+                `).join("")}
+            </ol>
+        `;
+    }
+
+    function renderConclusion(data) {
+        const job = data.job || {};
+        const conclusion = data.conclusion || {};
+
+        document.getElementById("jobPosition").textContent =
+            job.position || "未提供岗位名称";
+
+        document.getElementById("jobCompany").textContent =
+            job.company || "公司名称未提供";
+
+        const status = conclusion.overall_status || "信息不足";
+
+        document.getElementById("overallStatus").textContent = status;
+
+        document.getElementById("summary").textContent =
+            conclusion.summary || "暂无综合结论。";
+
+        const score = conclusion.overall_score;
+
+        document.getElementById("overallScore").textContent =
+            score === null || score === undefined
+                ? "暂无评分"
+                : `${score}/100`;
+
+        document.getElementById("coverage").textContent =
+            `${conclusion.evidence_coverage ?? 0}%`;
+
+        document.getElementById("statusBox").className =
+            "status-box " + statusBoxClass(status);
+
+        renderDimensions(conclusion.dimensions || {});
+
+        renderEvidenceItems(
+            "reasoning",
+            conclusion.reasoning,
+            "暂无结论依据。"
+        );
+
+        renderEvidenceItems(
+            "highlights",
+            conclusion.highlights,
+            "当前没有识别到明确的直接匹配优势，建议检查原始分析结果。"
+        );
+
+        renderEvidenceItems(
+            "risks",
+            conclusion.risks,
+            "当前没有识别到明确风险，但仍建议核对原始岗位要求。"
+        );
+
+        renderRecommendations(
+            conclusion.recommendations
+        );
+
+        document.getElementById("rawJson").textContent =
+            JSON.stringify(data, null, 2);
+
+        document.getElementById("content").style.display =
+            "block";
+    }
+
+    async function loadConclusion() {
+        const loading = document.getElementById("loading");
+        const errorBox = document.getElementById("errorBox");
+        const content = document.getElementById("content");
+        const button = document.getElementById("reloadButton");
+
+        errorBox.textContent = "";
+        errorBox.className = "";
+        errorBox.style.display = "none";
+
+        content.style.display = "none";
+        loading.style.display = "block";
+
+        if (button) {
+            button.disabled = true;
+            button.textContent = "正在分析...";
+        }
+
+        try {
+            const savedJob =
+                sessionStorage.getItem("careerpilot_job");
+
+            if (!savedJob) {
+                throw new Error(
+                    "没有找到已保存的岗位信息，请先完成 JD 解析。"
+                );
+            }
+
+            let job;
+
+            try {
+                job = JSON.parse(savedJob);
+            } catch {
+                throw new Error(
+                    "保存的岗位信息不是有效 JSON，请重新解析 JD。"
+                );
+            }
+
+            const response = await fetch(
+                "/api/jd/conclusion",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        job: job
+                    })
+                }
+            );
+
+            let data;
+
+            try {
+                data = await response.json();
+            } catch {
+                throw new Error(
+                    "服务器返回的内容不是有效 JSON。"
+                );
+            }
+
+            if (!response.ok) {
+                const detail = data.detail;
+
+                const message =
+                    typeof detail === "string"
+                        ? detail
+                        : JSON.stringify(
+                            detail || data,
+                            null,
+                            2
+                        );
+
+                throw new Error(message);
+            }
+
+            if (!data.conclusion) {
+                throw new Error(
+                    "接口返回成功，但没有综合结论数据。"
+                );
+            }
+
+            renderConclusion(data);
+
+        } catch (error) {
+            console.error(
+                "US07 综合结论生成失败：",
+                error
+            );
+
+            errorBox.className = "error";
+            errorBox.textContent =
+                "综合结论生成失败：\n" +
+                (
+                    error.message ||
+                    String(error)
+                );
+            errorBox.style.display = "block";
+
+        } finally {
+            loading.style.display = "none";
+
+            if (button) {
+                button.disabled = false;
+                button.textContent = "重新生成结论";
+            }
+        }
+    }
+
+    function goTo(path) {
+        window.location.href = path;
+    }
+
+    loadConclusion();
+</script>
+
+</body>
+</html>
